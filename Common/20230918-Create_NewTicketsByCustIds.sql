@@ -22,7 +22,7 @@ INNER JOIN dbo.match AS m WITH(NOLOCK) ON b.matchid = m.matchid
 WHERE m.matchcode = 'CTS_Test_J01';
 	
 DELETE m FROM dbo.match AS m WITH(ROWLOCK) WHERE m.matchcode = 'CTS_Test_J01';	
-DELETE FROM [bodb02].[dbo].bettrans where matchid = 99612178;
+DELETE FROM [bodb02].[dbo].bettrans where matchid = 73558245;
 DELETE FROM [bodb02].[dbo].bettrans where transid in (144460589345800192)
 
 SELECT TOP (100) ExchangeId,* FROM [dbo].Exchange (NOLOCK);
@@ -48,10 +48,9 @@ Update dbo.match WITH(ROWLOCK) set eventstatus = 'Completed' where matchid = 700
 	WHEN b.oddstype = 5 THEN -(1/NULLIF(b.odds,0))
 END AS odds
 */
-
 /*
--- 12BETAUD02001,12BETAUD02002,12BETAUD02003,M28RMB06001,MBRM55568,M28RMB06027
-   Custid in (1411402,1481207,1775698,121124,169695,954103)
+-- M28RMB06001,MBRM55568,M28RMB06027,12BETAUD02001,12BETAUD02002,12BETAUD02003
+   Custid in (121124,169695,954103,1411402,1481207,1775698)
 -- MS88HK$01014,MS88HK$01015,MS88HK$01016,MS88HK$01017
    Custid in (1773935,1773951,1773953,1807075)
 -- AB88GBP01010,AB88GBP01011,AB88GBP01012,AB88GBP01013,MBRM55569
@@ -65,32 +64,40 @@ END AS odds
 */
 -- TESTDBTRANS (10.18.200.55)
 USE bodb02
-DECLARE @matchid int = 72187867 -- Enter matchid here to create tickets into that match. If leave blank, a random match will be selected
-,@sporttype smallint = 1, @stakeRM money = 10000, @stake money = 500 ,@currency smallint = 16, @actualrate float = 4.1723, @virtualrate float = 4.1723
+DECLARE @matchid int = 73558239 -- Enter matchid here to create tickets into that match. If leave blank, a random match will be selected
+,@sporttype smallint = 1, @stakeRM money = 10000, @stake money = 1500 ,@currency smallint = 16, @actualrate float = 4.1723, @virtualrate float = 4.1723
  -- @stakeRM <> 0 -> Create tickets ~ stakeRM value, not check @stake value
-,@CustIds varchar(2000) = '1411402,1481207,1775698,121124,169695,954103' -- Create ticket for custids list
-,@bettype1 smallmoney = 3, @bettype2 smallmoney = 0, @bettype3 smallmoney= 0, @bettype4 smallmoney = 0
+,@CustIds varchar(2000) = '121124,169695,954103,1411402,1481207,1775698' -- Create ticket for custids list
+,@bettype1 smallmoney = 7, @bettype2 smallmoney = 0, @bettype3 smallmoney= 0, @bettype4 smallmoney = 0
 ,@liveindicator bit = 1, @livehomescore int = 0, @liveawayscore int = 0 --, @HTHomeScore INT = 0, @HTAwayScore INT = 0, @FinalHomeScore INT = 0, @FinalAwayScore INT = 0
 ,@hdp1 smallmoney = 0, @hdp2 smallmoney = 0.5 -- (0.25 - 0.5 - 0.75 - 1 ...)
-,@oddsid1 int = 0, @oddsid2 int = 0, @oddsid3 int = 0, @oddsid4 int = 0, @statusid int = 0, @oddsstatus varchar(20) = 'running' -- oddsstatus = 'running', 'closed'
-,@odds smallmoney = 0.65, @oddsType tinyint = 2 ---- odds, oddsType -----
-,@leagueid int = 3, @homeid int = 8, @awayid int = 9, @eventstatus varchar(20) = 'running'
-,@matchcode varchar(200) = 'CTS_Test_J01', @creator int = 8, @ip varchar(45) = '10.164.168.09' -- '161.142.250.65' --ipv6:  '240e:465:1f32:2dd3:64a6:d7ff:fed9:3046'
+,@oddsid1 int = 0, @oddsid2 int = 0, @oddsid3 int = 0, @oddsid4 int = 0
+,@odds smallmoney = 0.65, @oddsType tinyint = 2, @statusid int = 0, @status varchar(20) = 'running' ---- odds, oddsType, {@statusid,@status}: ticket status -----
+/* @statusid = 0,111,112,113; @status = 'running','DRAW','WON','LOSE'*/
+,@ip varchar(45) = '161.142.250.65' --ipv4 '10.164.168.09', '161.142.250.65' --ipv6:  '240e:465:1f32:2dd3:64a6:d7ff:fed9:3046'
 ,@betteam varchar(10) = 'h', @betid int = 0, @time time = CONVERT(Time, GETDATE())
-,@eventdate datetime = '2023-09-14 00:00:00.000' -- DATEADD(DD, 0, DATEDIFF(DD, 0, GETDATE())) 
+
+------------- Get match -------------
+declare	@eventdate datetime, @kickofftime datetime;
+select	@livehomescore = CASE WHEN @liveindicator = 0 THEN 0 ELSE m.livehomescore END
+	,	@liveawayscore = CASE WHEN @liveindicator = 0 THEN 0 ELSE m.liveawayscore END
+	,	@eventdate = m.eventdate, @kickofftime = m.kickofftime
+from dbo.match m (NOLOCK) where m.matchid  = @matchid;
+
 declare @transdate datetime = @eventdate + CAST(@time AS DATETIME) -- DATEADD(DD, 0, GETDATE()) OR DATEADD(HOUR,10,DATEADD(MINUTE,30,DATEADD(SECOND,0,@eventdate)))
-	   ,@kickofftime datetime = DATEADD(DD,0, DATEADD(HOUR,10,DATEADD(MINUTE,20,@eventdate))) -- DATEADD(HOUR,10,DATEADD(MINUTE,20,@eventdate));
-------------- Get match ----------------------------------------------------
--- SELECT @eventdate,@transdate,@kickofftime;
-DECLARE @Tickets INT = 4; -- Create tickets
+-- SELECT @eventdate AS eventdate , @kickofftime AS kickofftime, @transdate AS transdate
+
+DECLARE @Tickets INT = 1; -- Create tickets
 DECLARE @steptimeticket INT = 5; -- transdate step of ticket1 & ticket2 ... (second)
 
 if object_id ( 'tempdb..#tmpMatches', 'U') is not null drop table #tmpMatches
 create table #tmpMatches(matchid int);
-
-select	@livehomescore = CASE WHEN @liveindicator = 0 THEN 0 ELSE m.livehomescore END
-	,	@liveawayscore = CASE WHEN @liveindicator = 0 THEN 0 ELSE m.liveawayscore END
-from dbo.match m (NOLOCK) where m.matchid  = @matchid;
+select distinct m.matchid, l.leaguename, h.teamname, a.teamname, m.eventstatus, m.eventdate, m.kickofftime, m.GlobalShowTime
+from dbo.match m (NOLOCK)
+	inner join dbo.team a (NOLOCK) on a.teamid = m.awayid 
+	inner join dbo.team h (NOLOCK) on h.teamid = m.homeid 
+	inner join league l (nolock) on l.leagueid = m.leagueid where m.matchid = @matchid;
+insert into #tmpMatches values (@matchid);
 
 if @bettype1 <> 0 begin
 	select top 1 @oddsid1 = od.oddsid from bodb02.dbo.Match m WITH(NOLOCK)	
@@ -285,7 +292,6 @@ values
    ,(609,'A'),(609,'H'),(610,'A'),(610,'H'),(612,'A'),(612,'H');
 
 -----------------------------Get Trans-----------------------------------------------------------------------
-
 if object_id('tempdb..#tmpBettrans', 'U') is not null drop table #tmpBettrans
 create table #tmpBettrans (
   id int identity (1,1) not null
@@ -382,7 +388,7 @@ DECLARE @c AS INT = 1;
 
 if (@@SERVERNAME in ('TESTDBTRANS') and exists (select 1 from #tmpcustinfo) and exists (select 1 from #tmpbettrans) and exists (select 1 from match(nolock) where matchid = @matchid)) begin	
 	insert into dbo.bettrans (transdate, winlostdate,oddsid, hdp1, hdp2, oddstype, odds, stake, livehomescore, liveawayscore, liveindicator, betteam, bettype, statusid,custid,matchid,recommend,mrecommend,srecommend, refno,username,betid,currency,CurrencyName,status,oddsspread, virtualrate, actualrate, actual_stake, ip)
-	select transdate, @eventdate,oddsid, hdp1, hdp2, @oddstype,odds, stake, livehomescore, liveawayscore, liveindicator, betteam, bettype, statusid,custid,matchid,recommend,mrecommend,srecommend, 100000000000,username,betid,currency,currencyName,'running', 0, @virtualrate, actualrate, stake, @ip
+	select transdate, @eventdate,oddsid, hdp1, hdp2, @oddstype,odds, stake, livehomescore, liveawayscore, liveindicator, betteam, bettype, statusid,custid,matchid,recommend,mrecommend,srecommend, 100000000000,username,betid,currency,currencyName,@status, 0, @virtualrate, actualrate, stake, @ip
 	from #tmpbettrans (nolock) where matchid = @matchid
 end
 

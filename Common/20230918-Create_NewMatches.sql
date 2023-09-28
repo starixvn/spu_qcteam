@@ -23,17 +23,17 @@ DELETE m FROM dbo.match AS m WITH(ROWLOCK) WHERE m.matchcode = 'CTS_Test_J01';
 -- TESTDBPRO (10.18.200.17)
 USE bodb02
 DECLARE @matchid int = 0, @sporttype smallint = 1
-,@bettype1 smallmoney = 1, @bettype2 smallmoney = 0, @bettype3 smallmoney= 0, @bettype4 smallmoney = 0
-,@liveindicator bit = 1, @livehomescore int = 0, @liveawayscore int = 0 --, @HTHomeScore INT = 0, @HTAwayScore INT = 0, @FinalHomeScore INT = 0, @FinalAwayScore INT = 0
 ,@oddsid1 int = 0, @oddsid2 int = 0, @oddsid3 int = 0, @oddsid4 int = 0, @oddsstatus varchar(20) = 'running' -- oddsstatus = 'running', 'closed'
-,@leagueid int = 3, @homeid int = 8, @awayid int = 9, @eventstatus varchar(20) = 'running'
-,@matchcode varchar(200) = 'CTS_Test_J01', @creator int = 8, @time time = CONVERT(Time, GETDATE())
-,@eventdate datetime = '2023-09-14 00:00:00.000' -- DATEADD(DD, 0, DATEDIFF(DD, 0, GETDATE())) 
-declare @transdate datetime = @eventdate + CAST(@time AS DATETIME) -- DATEADD(DD, 0, GETDATE()) OR DATEADD(HOUR,10,DATEADD(MINUTE,30,DATEADD(SECOND,0,@eventdate)))
-	   ,@kickofftime datetime = DATEADD(DD,0, DATEADD(HOUR,10,DATEADD(MINUTE,20,@eventdate))) -- DATEADD(HOUR,10,DATEADD(MINUTE,20,@eventdate));
-------------- Get match info -------------
--- SELECT @eventdate, @transdate, @kickofftime;
+,@bettype1 smallmoney = 1, @bettype2 smallmoney = 3, @bettype3 smallmoney= 7, @bettype4 smallmoney = 8
+,@leagueid int = 3, @homeid int = 8, @awayid int = 9, @eventstatus varchar(20) = 'Completed' -- running Completed
+,@liveindicator bit = 1, @livehomescore int = 0, @liveawayscore int = 0 --, @HTHomeScore INT = 0, @HTAwayScore INT = 0, @FinalHomeScore INT = 0, @FinalAwayScore INT = 0
+,@matchcode varchar(200) = 'CTS_Test_J01', @creator int = 8
+,@eventdate datetime =  DATEADD(DD, 0, DATEDIFF(DD, 0, GETDATE())) -- '2023-09-14 00:00:00.000'
+declare @kickofftime datetime = DATEADD(DD,0, DATEADD(HOUR,10,DATEADD(MINUTE,20,@eventdate))) -- DATEADD(HOUR,10,DATEADD(MINUTE,20,@eventdate));
 
+SELECT @eventdate AS eventdate , @kickofftime AS kickofftime;
+
+------------- Get match info -------------
 if object_id ( 'tempdb..#tmpMatches', 'U') is not null drop table #tmpMatches
 create table #tmpMatches(
 matchid int
@@ -123,5 +123,5 @@ select distinct m.matchid, L.leagueid, l.leaguename, m.homeid, h.teamname, m.awa
 from dbo.match m (NOLOCK)
 	inner join dbo.team a (NOLOCK) on a.teamid = m.awayid 
 	inner join dbo.team h (NOLOCK) on h.teamid = m.homeid 
-	inner join league l (nolock) on l.leagueid = m.leagueid where m.matchid >= 69676336 order by m.matchid desc;
+	inner join league l (nolock) on l.leagueid = m.leagueid where m.matchid >= 73558239  and m.matchcode = 'CTS_Test_J01' order by m.matchid desc;
 */
