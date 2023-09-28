@@ -1,10 +1,18 @@
+/*
+	Created:	20230928@Irena.Vo
+	Task :		Create data for Robot Report 
+	DB:			MainDB: ON_USER (10.18.200.58 - TESTDB053) & CTS: CTS_DataCenter 
+*/
 
 A. Robot Source
 1. Table: AI: CTS_DataCenter.RobotDetection, Imperva: CTS_DataCenter.RobotImperva, Counter: ON_USER.dbo.RobotUsers 
 2. SP: 
-Counter: [dbo].[CTS_Customer_RobotListSelByDate], IsLicensee (null: get both(Credit and Licensee), 0: Credit, 1: IsLicensee) --> return object to Robot Report, AI Robot Report(*)
+Counter: [dbo].[CTS_Customer_RobotListSelByDate], IsLicensee (2: get both(Credit and Licensee), 0: Credit, 1: IsLicensee) --> return object to Robot Report, AI Robot Report(*)
+-- exec CTS_Customer_RobotListSelByDate @FromDate='2023-04-01 00:00:00',@ToDate='2023-09-30 23:59:59',@IsLicensee=2
 Robot Report: call CTS_DataCenter.CTS_DC_RPT_RobotStatistic(1, 0, null, '2022-10-01 00:00:00', '2022-10-31 00:00:00', null);
+-- CALL CTS_DC_RPT_RobotStatistic_xtest(true, false, NULL, timestamp('2023-01-01 00:00:00.000000'), timestamp('2023-09-30 23:59:59.000000'), '[{"CustID":1275,"RobotDate":"2023-07-29T21:00:00"},{"CustID":1277,"RobotDate":"2023-07-29T21:00:00"}]');
 AI Robot Report: call CTS_DataCenter.CTS_DC_RPT_RobotStatistic_AI(1, 0, null, '2022-10-01 00:00:00', '2022-10-31 00:00:00');
+-- CALL CTS_DC_RPT_RobotStatistic_AI_xtest(true, false, NULL, timestamp('2023-01-01 00:00:00.000000'), timestamp('2023-09-30 23:59:59.000000'))
 
 B. Data flow:
 /*STEP 1: Clean old data*/
@@ -128,9 +136,10 @@ insert into CTS_DataCenter.RobotImperva (LogID, CustID, Platform, CreateTime, Is
 (91,@Credit01, 56, DATE_FORMAT(@Old13Months, @Day01),1),(92,@Credit02, 57, DATE_FORMAT(@Old13Months, @Day01),1),(93,@Credit03, 58, DATE_FORMAT(@Old13Months, @Day01),1),(94,@Credit04, 59, DATE_FORMAT(@Old13Months, @Day01),1),(95,@Credit05, 60, DATE_FORMAT(@Old13Months, @Day01),1),(96,@Licensee01, 37, DATE_FORMAT(@Old13Months, @Day10),1),(97,@Licensee02, 38, DATE_FORMAT(@Old13Months, @Day10),1),(98,@Licensee01, 39, DATE_FORMAT(@Old13Months, @Day20),1),(99,@Licensee02, 40, DATE_FORMAT(@Old13Months, @Day20),1);
 */
 
-/*STEP 2.2: Insert new raw data for Counter*/
+/*STEP 2.2: Insert data with counter >= 10 (or 3 and ...)*/
+-- ON_USER (10.18.200.58 - TESTDB053)
 /*STEP 2.2.1: Setting param*/
-SELECT * FROM CTS_DataCenter.SystemParameter where ParameterID = 2;
+SELECT * FROM CTS_DataCenter.SystemParameter where ParameterID = 3;
 
 declare @Credit01 bigint =5941;declare @Credit02 bigint =5942;declare @Credit03 bigint =5943;declare @Credit04 bigint =5944;declare @Credit05 bigint =5945;declare @Credit06 bigint =5947;declare @Credit07 bigint =5948;declare @Credit08 bigint =5949;declare @Credit09 bigint =5951;declare @Credit11 bigint =55892;declare @Credit12 bigint =55894;declare @Credit13 bigint =55896;declare @Credit14 bigint =55897;declare @Credit15 bigint =55898;declare @Credit16 bigint =55899;declare @Credit17 bigint =55901;declare @Credit18 bigint =55902;declare @Credit19 bigint =55904;declare @Credit21 bigint =1275;declare @Credit22 bigint =1277;declare @Credit23 bigint =1280;declare @Credit24 bigint =1282;declare @Credit25 bigint =1284;
 declare @Licensee01 bigint =41878831;declare @Licensee02 bigint =41878832;declare @Licensee03 bigint =41878833;declare @Licensee04 bigint =41878834;declare @Licensee05 bigint =41878835;declare @Licensee06 bigint =27109626;declare @Licensee07 bigint =27109627;declare @Licensee08 bigint =27109628;declare @Licensee09 bigint =27109629;declare @Licensee11 bigint =980651;declare @Licensee12 bigint =980652;declare @Licensee13 bigint =980653;declare @Licensee14 bigint =980655;declare @Licensee15 bigint =980657;declare @Licensee16 bigint =980659;declare @Licensee17 bigint =980661;declare @Licensee18 bigint =980663;declare @Licensee19 bigint =980665;declare @Licensee21 bigint =832131;declare @Licensee22 bigint =832132;declare @Licensee23 bigint =832134;declare @Licensee24 bigint =832138;declare @Licensee25 bigint =835062;
@@ -170,4 +179,6 @@ insert into [ON_USER].[dbo].[RobotUsers] (CustID, IP, LastChangeTime, Site, Coun
 
 insert into [ON_USER].[dbo].[RobotUsers] (CustID, IP, LastChangeTime, Site, Counter, RobotDate, Creator) select custid, 'N/A', FORMAT(@Latest13Months, @Day20), site, 11, FORMAT(@Latest13Months, @Day20), 8 from bodb02.dbo.customer with(nolock) where custid in (@Licensee21,@Licensee22,@Licensee23,@Licensee24,@Licensee25);
 insert into [ON_USER].[dbo].[RobotUsers] (CustID, IP, LastChangeTime, Site, Counter, RobotDate, Creator) select custid, 'N/A', FORMAT(@Old13Months, @Day20), site, 11, FORMAT(@Old13Months, @Day20), 8 from bodb02.dbo.customer with(nolock) where custid in (@Credit21,@Credit22,@Credit23,@Credit24,@Credit25);
-*/
+
+-- SPs:
+exec CTS_Customer_RobotListSelByDate @FromDate='2023-04-01 00:00:00',@ToDate='2023-09-30 23:59:59',@IsLicensee=2
