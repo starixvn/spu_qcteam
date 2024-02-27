@@ -1,4 +1,11 @@
-#===== EXISTING CATEGORY
+/*
+	Created:	20240227@Irena.Vo
+	Task :		Create script to generate data from CTS for switch category
+	DB:			CTS_DataCenter
+	
+	Revisions:
+			-   20240227@Irena.Vo: Created
+*/
 -- Step 1: Define parameters
 SET 	@CustIDs = '1284,3681780,4504877' /*recommend at least 1 credit & 1 licensee & 1 special site*/
     ,	@CategoryGroup = 201 /*201: New;   202: Normal;   203: Smart;   204: Risky;   205: Good;   206: Probation*/

@@ -1,3 +1,12 @@
+/*
+	Created:	20240227@Irena.Vo
+	Task :		Create script to create Tickets for Realtime Scanning
+	DB:			TESTDB053 (bodb_Account, bodb_ODS)
+	
+	Revisions:
+			-   20240227@Irena.Vo: Created
+*/
+
 -- select top 5* from bodb02.dbo.customer with(nolock) where site = 'W88' and roleid = 1 and currency not in (20, 27, 28) order by custid asc;
 -- 1. Special site:
 -- site = haifa: 4359501,4359569,4501696,4526581,4529106

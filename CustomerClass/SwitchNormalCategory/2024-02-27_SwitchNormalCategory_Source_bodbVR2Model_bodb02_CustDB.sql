@@ -1,3 +1,11 @@
+/*
+	Created:	20240227@Irena.Vo
+	Task :		Create script to generate data from bodbVR2Model, bodb02, CustDB for switch category
+	DB:			CTS_DataCenter
+	
+	Revisions:
+			-   20240227@Irena.Vo: Created
+*/
 USE bodb_VR2Model;
 -- Step 6: Define parameters
 DECLARE  	@CustIDs VARCHAR(MAX) = '1284,3681780,4504877' /*recommend at least 1 credit & 1 licensee & 1 special site*/
@@ -128,7 +136,8 @@ SELECT * FROM dbo.CustomerClassification_NormalPool p WHERE EXISTS (SELECT 1 FRO
 
 -- Step 12: Generate data in DW
 SELECT * FROM #tmpCustInfo cc;-- get info for the below file.
-/*File: 2024-02-27_GenerateDataRealtime.sql*/
+/*File: 2024-02-27_GenerateDataRealtime.sql, Current Category = NULL/INACTIVE/NEW/GOOD/NORMAL*/
+/*File: 2024-02-27_GenerateDataDailyProb.sql, Current Category = PROB/SMART/RISKY*/
 
 -- Step 13: Start service: CTS_CustomerClassification_Secondly_NormalAccountClassification_Renovate
 -- Step 14: Start service: CTS_CustomerClassification_Secondly_NormalAccountInsert_Renovate
