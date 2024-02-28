@@ -6,6 +6,7 @@
 	
 	Revisions:
 			- 20231218@Randy.Nguyen: Created
+			- 20240228@Lisa.Phan: Update LB
 */
 
 
@@ -16,11 +17,11 @@ SELECT
 ,	@EventStatus  := 'running'
 ,	@BettypeID :=	1	
 , 	@BetID := 0 		-- Soccer: 0, Basketball: 0/80X, Esports: 0/80X/80XYY 
-,	@LiveIndicator  := 0	,	@Reason := 2		-- 0: GB , 1: HED, 2: ARB, 3: FG, 58: IRR
+,	@LiveIndicator  := 0	,	@Reason := 2		-- 0: GB , 1: HED, 2: ARB, 3: FG, 58: IRR, 4: LB
 , 	@EventDate := '2023-12-11 00:00:00.000'	,	@KickOffTime := '2023-12-11 01:30:00'  	-- define "match setion"
 ,	@IsVerified := 0
 -- MatchMonitorDetail
-,	 @GroupID := 2
+,	 @GroupID := 2 -- 0: FG, LB | >=1: GB, HED, ARB, IRR
 ,	@ListTransID := '196111221802401799,196111221802401811,196111221802401823'
 		-- select transid from maindb: select top 500  transid from dbo.bettrans where matchid = 77254707 and bettype =1 ; 
 ,	@ListCustID := '1284,4359501,4359569'			-- 	102572090,101993845,76309594,49705225			
@@ -45,4 +46,3 @@ INSERT INTO `CTS_DataCenter`.`MatchMonitorDetails`
 
  SELECT * from `CTS_DataCenter`.`MatchMonitor` where MatchID = @MatchID;
  SELECT * from `CTS_DataCenter`.`MatchMonitorDetails` where MatchID = @MatchID;
-
