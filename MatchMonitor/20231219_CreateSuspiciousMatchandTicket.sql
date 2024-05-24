@@ -1,6 +1,6 @@
 /*
 	Created:	20231218@Randy.Nguyen
-	Task :		Create script to create Suspicious Natch/Ticket
+	Task :		Create script to create Suspicious Match/Ticket
 	DB:			CTS_DataCenter, 10.18.200.17 (TESTDBPRO), 10.18.200.55 (TESTDBTRANS )
 	
 	
