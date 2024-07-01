@@ -1,0 +1,33 @@
+sp: CTS_Association_GetBySharedMatches
+USE [bodb02]
+GO
+DECLARE	@return_value int
+EXEC	@return_value = [dbo].[CTS_Association_GetBySharedMatches]
+		@ListCustId = '1306,871291,1338,906974,5187013,2932975,14301874,18709801',
+		@RootCustId = 0,
+		@QueryType = 1
+SELECT	'Return Value' = @return_value
+GO
+
+	/**NA Test*/
+	IF EXISTS (SELECT * FROM #tmpCustIds WHERE CustID IN (1306,871291,1338,906974,5187013,2932975,14301874,18709801))
+	BEGIN
+		INSERT INTO #tmpAssociation (CustID1, CustID2) VALUES
+		(1306,871291),(1338,906974),(5187013,2932975),(14301874,18709801);
+	END;
+
+
+sp:  CTS_Association_IpSharedLast3Days
+USE [bodb02]
+GO
+DECLARE	@return_value int
+EXEC	@return_value = [dbo].[CTS_Association_IpSharedLast3Days]
+		@ListCustId = N'1305,1337,861534,906234,1365,927039,1395,936154'
+SELECT	'Return Value' = @return_value
+GO
+/**NA Test*/
+	IF EXISTS (SELECT * FROM #tmp_CustID WHERE CustID IN (1305,1337,861534,906234,1365,927039,1395,936154))
+	BEGIN
+	INSERT INTO #tmp_Association (CustID1, CustID2, IP) VALUES
+	(1305,861534,'10.1.1.1'),(1337,906234,'10.1.1.2'),(1365,927039,'10.1.1.3'),(1395,936154,'10.1.1.4');
+	END;
