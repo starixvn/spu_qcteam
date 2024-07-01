@@ -7,6 +7,7 @@
 	Revisions:
 			- 20231218@Randy.Nguyen: Created
 			- 20240228@Lisa.Phan: Update LB
+			- 20240701@Lisa.Phan: add LeagueGroupID for Saba 
 */
 
 
@@ -14,6 +15,7 @@ SELECT
 -- MatchMonitor
 	@MatchID :=	77254707		
 ,	@SportType :=	1, 	@LeagueID :=	5 ,	@LeagueName := '*GERMANY-BUNDESLIGA I',	@HomeID :=	8 , @AwayID :=	9
+,   @LeagueGroupID := NULL -- Saba: 42, Others: NULL
 ,	@EventStatus  := 'running'
 ,	@BettypeID :=	1	
 , 	@BetID := 0 		-- Soccer: 0, Basketball: 0/80X, Esports: 0/80X/80XYY 
@@ -37,8 +39,8 @@ SELECT
 
 -- insert match in cts
 INSERT IGNORE INTO `CTS_DataCenter`.`MatchMonitor` 
-(`EventDate`, `BettypeID`, `MatchID`, `IsMajorLeague`, `LiveIndicator`, `Reason`, `KickOffTime`, `EventStatus`, `HomeID`, `AwayID`, `LeagueID`, `IsVerified`, `LeagueName`, `SportType`, `BetID`, `ClassifyStatus`, `InsertTime`, `InsertDate`) VALUES 
-(@EventDate, @BettypeID, @MatchID, '1', @LiveIndicator , @Reason, @KickOffTime, @EventStatus , @HomeID, @AwayID, @LeagueID,@IsVerified,@LeagueName,@SportType, @BetID, '0', @InsertTime, @InsertDate);
+(`EventDate`, `BettypeID`, `MatchID`, `IsMajorLeague`, `LiveIndicator`, `Reason`, `KickOffTime`, `EventStatus`, `HomeID`, `AwayID`, `LeagueID`, `IsVerified`, `LeagueName`, `SportType`, `BetID`, `ClassifyStatus`, `InsertTime`, `InsertDate`, `LeagueGroupID`) VALUES 
+(@EventDate, @BettypeID, @MatchID, '1', @LiveIndicator , @Reason, @KickOffTime, @EventStatus , @HomeID, @AwayID, @LeagueID,@IsVerified,@LeagueName,@SportType, @BetID, '0', @InsertTime, @InsertDate, @LeagueGroupID);
 
 INSERT INTO `CTS_DataCenter`.`MatchMonitorDetails` 
 (`MatchID`, `IsMajorLeague`, `LiveIndicator`, `BettypeID`, `HDP`, `GroupID`, `Reason`, `ListCustID`, `ListTransID`, `EventDate`, `LiveHomeScore`, `LiveAwayScore`, `BetID`, `ClassifyStatus`, `Betteam`, `InsertTime`, `ScoreDiff`) VALUES 
