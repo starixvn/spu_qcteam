@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan">
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="ProjectFolder" elementType="Argument">
+            <stringProp name="Argument.name">ProjectFolder</stringProp>
+            <stringProp name="Argument.value">D:/CTS_LoadTest/Module/Danger Monitor</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath">D:\CTS_LoadTest\DBDriver\mssql-jdbc-12.6.1.jre8.jar,D:\CTS_LoadTest\DBDriver\mysql-connector-j-8.3.0.jar</stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="[Var Config] Common">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="RowNum" elementType="Argument">
+            <stringProp name="Argument.name">RowNum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Tomorrow" elementType="Argument">
+            <stringProp name="Argument.name">Tomorrow</stringProp>
+            <stringProp name="Argument.value">${__groovy((new Date() + 1).format(&quot;yyyy-MM-dd&quot;),)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Today" elementType="Argument">
+            <stringProp name="Argument.name">Today</stringProp>
+            <stringProp name="Argument.value">${__groovy(new Date().format(&quot;yyyy-MM-dd&quot;),)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Yesterday" elementType="Argument">
+            <stringProp name="Argument.name">Yesterday</stringProp>
+            <stringProp name="Argument.value">${__groovy((new Date() - 1).format(&quot;yyyy-MM-dd&quot;),)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Last6d" elementType="Argument">
+            <stringProp name="Argument.name">Last6d</stringProp>
+            <stringProp name="Argument.value">${__groovy((new Date() - 6).format(&quot;yyyy-MM-dd&quot;),)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Last7d" elementType="Argument">
+            <stringProp name="Argument.name">Last7d</stringProp>
+            <stringProp name="Argument.value">${__groovy((new Date() - 7).format(&quot;yyyy-MM-dd&quot;),)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SQLServer_Conn_CUST" elementType="Argument">
+            <stringProp name="Argument.name">SQLServer_Conn_CUST</stringProp>
+            <stringProp name="Argument.value">jdbc:sqlserver://TESTDBCUST:1433;encrypt=true;trustServerCertificate=true</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SQLServer_Conn_MATCH" elementType="Argument">
+            <stringProp name="Argument.name">SQLServer_Conn_MATCH</stringProp>
+            <stringProp name="Argument.value">jdbc:sqlserver://TESTDBPRO:1433;encrypt=true;trustServerCertificate=true</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SQLServer_Conn_TRANS" elementType="Argument">
+            <stringProp name="Argument.name">SQLServer_Conn_TRANS</stringProp>
+            <stringProp name="Argument.value">jdbc:sqlserver://TESTDBTRANS:1433;encrypt=true;trustServerCertificate=true</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="CustListPath" elementType="Argument">
+            <stringProp name="Argument.name">CustListPath</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/CustList.txt</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="NewTransInfoPath" elementType="Argument">
+            <stringProp name="Argument.name">NewTransInfoPath</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/NewTransInfo.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="NewMatchInfoPath" elementType="Argument">
+            <stringProp name="Argument.name">NewMatchInfoPath</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/NewMatchInfo.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="ExistingCCDangerInfoPath" elementType="Argument">
+            <stringProp name="Argument.name">ExistingCCDangerInfoPath</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/ExistingCCDangerInfo.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="CurrentDateTime" elementType="Argument">
+            <stringProp name="Argument.name">CurrentDateTime</stringProp>
+            <stringProp name="Argument.value">${__groovy(new Date().format(&quot;yyyy-MM-dd hh:mm:ss&quot;),)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CustDB">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">60000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">CustDB</stringProp>
+        <stringProp name="dbUrl">${SQLServer_Conn_CUST};databaseName=CustDB</stringProp>
+        <stringProp name="driver">com.microsoft.sqlserver.jdbc.SQLServerDriver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">@quality#</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">100000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">600000</stringProp>
+        <stringProp name="username">testteam</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] MatchDB">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">60000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">MatchDB</stringProp>
+        <stringProp name="dbUrl">${SQLServer_Conn_MATCH};databaseName=bodb02</stringProp>
+        <stringProp name="driver">com.microsoft.sqlserver.jdbc.SQLServerDriver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">@quality#</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">100000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">600000</stringProp>
+        <stringProp name="username">testteam</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] TransDB">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">60000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">TransDB</stringProp>
+        <stringProp name="dbUrl">${SQLServer_Conn_TRANS};databaseName=bodb02</stringProp>
+        <stringProp name="driver">com.microsoft.sqlserver.jdbc.SQLServerDriver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">@quality#</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">100000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">600000</stringProp>
+        <stringProp name="username">testteam</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get CustID list">
+        <stringProp name="scriptLanguage">groovy</stringProp>
+        <stringProp name="parameters">CustIDList</stringProp>
+        <stringProp name="filename"></stringProp>
+        <stringProp name="cacheKey">true</stringProp>
+        <stringProp name="script">String readFileToString(String filePath) {
+    String content = &apos;&apos;
+    try {
+        content = new File(filePath).text
+    } catch (Exception e) {
+        log.error(&quot;Error reading file: ${e.message}&quot;)
+    }
+    return content
+}
+
+def filePath = &apos;${CustListPath}&apos;
+def CustList = readFileToString(filePath)
+vars.put(&quot;CustList&quot;, CustList)</stringProp>
+      </JSR223PreProcessor>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="[1. Reset data]">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">60</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update tbl: custinfo">
+          <stringProp name="dataSource">CustDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">update dbo.custinfo 
+set Danger=0, Danger2=0, Danger3=0, Danger4=0, Danger5=0
+where CustID IN (${CustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: match">
+          <stringProp name="dataSource">MatchDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from dbo.match where matchcode like &apos;NAGA TEST MATCH%&apos;;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: match14">
+          <stringProp name="dataSource">MatchDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from dbo.match14 where matchcode like &apos;NAGA TEST MATCH%&apos;;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: bettrans">
+          <stringProp name="dataSource">TransDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from dbo.bettrans where CustID IN (${CustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: bettrans14">
+          <stringProp name="dataSource">TransDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from dbo.bettrans14 where CustID IN (${CustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Prepare existing CC &amp; danger]">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">60</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get Existing CC &amp; Danger Info">
+          <stringProp name="filename">${ExistingCCDangerInfoPath}</stringProp>
+          <stringProp name="fileEncoding">utf-8</stringProp>
+          <stringProp name="variableNames">CustID,CustomerClass,Danger3,Danger2,Danger,Danger4,Danger5</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update CC &amp; Danger Info">
+          <stringProp name="dataSource">CustDB</stringProp>
+          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="query">/*No danger: cust1,cust2,cust3,cust4,cust5,cust36,cust37,cust38,cust39,cust40*/
+update custinfo 
+set CustomerClass=${CustomerClass}, Danger3=${Danger3}, Danger2=${Danger2}, Danger=${Danger}, Danger4=${Danger4}, Danger5=${Danger5}
+where CustID = ${CustID};</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[3. Prepare new match]">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">60</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Match Info">
+          <stringProp name="filename">${NewMatchInfoPath}</stringProp>
+          <stringProp name="fileEncoding">utf-8</stringProp>
+          <stringProp name="variableNames">No,Market,SportType,LeagueID,HomeID,AwayID,Range</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.match ">
+          <stringProp name="dataSource">MatchDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">insert into dbo.match (leagueid,homeid,homeid2,awayid,awayid2,eventstatus,eventdate,kickofftime,GlobalShowTime,creator,matchcode,sporttype,DisplayMode,LeaguePatternID,HomeDisplayPatternID,AwayDisplayPatternID,IsNeutral,HasLive)
+select 	${LeagueID}
+	,	${HomeID}
+	,	${HomeID}
+	,	${AwayID}
+	,	${AwayID}
+	,	&apos;running&apos;
+	,	CASE WHEN ${Range} = 0 THEN &apos;${Tomorrow}&apos;
+			WHEN ${Range} = 1 THEN &apos;${Today}&apos; 
+			WHEN ${Range} = 2 THEN &apos;${Yesterday}&apos; 
+			WHEN ${Range} = 3 THEN &apos;${Last6d}&apos; 
+			WHEN ${Range} = 4 THEN &apos;${Last7d}&apos; END
+	,	CASE WHEN ${Range} = 0 THEN &apos;${Tomorrow}&apos;
+			WHEN ${Range} = 1 THEN &apos;${Today}&apos; 
+			WHEN ${Range} = 2 THEN &apos;${Yesterday}&apos; 
+			WHEN ${Range} = 3 THEN &apos;${Last6d}&apos; 
+			WHEN ${Range} = 4 THEN &apos;${Last7d}&apos; END
+	,	CASE WHEN ${Range} = 0 THEN &apos;${Tomorrow}&apos;
+			WHEN ${Range} = 1 THEN &apos;${Today}&apos; 
+			WHEN ${Range} = 2 THEN &apos;${Yesterday}&apos; 
+			WHEN ${Range} = 3 THEN &apos;${Last6d}&apos; 
+			WHEN ${Range} = 4 THEN &apos;${Last7d}&apos; END
+	,	8
+	,	CONCAT(&apos;NAGA TEST MATCH &apos;, &apos;${Market}&apos;, &apos; &apos;, &apos;${No}&apos;) 
+	,	${SportType}
+	,	1
+	,	1
+	,	1
+	,	1
+	,	0
+	,	1
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[4. Prepare new trans]">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">60</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Trans Info">
+          <stringProp name="filename">${NewTransInfoPath}</stringProp>
+          <stringProp name="fileEncoding">utf-8</stringProp>
+          <stringProp name="variableNames">MatchNo,LiveIndicator,BetTypeID,BetID,BetTeam,CustID,UserName,Recommend,MRecommend,SRecommend,Currency,CurrencyName</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.bettrans">
+          <stringProp name="dataSource">TransDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">insert into dbo.bettrans (winlostdate,transdate,matchid,liveindicator,livehomescore,liveawayscore,statusid,status,bettype,betid,betteam,betfrom,oddstype,odds,hdp1,hdp2,stake,actualrate,custid,username,recommend,mrecommend,srecommend,currency,currencyName,oddsid,ip,refno) 
+select m.EventDate,m.EventDate,m.MatchID,${LiveIndicator},0,0,0,&apos;running&apos;,${BetTypeID},${BetID},&apos;${BetTeam}&apos;,&apos;i&apos;,2,&apos;0.1&apos;,&apos;0.5&apos;,&apos;0&apos;,500,1,${CustID},&apos;${UserName}&apos;,${Recommend},${MRecommend},${SRecommend},${Currency},&apos;${CurrencyName}&apos;,0,&apos;10.200.18.100&apos;,0
+from dbo.match as m with(nolock)
+where m.MatchCode like &apos;NAGA TEST MATCH%&apos; and RIGHT(m.MatchCode, 3) = &apos;${MatchNo}&apos;
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[5. Prepare  match &amp; trans last 14d]">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">60</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.match14">
+          <stringProp name="dataSource">MatchDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">insert into dbo.match14 (matchid,leagueid,homeid,homeid2,awayid,awayid2,eventstatus,eventdate,kickofftime,GlobalShowTime,creator,matchcode,sporttype,DisplayMode,LeaguePatternID,HomeDisplayPatternID,AwayDisplayPatternID,IsNeutral)
+select matchid,leagueid,homeid,homeid2,awayid,awayid2,&apos;completed&apos;,eventdate,kickofftime,GlobalShowTime,creator,matchcode,sporttype,DisplayMode,LeaguePatternID,HomeDisplayPatternID,AwayDisplayPatternID,IsNeutral
+from dbo.match with(nolock)
+where matchcode like &apos;NAGA TEST MATCH%&apos; and eventdate in (&apos;${Last6d}&apos;, &apos;${Last7d}&apos;) 
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.bettrans14">
+          <stringProp name="dataSource">TransDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">insert into dbo.bettrans14 (transid,winlostdate,transdate,matchid,liveindicator,livehomescore,liveawayscore,statusid,status,bettype,betid,betteam,betfrom,oddstype,odds,hdp1,hdp2,stake,actualrate,custid,username,recommend,mrecommend,srecommend,currency,currencyName,oddsid,ip,refno,creator) 
+select b.transid,b.winlostdate,b.transdate,b.matchid,b.liveindicator,b.livehomescore,b.liveawayscore,b.statusid,b.status,b.bettype,b.betid,b.betteam,b.betfrom,b.oddstype,b.odds,b.hdp1,b.hdp2,b.stake,b.actualrate,b.custid,b.username,b.recommend,b.mrecommend,b.srecommend,b.currency,b.currencyName,b.oddsid,b.ip,b.refno,8
+from dbo.bettrans as b with(nolock)
+	inner join dbo.match as m with(nolock) on m.matchid = b.matchid
+where m.MatchCode like &apos;NAGA TEST MATCH%&apos; and m.eventdate in (&apos;${Last6d}&apos;, &apos;${Last7d}&apos;) and b.winlostdate in (&apos;${Last6d}&apos;, &apos;${Last7d}&apos;)
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[6. Clean up match &amp; trans]">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">60</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean up tbl dbo.match">
+          <stringProp name="dataSource">MatchDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from dbo.match where matchcode like &apos;NAGA TEST MATCH%&apos; and eventdate in (&apos;${Last6d}&apos;, &apos;${Last7d}&apos;);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean up tbl dbo.bettrans">
+          <stringProp name="dataSource">TransDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete b
+from dbo.bettrans as b with(nolock)
+	inner join dbo.match as m with(nolock) on m.matchid = b.matchid
+where m.MatchCode like &apos;NAGA TEST MATCH%&apos; and m.eventdate in (&apos;${Last6d}&apos;, &apos;${Last7d}&apos;) and b.winlostdate in (&apos;${Last6d}&apos;, &apos;${Last7d}&apos;)
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
