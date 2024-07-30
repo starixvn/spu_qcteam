@@ -7,19 +7,23 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="ProjectFolder" elementType="Argument">
             <stringProp name="Argument.name">ProjectFolder</stringProp>
-            <stringProp name="Argument.value">D:/CTS_LoadTest/Module/MatchMonitor</stringProp>
+            <stringProp name="Argument.value">D:/CTS_LoadTest/Module/MatchMonitor/RuleARB</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath">D:\CTS_LoadTest\DBDriver\mysql-connector-j-8.3.0.jar,D:\CTS_LoadTest\DBDriver\mssql-jdbc-12.6.1.jre8.jar</stringProp>
-      <boolProp name="TestPlan.functional_mode">false</boolProp>
     </TestPlan>
     <hashTree>
       <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="[Var Config] Common">
         <collectionProp name="Arguments.arguments">
           <elementProp name="RowNum" elementType="Argument">
             <stringProp name="Argument.name">RowNum</stringProp>
+            <stringProp name="Argument.value">200</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="LoopNum" elementType="Argument">
+            <stringProp name="Argument.name">LoopNum</stringProp>
             <stringProp name="Argument.value">100</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -43,24 +47,19 @@
             <stringProp name="Argument.name">MySQL_Conn_Local</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="MySQL_DB_CTS_DataCenter" elementType="Argument">
-            <stringProp name="Argument.value">CTS_DataCenter</stringProp>
-            <stringProp name="Argument.name">MySQL_DB_CTS_DataCenter</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="CustListPath" elementType="Argument">
             <stringProp name="Argument.name">CustListPath</stringProp>
-            <stringProp name="Argument.value">${ProjectFolder}/CustList.txt</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/CustList_RuleARB.txt</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="NewTransInfoPath" elementType="Argument">
             <stringProp name="Argument.name">NewTransInfoPath</stringProp>
-            <stringProp name="Argument.value">${ProjectFolder}/NewTransInfo_RuleGB.csv</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/NewTransInfo_RuleARB.csv</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="ExistingAssInfoPath" elementType="Argument">
             <stringProp name="Argument.name">ExistingAssInfoPath</stringProp>
-            <stringProp name="Argument.value">${ProjectFolder}/ExistingAssInfo_RuleGB.csv</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/ExistingAssInfo_RuleARB.csv</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -71,8 +70,8 @@
         <stringProp name="checkQuery">Select 1</stringProp>
         <stringProp name="connectionAge">60000</stringProp>
         <stringProp name="connectionProperties"></stringProp>
-        <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-        <stringProp name="dbUrl">${MySQL_Conn_Local}/${MySQL_DB_CTS_DataCenter}</stringProp>
+        <stringProp name="dataSource">CTSDB</stringProp>
+        <stringProp name="dbUrl">${MySQL_Conn_Local}/CTS_DataCenter</stringProp>
         <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
         <stringProp name="initQuery"></stringProp>
         <boolProp name="keepAlive">true</boolProp>
@@ -85,7 +84,7 @@
         <stringProp name="username">irena.vn</stringProp>
       </JDBCDataSource>
       <hashTree/>
-      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get CustID list" enabled="true">
+      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get CustID list">
         <stringProp name="scriptLanguage">groovy</stringProp>
         <stringProp name="parameters">CustIDList</stringProp>
         <stringProp name="filename"></stringProp>
@@ -105,7 +104,7 @@ def CustList = readFileToString(filePath)
 vars.put(&quot;CustList&quot;, CustList)</stringProp>
       </JSR223PreProcessor>
       <hashTree/>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="[1. Reset data]" enabled="true">
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="[1. Reset data]">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <longProp name="ThreadGroup.duration">60</longProp>
         <longProp name="ThreadGroup.delay">0</longProp>
@@ -119,9 +118,9 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
       </SetupThreadGroup>
       <hashTree>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update Sys Param" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
-          <stringProp name="query"> update SystemParameter set ParameterValue = ${ParamValue} where ParameterID IN (47, 48);</stringProp>
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query"> update SystemParameter set ParameterValue = ${ParamValue} where ParameterID IN (128);</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames"></stringProp>
@@ -132,9 +131,9 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
         </JDBCSampler>
         <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update Sys BatchSize" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
-          <stringProp name="query"> update SystemParameter set ParameterValue = ${BatchSizeValue} where ParameterID IN (122);</stringProp>
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query"> update SystemParameter set ParameterValue = ${BatchSizeValue} where ParameterID IN (129);</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames"></stringProp>
@@ -145,9 +144,9 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
         </JDBCSampler>
         <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitor" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
-          <stringProp name="query">delete from MatchMonitor where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532) and Reason = 0; /**/</stringProp>
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from MatchMonitor where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532)  and Reason = 2;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames"></stringProp>
@@ -158,9 +157,9 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
         </JDBCSampler>
         <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorDetails" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
-          <stringProp name="query">delete from MatchMonitorDetails where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532) and Reason = 0;/**/</stringProp>
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from MatchMonitorDetails where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532) and Reason = 2;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames"></stringProp>
@@ -170,23 +169,10 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorStagingGroupBettingLive" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
-          <stringProp name="query"> delete from MatchMonitorStagingGroupBettingLive where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532);</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetMaxRows"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorStagingGroupBettingNonLive" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
-          <stringProp name="query"> delete from MatchMonitorStagingGroupBettingNonLive where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532);</stringProp>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorStagingArbitrageNonLive" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query"> delete from MatchMonitorStagingArbitrageNonLive where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532);</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames"></stringProp>
@@ -197,8 +183,8 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
         </JDBCSampler>
         <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationByDevice" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete d
 from AssociationByDevice AS d
 	inner join CTSCustomer AS c on c.CTSCustID = d.CTSCustID
@@ -213,8 +199,8 @@ where c.CustID IN (${CustList});</stringProp>
         </JDBCSampler>
         <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationByAI" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from AssociationByAI where FromCustID IN (${CustList}) OR ToCustID IN (${CustList});</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
@@ -225,9 +211,9 @@ where c.CustID IN (${CustList});</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationGroupByAI">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationGroupByAI" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from AssociationGroupByAI where CustID IN (${CustList});</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
@@ -238,9 +224,9 @@ where c.CustID IN (${CustList});</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationByIP">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationByIP" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from AssociationByIP where FromCustID IN (${CustList}) OR ToCustID IN (${CustList});</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
@@ -252,7 +238,7 @@ where c.CustID IN (${CustList});</stringProp>
         </JDBCSampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Prepare existing association]">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Prepare existing association]" enabled="true">
         <stringProp name="TestPlan.comments">Duration: 4 hours</stringProp>
         <stringProp name="ThreadGroup.num_threads">${RowNum}</stringProp>
         <longProp name="ThreadGroup.duration">300</longProp>
@@ -266,7 +252,7 @@ where c.CustID IN (${CustList});</stringProp>
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get Existing Ass Info">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get Existing Ass Info" enabled="true">
           <stringProp name="filename">${ExistingAssInfoPath}</stringProp>
           <stringProp name="fileEncoding">utf-8</stringProp>
           <stringProp name="variableNames">CustID,RelatedID,TypeID</stringProp>
@@ -279,12 +265,12 @@ where c.CustID IN (${CustList});</stringProp>
         </CSVDataSet>
         <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: AssociationByDevice" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">INSERT IGNORE INTO AssociationByDevice(CTSCustID,DCSDeviceID,SubscriberID,CreatedTime,InsertTime)
 SELECT c.CTSCustID,${RelatedID},c.SubscriberID,&apos;${CurrentDateTime}&apos;,&apos;${CurrentDateTime}&apos;
 FROM CTSCustomer AS c
-where c.CustID = ${CustID} and ${TypeID} IN (11, 12, 61);</stringProp>
+where c.CustID = ${CustID} and ${TypeID} IN (11, 12, 13, 41, 42, 43);</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames"></stringProp>
@@ -294,13 +280,13 @@ where c.CustID = ${CustID} and ${TypeID} IN (11, 12, 61);</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: AssociationByAI">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: AssociationByAI" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">INSERT IGNORE INTO AssociationByAI(AssType,FromCustID,ToCustID,CreatedDate)
 SELECT 1,${CustID},${RelatedID},&apos;${CurrentDateTime}&apos;
 FROM CTSCustomer AS c
-where c.CustID = ${CustID} and ${TypeID} IN (21, 22);</stringProp>
+where c.CustID = ${CustID} and ${TypeID} IN (21, 22, 23);</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames"></stringProp>
@@ -311,12 +297,12 @@ where c.CustID = ${CustID} and ${TypeID} IN (21, 22);</stringProp>
         </JDBCSampler>
         <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: AssociationByIP" enabled="true">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">INSERT IGNORE INTO AssociationByIP(AssType,FromCustID,ToCustID,CreatedDate)
 SELECT 1,${CustID},${RelatedID},&apos;${CurrentDateTime}&apos;
 FROM CTSCustomer AS c
-where c.CustID = ${CustID} and ${TypeID} IN (31, 32);</stringProp>
+where c.CustID = ${CustID} and ${TypeID} IN (31, 32, 33);</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="variableNames"></stringProp>
@@ -327,10 +313,10 @@ where c.CustID = ${CustID} and ${TypeID} IN (31, 32);</stringProp>
         </JDBCSampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[3. Prepare new trans]" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[3. Prepare new trans]">
         <stringProp name="TestPlan.comments">Duration: 4 hours</stringProp>
         <stringProp name="ThreadGroup.num_threads">${RowNum}</stringProp>
-        <longProp name="ThreadGroup.duration">6000</longProp>
+        <longProp name="ThreadGroup.duration">600</longProp>
         <longProp name="ThreadGroup.delay">0</longProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
@@ -341,10 +327,10 @@ where c.CustID = ${CustID} and ${TypeID} IN (31, 32);</stringProp>
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Trans Info">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Trans Info" enabled="true">
           <stringProp name="filename">${NewTransInfoPath}</stringProp>
           <stringProp name="fileEncoding">utf-8</stringProp>
-          <stringProp name="variableNames">SequenceID,MatchID,LiveHomeScore,LiveAwayScore,ScoreDiff,LiveIndicator,SportType,BettypeID,BetID,BetTeam,StakeRM,TransID,TransDate,CustID </stringProp>
+          <stringProp name="variableNames">SequenceID,MatchID,SportType,IsMajorLeague,BettypeID,BetID,BetTeam,HDP1,HDP2,HDP,StakeRM,TransID,TransDate,CustID </stringProp>
           <boolProp name="ignoreFirstLine">true</boolProp>
           <stringProp name="delimiter">,</stringProp>
           <boolProp name="quotedData">false</boolProp>
@@ -353,14 +339,15 @@ where c.CustID = ${CustID} and ${TypeID} IN (31, 32);</stringProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: MatchMonitorStagingGroupBettingLive">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
-          <stringProp name="query">INSERT IGNORE INTO MatchMonitorStagingGroupBettingLive(
-SequenceID,SportType,BettypeID,BetID,Betteam,Stake,TransID,TransDate,CustID,MatchID,HomeID,AwayID,LeagueID,EventDate,EventStatus,KickOffTime,LeagueName,IsMajorLeague,LiveHomeScore,LiveAwayScore,ScoreDiff,Odds,Hdp1,Hdp2,HDP,CTSCustID,IsLicensee,TransDateToSecond,InsertTime,GroupID)
-SELECT ${SequenceID},${SportType},${BettypeID},${BetID},&apos;${BetTeam}&apos;,${StakeRM},${TransID},&apos;${TransDate}&apos;,${CustID},${MatchID},11,22,33,&apos;${CurrentDateTime}&apos;,&apos;running&apos;,&apos;${CurrentDateTime}&apos;,&apos;League001&apos;,1,${LiveHomeScore},${LiveAwayScore},${ScoreDiff},&apos;0.5&apos;,&apos;0.5&apos;,0,&apos;0.5&apos;,c.CTSCustID,c.IsLicensee,UNIX_TIMESTAMP(&apos;${TransDate}&apos;),&apos;${CurrentDateTime}&apos;,0
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: MatchMonitorStagingArbitrageNonLive (Major League)" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO MatchMonitorStagingArbitrageNonLive(
+SequenceID,SportType,BettypeID,BetID,Betteam,Stake,TransID,TransDate,CustID,MatchID,HomeID,AwayID,LeagueID,EventDate,EventStatus,KickOffTime,LeagueName,IsMajorLeague,LiveHomeScore,LiveAwayScore,ScoreDiff,Hdp1,Hdp2,HDP,CTSCustID,SubscriberID,TransDateToSecond,InsertTime,GroupID)
+SELECT ${SequenceID},${SportType},${BettypeID},${BetID},&apos;${BetTeam}&apos;,${StakeRM},${TransID},&apos;${TransDate}&apos;,${CustID},${MatchID},111,222,333,&apos;${CurrentDateTime}&apos;,&apos;running&apos;,&apos;${CurrentDateTime}&apos;,&apos;Test Arbitrage Major League&apos;,${IsMajorLeague},0,0,0,&apos;${Hdp1}&apos;,&apos;${Hdp2}&apos;,&apos;${HDP}&apos;,c.CTSCustID,c.SubscriberID,UNIX_TIMESTAMP(&apos;${TransDate}&apos;),&apos;${CurrentDateTime}&apos;,0
 FROM CTSCustomer AS c
-where c.CustID = ${CustID} and ${LiveIndicator} = 1 /*and ${SportType} = 1 and ${TransID} &lt;= 1018 and ${CustID} IN (1326,896458)*/
+where c.CustID = ${CustID} AND ${IsMajorLeague} = 1  /*and ${SequenceID} IN (23,24,29,30,31,32,33,34) 23,24,30,31,33,34 and ${MatchID} = 2289511
+ and ${CustID} IN (98419065,98419068 ) /*and ${SequenceID} between 20 and 35  and ${CustID} in (1314,891930) */
 ;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
@@ -371,14 +358,14 @@ where c.CustID = ${CustID} and ${LiveIndicator} = 1 /*and ${SportType} = 1 and $
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: MatchMonitorStagingGroupBettingNonLive">
-          <stringProp name="dataSource">${MySQL_DB_CTS_DataCenter}</stringProp>
-          <stringProp name="queryType">Update Statement</stringProp>
-          <stringProp name="query">INSERT IGNORE INTO MatchMonitorStagingGroupBettingNonLive(
-SequenceID,SportType,BettypeID,BetID,Betteam,Stake,TransID,TransDate,CustID,MatchID,HomeID,AwayID,LeagueID,EventDate,EventStatus,KickOffTime,LeagueName,IsMajorLeague,LiveHomeScore,LiveAwayScore,ScoreDiff,Odds,Hdp1,Hdp2,HDP,CTSCustID,IsLicensee,TransDateToSecond,InsertTime,GroupID)
-SELECT ${SequenceID},${SportType},${BettypeID},${BetID},&apos;${BetTeam}&apos;,${StakeRM},${TransID},&apos;${TransDate}&apos;,${CustID},${MatchID},111,222,333,&apos;${CurrentDateTime}&apos;,&apos;running&apos;,&apos;${CurrentDateTime}&apos;,&apos;League002&apos;,1,${LiveHomeScore},${LiveAwayScore},${ScoreDiff},&apos;0.5&apos;,&apos;0.5&apos;,0,&apos;0.5&apos;,c.CTSCustID,c.IsLicensee,UNIX_TIMESTAMP(&apos;${TransDate}&apos;),&apos;${CurrentDateTime}&apos;,0
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: MatchMonitorStagingArbitrageNonLive (Minor League)" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO MatchMonitorStagingArbitrageNonLive(
+SequenceID,SportType,BettypeID,BetID,Betteam,Stake,TransID,TransDate,CustID,MatchID,HomeID,AwayID,LeagueID,EventDate,EventStatus,KickOffTime,LeagueName,IsMajorLeague,LiveHomeScore,LiveAwayScore,ScoreDiff,Hdp1,Hdp2,HDP,CTSCustID,SubscriberID,TransDateToSecond,InsertTime,GroupID)
+SELECT ${SequenceID},${SportType},${BettypeID},${BetID},&apos;${BetTeam}&apos;,${StakeRM},${TransID},&apos;${TransDate}&apos;,${CustID},${MatchID},111,222,333,&apos;${CurrentDateTime}&apos;,&apos;running&apos;,&apos;${CurrentDateTime}&apos;,&apos;Test Arbitrage Minor League&apos;,${IsMajorLeague},0,0,0,&apos;${Hdp1}&apos;,&apos;${Hdp2}&apos;,&apos;${HDP}&apos;,c.CTSCustID,c.SubscriberID,UNIX_TIMESTAMP(&apos;${TransDate}&apos;),&apos;${CurrentDateTime}&apos;,0
 FROM CTSCustomer AS c
-where c.CustID = ${CustID} and ${LiveIndicator} = 0 /*and ${SportType} = 1 and ${TransID} &lt;= 1018 and ${CustID} IN (1326,896458)*/
+where c.CustID = ${CustID} AND ${IsMajorLeague} = 0 /*and ${SequenceID} IN (237,238,239,246,247,248,249,250,251,252)*/
 ;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
@@ -390,7 +377,7 @@ where c.CustID = ${CustID} and ${LiveIndicator} = 0 /*and ${SportType} = 1 and $
         </JDBCSampler>
         <hashTree/>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result" enabled="true">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -424,7 +411,7 @@ where c.CustID = ${CustID} and ${LiveIndicator} = 0 /*and ${SportType} = 1 and $
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename"></stringProp>
+        <stringProp name="filename">${ProjectFolder}/Report.rpt</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>

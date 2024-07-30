@@ -7,7 +7,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="ProjectFolder" elementType="Argument">
             <stringProp name="Argument.name">ProjectFolder</stringProp>
-            <stringProp name="Argument.value">D:/CTS_LoadTest/Module/Danger Monitor</stringProp>
+            <stringProp name="Argument.value">D:/CTS_LoadTest/Module/DangerMonitor</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -90,7 +90,7 @@
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CustDB">
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CustDB" enabled="true">
         <boolProp name="autocommit">true</boolProp>
         <stringProp name="checkQuery">Select 1</stringProp>
         <stringProp name="connectionAge">60000</stringProp>
@@ -109,7 +109,7 @@
         <stringProp name="username">testteam</stringProp>
       </JDBCDataSource>
       <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] MatchDB">
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] MatchDB" enabled="true">
         <boolProp name="autocommit">true</boolProp>
         <stringProp name="checkQuery">Select 1</stringProp>
         <stringProp name="connectionAge">60000</stringProp>
@@ -128,7 +128,7 @@
         <stringProp name="username">testteam</stringProp>
       </JDBCDataSource>
       <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] TransDB">
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] TransDB" enabled="true">
         <boolProp name="autocommit">true</boolProp>
         <stringProp name="checkQuery">Select 1</stringProp>
         <stringProp name="connectionAge">60000</stringProp>
@@ -147,7 +147,7 @@
         <stringProp name="username">testteam</stringProp>
       </JDBCDataSource>
       <hashTree/>
-      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get CustID list">
+      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get CustID list" enabled="true">
         <stringProp name="scriptLanguage">groovy</stringProp>
         <stringProp name="parameters">CustIDList</stringProp>
         <stringProp name="filename"></stringProp>
@@ -180,7 +180,7 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
         </elementProp>
       </SetupThreadGroup>
       <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update tbl: custinfo">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update tbl: custinfo" enabled="true">
           <stringProp name="dataSource">CustDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">update dbo.custinfo 
@@ -195,7 +195,7 @@ where CustID IN (${CustList});</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: match">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: match" enabled="true">
           <stringProp name="dataSource">MatchDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from dbo.match where matchcode like &apos;NAGA TEST MATCH%&apos;;</stringProp>
@@ -208,7 +208,7 @@ where CustID IN (${CustList});</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: match14">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: match14" enabled="true">
           <stringProp name="dataSource">MatchDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from dbo.match14 where matchcode like &apos;NAGA TEST MATCH%&apos;;</stringProp>
@@ -221,7 +221,7 @@ where CustID IN (${CustList});</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: bettrans">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: bettrans" enabled="true">
           <stringProp name="dataSource">TransDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from dbo.bettrans where CustID IN (${CustList});</stringProp>
@@ -234,7 +234,7 @@ where CustID IN (${CustList});</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: bettrans14">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: bettrans14" enabled="true">
           <stringProp name="dataSource">TransDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from dbo.bettrans14 where CustID IN (${CustList});</stringProp>
@@ -248,7 +248,7 @@ where CustID IN (${CustList});</stringProp>
         </JDBCSampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Prepare existing CC &amp; danger]">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Prepare existing CC &amp; danger]" enabled="true">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <longProp name="ThreadGroup.duration">60</longProp>
         <longProp name="ThreadGroup.delay">0</longProp>
@@ -261,7 +261,7 @@ where CustID IN (${CustList});</stringProp>
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get Existing CC &amp; Danger Info">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get Existing CC &amp; Danger Info" enabled="true">
           <stringProp name="filename">${ExistingCCDangerInfoPath}</stringProp>
           <stringProp name="fileEncoding">utf-8</stringProp>
           <stringProp name="variableNames">CustID,CustomerClass,Danger3,Danger2,Danger,Danger4,Danger5</stringProp>
@@ -273,7 +273,7 @@ where CustID IN (${CustList});</stringProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update CC &amp; Danger Info">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update CC &amp; Danger Info" enabled="true">
           <stringProp name="dataSource">CustDB</stringProp>
           <stringProp name="queryType">Update Statement</stringProp>
           <stringProp name="query">/*No danger: cust1,cust2,cust3,cust4,cust5,cust36,cust37,cust38,cust39,cust40*/
@@ -303,7 +303,7 @@ where CustID = ${CustID};</stringProp>
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Match Info">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Match Info" enabled="true">
           <stringProp name="filename">${NewMatchInfoPath}</stringProp>
           <stringProp name="fileEncoding">utf-8</stringProp>
           <stringProp name="variableNames">No,Market,SportType,LeagueID,HomeID,AwayID,Range</stringProp>
@@ -315,7 +315,7 @@ where CustID = ${CustID};</stringProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.match ">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.match " enabled="true">
           <stringProp name="dataSource">MatchDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">insert into dbo.match (leagueid,homeid,homeid2,awayid,awayid2,eventstatus,eventdate,kickofftime,GlobalShowTime,creator,matchcode,sporttype,DisplayMode,LeaguePatternID,HomeDisplayPatternID,AwayDisplayPatternID,IsNeutral,HasLive)
@@ -360,7 +360,7 @@ select 	${LeagueID}
         </JDBCSampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[4. Prepare new trans]">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[4. Prepare new trans]" enabled="true">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <longProp name="ThreadGroup.duration">60</longProp>
         <longProp name="ThreadGroup.delay">0</longProp>
@@ -373,7 +373,7 @@ select 	${LeagueID}
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Trans Info">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Trans Info" enabled="true">
           <stringProp name="filename">${NewTransInfoPath}</stringProp>
           <stringProp name="fileEncoding">utf-8</stringProp>
           <stringProp name="variableNames">MatchNo,LiveIndicator,BetTypeID,BetID,BetTeam,CustID,UserName,Recommend,MRecommend,SRecommend,Currency,CurrencyName</stringProp>
@@ -385,7 +385,7 @@ select 	${LeagueID}
           <stringProp name="shareMode">shareMode.all</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.bettrans">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.bettrans" enabled="true">
           <stringProp name="dataSource">TransDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">insert into dbo.bettrans (winlostdate,transdate,matchid,liveindicator,livehomescore,liveawayscore,statusid,status,bettype,betid,betteam,betfrom,oddstype,odds,hdp1,hdp2,stake,actualrate,custid,username,recommend,mrecommend,srecommend,currency,currencyName,oddsid,ip,refno) 
@@ -403,7 +403,7 @@ where m.MatchCode like &apos;NAGA TEST MATCH%&apos; and RIGHT(m.MatchCode, 3) = 
         </JDBCSampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[5. Prepare  match &amp; trans last 14d]">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[5. Prepare  match &amp; trans last 14d]" enabled="true">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <longProp name="ThreadGroup.duration">60</longProp>
         <longProp name="ThreadGroup.delay">0</longProp>
@@ -416,7 +416,7 @@ where m.MatchCode like &apos;NAGA TEST MATCH%&apos; and RIGHT(m.MatchCode, 3) = 
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.match14">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.match14" enabled="true">
           <stringProp name="dataSource">MatchDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">insert into dbo.match14 (matchid,leagueid,homeid,homeid2,awayid,awayid2,eventstatus,eventdate,kickofftime,GlobalShowTime,creator,matchcode,sporttype,DisplayMode,LeaguePatternID,HomeDisplayPatternID,AwayDisplayPatternID,IsNeutral)
@@ -433,7 +433,7 @@ where matchcode like &apos;NAGA TEST MATCH%&apos; and eventdate in (&apos;${Last
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.bettrans14">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl dbo.bettrans14" enabled="true">
           <stringProp name="dataSource">TransDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">insert into dbo.bettrans14 (transid,winlostdate,transdate,matchid,liveindicator,livehomescore,liveawayscore,statusid,status,bettype,betid,betteam,betfrom,oddstype,odds,hdp1,hdp2,stake,actualrate,custid,username,recommend,mrecommend,srecommend,currency,currencyName,oddsid,ip,refno,creator) 
@@ -465,7 +465,7 @@ where m.MatchCode like &apos;NAGA TEST MATCH%&apos; and m.eventdate in (&apos;${
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean up tbl dbo.match">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean up tbl dbo.match" enabled="true">
           <stringProp name="dataSource">MatchDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from dbo.match where matchcode like &apos;NAGA TEST MATCH%&apos; and eventdate in (&apos;${Last6d}&apos;, &apos;${Last7d}&apos;);</stringProp>
@@ -478,7 +478,7 @@ where m.MatchCode like &apos;NAGA TEST MATCH%&apos; and m.eventdate in (&apos;${
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean up tbl dbo.bettrans">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean up tbl dbo.bettrans" enabled="true">
           <stringProp name="dataSource">TransDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete b
@@ -496,7 +496,7 @@ where m.MatchCode like &apos;NAGA TEST MATCH%&apos; and m.eventdate in (&apos;${
         </JDBCSampler>
         <hashTree/>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
