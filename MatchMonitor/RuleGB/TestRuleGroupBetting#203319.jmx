@@ -60,7 +60,7 @@
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CTS_DataCenter">
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CTS_DataCenter" enabled="true">
         <boolProp name="autocommit">true</boolProp>
         <stringProp name="checkQuery">Select 1</stringProp>
         <stringProp name="connectionAge">60000</stringProp>
@@ -79,7 +79,7 @@
         <stringProp name="username">irena.vn</stringProp>
       </JDBCDataSource>
       <hashTree/>
-      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get CustID list">
+      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get CustID list" enabled="true">
         <stringProp name="scriptLanguage">groovy</stringProp>
         <stringProp name="parameters">CustIDList</stringProp>
         <stringProp name="filename"></stringProp>
@@ -138,7 +138,7 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitor">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitor" enabled="true">
           <stringProp name="dataSource">CTSDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from MatchMonitor where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532) and Reason = 0; /**/</stringProp>
@@ -151,7 +151,7 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorDetails">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorDetails" enabled="true">
           <stringProp name="dataSource">CTSDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">delete from MatchMonitorDetails where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532) and Reason = 0;/**/</stringProp>
@@ -164,7 +164,7 @@ vars.put(&quot;CustList&quot;, CustList)</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorStagingGroupBettingLive">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorStagingGroupBettingLive" enabled="true">
           <stringProp name="dataSource">CTSDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query"> delete from MatchMonitorStagingGroupBettingLive where MatchID IN (2289511, 2289521, 2289531, 2289512, 2289522, 2289532);</stringProp>
@@ -247,7 +247,7 @@ where c.CustID IN (${CustList});</stringProp>
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get Existing Ass Info">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get Existing Ass Info" enabled="true">
           <stringProp name="filename">${ExistingAssInfoPath}</stringProp>
           <stringProp name="fileEncoding">utf-8</stringProp>
           <stringProp name="variableNames">CustID,RelatedID,TypeID</stringProp>
@@ -275,7 +275,7 @@ where c.CustID = ${CustID} and ${TypeID} IN (11, 12, 61);</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: AssociationByAI">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: AssociationByAI" enabled="true">
           <stringProp name="dataSource">CTSDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">INSERT IGNORE INTO AssociationByAI(AssType,FromCustID,ToCustID,CreatedDate)
@@ -308,7 +308,7 @@ where c.CustID = ${CustID} and ${TypeID} IN (31, 32);</stringProp>
         </JDBCSampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[3. Prepare new trans]">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[3. Prepare new trans]" enabled="true">
         <stringProp name="TestPlan.comments">Duration: 4 hours</stringProp>
         <stringProp name="ThreadGroup.num_threads">${RowNum}</stringProp>
         <longProp name="ThreadGroup.duration">6000</longProp>
@@ -352,7 +352,7 @@ where c.CustID = ${CustID} and ${LiveIndicator} = 1 /*and ${SportType} = 1 and $
           <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: MatchMonitorStagingGroupBettingNonLive">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: MatchMonitorStagingGroupBettingNonLive" enabled="true">
           <stringProp name="dataSource">CTSDB</stringProp>
           <stringProp name="queryType">Prepared Update Statement</stringProp>
           <stringProp name="query">INSERT IGNORE INTO MatchMonitorStagingGroupBettingNonLive(
@@ -371,7 +371,7 @@ where c.CustID = ${CustID} and ${LiveIndicator} = 0 /*and ${SportType} = 1 and $
         </JDBCSampler>
         <hashTree/>
       </hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result" enabled="true">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
