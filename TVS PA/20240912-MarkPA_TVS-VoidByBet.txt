@@ -1,0 +1,62 @@
+/*
+	Created:	20240912@Lisa.Phan
+	Task :		Create request TVS - Void by bet -> create PA from TVS 
+	DB:		TESTDB061 (10.18.200.56), CTS_DataCenter
+
+*/
+
+/* Void by bet */
+-- Step 1: Access to TESTDB061 (10.18.200.56) -> bodb02 and run below script
+
+Declare @custid int = 1053056; -- input custid
+
+Declare 	@SubIssueTypeId tinyint = 28, -- input Reason/PA (data in file document)
+		@IssueTypeId tinyint = 11; -- only 11
+
+declare 	@TransId bigint,
+		@MessageID int = 1099, -- can change to other number
+		@MatchId int,
+		@ReasonId int =209490, -- can change to other number
+		@Winlostdate smalldatetime,
+		@status nvarchar = 'running',
+		@Bettype smallint,
+		@stake money,
+		@winlost money,
+		@VoidingHistoryId int = 50123,
+		@SiteDBGroupID smallint =3
+
+SELECT top 1 @MatchId = m.matchid,
+			@TransId = b.TransId, 
+			@Winlostdate = b.winlostdate,
+			@Bettype = b.bettype,
+			@stake = b.stake,
+			@winlost = b.winlost
+FROM dbo.match m 
+INNER JOIN bettrans b 
+ON b.matchid = m.matchid
+WHERE m.eventdate <= getdate() 
+-- and m.sporttype=1
+ORDER BY NEWID();
+
+update bettrans set custid=@custid where transid = @TransId; 
+
+insert into dbo.Ticketvoiding_VoidedTransaction(TransId,MessageID,ReasonId,MatchId,CreatedDate,IssueTypeID,SubIssueTypeID,CustID,winlostdate,status,bettype,stake,winlost,voidingHistoryId,SiteDBGroupID) 
+values
+(@TransId,@MessageID,@ReasonId,@MatchId,getdate(),@IssueTypeId,@SubIssueTypeId,@custid,@Winlostdate,@status,@Bettype,@stake,@winlost,@VoidingHistoryId,@SiteDBGroupID);
+SELECT * FROM dbo.Ticketvoiding_VoidedTransaction where MessageId =@MessageID;
+select * FROM dbo.TicketVoiding_VoidingHistory where MessageId =@MessageID -- or MessageIdSpecial=@MessageIdSpecial;
+
+-- Step 2: Run script in mysql DB - CTS_DataCenter
+
+SELECT @LastScannedTVS := DATE_ADD(NOW(), INTERVAL -5 Minute);
+UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` =  @LastScannedTVS WHERE (`ParameterID` = '2');
+
+-- Step 3: Trigger service: CTS_CC.CTS_CustomerClassification_Secondly_TVSProblemAccountInsert
+
+
+
+
+
+
+
+
