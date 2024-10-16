@@ -1,0 +1,66 @@
+/*
+	Created:	20240912@Lisa.Phan
+	Task :		Document
+	DB:		TESTDB061 (10.18.200.56), CTS_DataCenter
+*/
+
+- Spec: https://nexdev.net/projects/nap-special-delete/wiki/202302_TVS_Send_problem_customer_in_AbnormalAccount_request_to_CTS
+
+- Có 2 loại: 
+1. IssueType=11: 
+ 1.a Void by bet (TVSRequestID = NULL) 
+ 1.b Void by request (TVSRequestID <> NULL)
+2. IssueType=13: void by request (TVSRequestID <> NULL)
+
+- Void by bet (IssueType=11) và void by request (IssueType=13) không có Parlay
+Chỉ có void by request IssueType=11 mới có Parlay
+
+- IssueType=13 không có Sport
+
+- Nếu vừa có void by request và bet thì ưu tiên request 
+
+- Cancel request TVS: gửi RequestID=x, ReasonID=a -> sau đó đổi ReasonID=b nhưng vẫn giữ RequestID=x
+Lúc này bên CTS_DatCenter: 
++ sẽ xóa ReasonID=a -> add ReasonID=b  
+-> chỉ tồn tại PA b trong table CTSCustomerClassification, CTSCustomerClassification_History,TVSVoidRequest
++ Table TVSVoidRequest_Log thì vẫn lưu cả a và b
+
+- Trường hợp có PA (from CTS) rồi, mark the same PA from TVS thì
++ Nếu không đổi perf: không insert history, TVS, maintable
++ Nếu đổi perf: insert, nhưng với CreatedBy là từ CTS
+
+- TVS only mark PA for member, not for SMA
+
+
+
+- Data: 
+ReasonID IssueTypeID ReasonName
+(ignore) 27        11        Abnormal
+28        11        Group Betting
+29        11        Hedging
+30        11        Arbitrage
+31        11        Fixed Game
+(ignore)32        11        AB Bet
+(ignore)36        11        Robot Betting
+37        11        Irrigation Bet
+38        11        System Formula Bet
+
+(ignore) 39        13        Abnormal
+100        13        Group Betting
+101        13        Hedging
+102        13        Arbitrage
+103        13        Fixed Game
+(ignore) 104        13        AB Bet
+(ignore)105        13        Robot Betting
+106        13        Irrigation Bet
+107        13        System Formula Bet
+
+
+
+
+
+
+
+
+
+
