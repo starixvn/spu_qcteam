@@ -1,0 +1,23 @@
+1* Test các service Realtime/ Daily/ NewInactive/ New Classify/ Normal Classify/ Normal Insert (basic case)
+Agent - Normal Flow.jmx (JMeter)
+CustListInfo.txt (list cust)
+NewPlacedBetInfo.csv (data place new bet từ DW)
+AccumulatedPerformanceInfo.csv (data settled có WL Perf từ DW)
+ExistingCategoryInfo.csv (current category trước khi test)
+
+2* Test riêng service Normal Insert
+Agent - Normal Insert - Exceptional.jmx (JMeter)
+CustListInfo_exceptional.txt (list cust)
+ExistingCategoryInfo_exceptional.csv (current category trước khi test)
+NewCategoryInfo_exceptional.csv (new category để test expected)
+
+3* VVIP Action
+CheckVVIPAction.sql (test trực tiếp trên MySQL + web)
+
+4* Impact Function
+ImpactFunction.sql (test trực tiếp trên MySQL + web)
+ImpactService.sql (test trực tiếp trên MySQL + job)
+
+
+5* Others
+ScriptTest.sql (test rule Normal)
