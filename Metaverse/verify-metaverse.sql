@@ -1,3 +1,5 @@
+#PASS: @KeepTheFaith2209#
+#DATA:
 /*Install Dot Net.5 --> Import data (folder import/data.csv) --> Adjust config & version SP (folder App_data/SPNames.txt) --> Run SPU.CustomerClass.exe*/
 -- Prepare data
 SELECT * FROM CTS_DataCenter.CTSCustomer where IsInternal = 0 and roleid = 2 and CustSubID = 0 and SiteID = 16;
