@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="17d93c61-85b9-48dd-980b-bb917bbfc246" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/tests/test_mark_pa_credit_member.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2dDM9sxz9f7pOdkH1W5LTFhsPBd" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.Python tests for test_account_profile.TestAccountProfilePage.executor": "Run",
+    "Python tests.Python tests for test_account_profile.TestAccountProfilePage.test_mark_pa_member.executor": "Run",
+    "Python tests.Python tests for test_account_profile.TestAccountProfilePage.test_mark_pa_sma.executor": "Run",
+    "Python tests.Python tests for test_account_profile.TestAccountProfilePage.test_mark_vvip_member.executor": "Run",
+    "Python tests.Python tests for test_account_profile.TestAccountProfilePage.test_mark_vvip_sma.executor": "Run",
+    "Python tests.Python tests for test_action_cate.TestActionCate.executor": "Run",
+    "Python tests.Python tests for test_action_cate.TestActionCate.testMarkPA.executor": "Run",
+    "Python tests.Python tests for test_action_cate.TestActionCate.testMarkPAForMember.executor": "Run",
+    "Python tests.Python tests for test_action_cate.TestActionCate.testMarkVVIP.executor": "Run",
+    "Python tests.Python tests for test_action_cate.TestActionCate.test_ctsDBConn.executor": "Run",
+    "Python tests.Python tests for test_action_cate.TestActionCate.test_ctsDataCenterDBConn.executor": "Run",
+    "Python tests.Python tests for test_action_cate.TestActionCate.test_custDBConn.executor": "Run",
+    "Python tests.Python tests for test_action_pa.TestActionCate.executor": "Run",
+    "Python tests.Python tests for test_action_pa.TestActionCate.testMarkCate.executor": "Run",
+    "Python tests.Python tests for test_action_pa.TestActionCate.testUnmarkCate.executor": "Run",
+    "Python tests.Python tests for test_demo.TestDemo.executor": "Run",
+    "Python tests.Python tests for test_demo.TestDemo.test_demo.executor": "Run",
+    "Python tests.Python tests for test_get_ass.test_get_ass.executor": "Run",
+    "Python tests.Python tests for test_login.TestLogin.executor": "Run",
+    "Python tests.Python tests for test_login.TestLoginPage.executor": "Run",
+    "Python tests.Python tests for test_login.TestLoginPage.test_login_page.executor": "Run",
+    "Python tests.Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember.executor": "Run",
+    "Python tests.Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember.test_mark_pa_credit_member.executor": "Run",
+    "Python tests.Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember.test_mark_robot_credit_member.executor": "Run",
+    "Python tests.Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember.test_mark_vvip_credit_member.executor": "Run",
+    "Python tests.Python tests for test_mark_pa_credit_member.TestMarkPACreditMember.executor": "Run",
+    "Python tests.Python tests for test_mark_pa_credit_member.TestMarkPACreditMember.test_data_mark_pa_credit_member.executor": "Run",
+    "Python tests.Python tests for test_mark_pa_credit_member.TestMarkPACreditMember.test_mark_pa_credit_member.executor": "Run",
+    "Python tests.Python tests for test_mark_pa_credit_member.TestMarkPACreditMember.test_ui_mark_pa_credit_member.executor": "Run",
+    "Python tests.Python tests for test_mark_pa_credit_member.TestMarkPACreditMember.test_unmark_pa_credit_member.executor": "Run",
+    "Python tests.Python tests for test_mark_pa_member.TestMarkPAMember.executor": "Run",
+    "Python tests.Python tests for test_mark_pa_member.TestMarkPAMember.test_mark_pa_credit_member.executor": "Run",
+    "Python tests.Python tests for test_mark_pa_member.TestMarkPAMember.test_mark_pa_licensee_member.executor": "Run",
+    "Python tests.Python tests for test_mark_pa_member.TestMarkPAMember.test_mark_pa_member.executor": "Run",
+    "Python tests.Python tests for test_mark_vvip_credit_member.TestMarkVVIPCreditMember.executor": "Run",
+    "Python tests.Python tests for test_mark_vvip_credit_member.TestMarkVVIPCreditMember.test_mark_vvip_credit_member.executor": "Run",
+    "Python tests.Python tests for test_search.TestHomePage.executor": "Run",
+    "Python tests.Python tests for test_search.TestHomePage.test_home_page.executor": "Run",
+    "Python tests.Python tests for test_search.TestSearch.executor": "Run",
+    "Python tests.Python tests for test_unmark_category_credit_member.TestUnmarkCategoryCreditMember.executor": "Run",
+    "Python tests.Python tests for test_unmark_pa_credit_member.TestUnmarkCategoryCreditMember.executor": "Run",
+    "Python tests.Python tests for test_unmark_pa_credit_member.TestUnmarkPACreditMember.executor": "Run",
+    "Python tests.Python tests for test_unmark_pa_credit_member.TestUnmarkPACreditMember.test_unmark_pa_credit_member.executor": "Run",
+    "Python tests.Python tests for test_unmark_pa_licensee_member.TestUnmarkPALicenseeMember.executor": "Run",
+    "Python tests.Python tests for test_unmark_vvip_credit_member.TestUnmarkVVIPCreditMember.test_unmark_vvip_credit_member.executor": "Run",
+    "Python tests.Python tests for tests.local.test_action_cate.TestActionCate.executor": "Run",
+    "Python tests.Python tests in test_demo.py.executor": "Run",
+    "Python tests.Python tests in test_get_ass.py.executor": "Run",
+    "Python tests.Python tests in test_mark_pa_credit_member.py.executor": "Run",
+    "Python tests.Python tests in tests.executor": "Run",
+    "Python.account_profile.executor": "Run",
+    "Python.api_testdemo.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/Automation/CTS_Automation/pages",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Automation\CTS_Automation\pages" />
+      <recent name="D:\Automation\CTS_Automation\tests" />
+      <recent name="D:\Automation\CTS_Automation\configs" />
+      <recent name="D:\Automation\CTS_Automation\utils" />
+      <recent name="D:\Automation\CTS_Automation\tests\local" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Automation\CTS_Automation" />
+      <recent name="D:\Automation\CTS_Automation\utils" />
+      <recent name="D:\Automation\CTS_Automation\tests" />
+      <recent name="D:\Automation\CTS_Automation\files" />
+      <recent name="D:\Automation\CTS_Automation\tests\local" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python tests.Python tests in tests">
+    <configuration name="Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="CTS_Automation" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_mark_category_credit_member.TestMarkCategoryCreditMember&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember.test_mark_robot_credit_member" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="CTS_Automation" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_mark_category_credit_member.TestMarkCategoryCreditMember.test_mark_robot_credit_member&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for test_mark_pa_credit_member.TestMarkPACreditMember" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="CTS_Automation" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_mark_pa_credit_member.TestMarkPACreditMember&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for test_mark_pa_credit_member.TestMarkPACreditMember.test_mark_pa_credit_member" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="CTS_Automation" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_mark_pa_credit_member.TestMarkPACreditMember.test_mark_pa_credit_member&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for test_unmark_category_credit_member.TestUnmarkCategoryCreditMember" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="CTS_Automation" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_unmark_category_credit_member.TestUnmarkCategoryCreditMember&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for tests.test_mark_category_credit_member" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="CTS_Automation" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.test_mark_category_credit_member&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for tests.test_mark_category_credit_member" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="CTS_Automation" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.test_mark_category_credit_member&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests in tests" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="CTS_Automation" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python tests.Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember" />
+      <item itemvalue="Python tests.Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember.test_mark_robot_credit_member" />
+      <item itemvalue="Python tests.Python tests for test_unmark_category_credit_member.TestUnmarkCategoryCreditMember" />
+      <item itemvalue="Python tests.Python tests in tests" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Python tests in tests" />
+        <item itemvalue="Python tests.Python tests for test_unmark_category_credit_member.TestUnmarkCategoryCreditMember" />
+        <item itemvalue="Python tests.Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember" />
+        <item itemvalue="Python tests.Python tests for test_mark_category_credit_member.TestMarkCategoryCreditMember.test_mark_robot_credit_member" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-0e3be3396995-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23339.19" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="17d93c61-85b9-48dd-980b-bb917bbfc246" name="Changes" comment="" />
+      <created>1709538047905</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1709538047905</updated>
+    </task>
+    <servers />
+  </component>
+</project>
