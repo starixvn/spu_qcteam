@@ -17,6 +17,7 @@
 			2.2 Category SDUL CC305/3005
             2.3 Others
 		3. Test Potential PA flow
+			3.0 CC250x - Special Haifa (Lic Sub)
 			3.1 CC2600 - Initial GB
             3.2 CC2700 - Initial Smart
             3.3 CC2800 - Early Warning Members
@@ -28,7 +29,7 @@
 /*************************************** 1.1 Scan Tagging Daily ***************************************/
 UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = 40604  WHERE (`ParameterID` = '144');
 
-select ParameterID,ParameterName,ParameterValue  from SystemParameter where parameterID in (143,144,145); 
+SELECT ParameterID,ParameterName,ParameterValue  FROM SystemParameter WHERE parameterID in (143,144,145); 
 
 CALL CTS_DC_CustClassification_TaggingScan_Get_UAT4(@outParam0, @outParam1);
 
@@ -41,9 +42,9 @@ CALL CTS_DC_CustClassification_TaggingScan_CheckChanges_UAT4('[{"CustID":1486264
 /*************************************** 1.2 Scan New inactive ***************************************/
 UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` =40500  WHERE (`ParameterID` = '80');
 
-select * from SystemParameter where parameterID in (79,80,81);
+SELECT * FROM SystemParameter WHERE parameterID in (79,80,81);
 
-UPDATE `CTS_DataCenter`.`CTSCustomer` SET CreatedDate  = '2024-08-15 05:00:00' where CustID = 148628766;
+UPDATE `CTS_DataCenter`.`CTSCustomer` SET CreatedDate  = '2024-08-15 05:00:00' WHERE CustID = 148628766;
 UPDATE `CTS_DataCenter`.`CTSCustomerClassification` SET `LastModifiedDate` = '2024-07-15 05:00:00' WHERE (`CustID` in (148628766)) and (`ParentID` = '40000') ;
 UPDATE `CTS_DataCenter`.`CTSCustomerClassification` SET `LastModifiedDate` = '2024-07-15 04:00:00' WHERE (`CustID` in (148628767)) and (`ParentID` = '40000') ;
 UPDATE `CTS_DataCenter`.`CTSCustomerClassification` SET `LastModifiedDate` = '2024-07-15 03:00:00' WHERE (`CustID` in (148628768)) and (`ParentID` = '40000') ;
@@ -51,13 +52,13 @@ UPDATE `CTS_DataCenter`.`CTSCustomerClassification` SET `LastModifiedDate` = '20
 UPDATE `CTS_DataCenter`.`CTSCustomerClassification` SET `CreatedDate` = '2024-07-15 00:00:00' WHERE (`CustID` in (148628766,148628767,148628768,148628769)) and (`ParentID` = '40000') ;
 UPDATE `CTS_Archive`.`CTSCustomerAssociationStatus` SET `Created` = '2024-07-15 00:00:00' WHERE (`CustID` in (148628766,148628767,148628768,148628769));
 
-select * from CTS_Archive.CTSCustomerAssociationStatus where Custid in (148628766,148628767,148628768,148628769);
+SELECT * FROM CTS_Archive.CTSCustomerAssociationStatus WHERE Custid in (148628766,148628767,148628768,148628769);
 
 CALL CTS_DC_CustClassification_DailyScan_GetInactiveNewMember_UAT4(@outParam0, @outParam1);
 
-select DATE_SUB(now(), INTERVAL 14 DAY);
+SELECT DATE_SUB(now(), INTERVAL 14 DAY);
 
-call CTS_DataCenter.CTS_DC_CustClassification_Normal_GetCurrentCategory_UAT4('148628766');
+CALL CTS_DataCenter.CTS_DC_CustClassification_Normal_GetCurrentCategory_UAT4('148628766');
 
 CALL CTS_DataCenter.CTS_DC_CustClassification_GetCCAndDangerLevel_UAT4('148626489');
 
@@ -66,9 +67,9 @@ CALL CTS_DC_CustClassification_Realtime_GetCategory_UAT4('148626489');
 
 CALL CTS_DC_CustClassification_Insert_VIC(9, 0, 0, 0, false, false, '[{"CreatedTime":"2024-07-12T04:47:13.553","TaggingID":8,"TaggingType":1,"TWBetCount":0,"TWGroupBettingRate":0.0,"TWTicketRejectRate":0.0,"TWDesktopUsageRate":0.0,"ScanTaggingType":2,"CustID":1277,"CategoryID":40600,"CategoryGroupID":40600,"TurnoverRM":0.0,"WinlossRM":0.0,"BetCount":0,"ActiveDays":0,"PerformanceTime":"2024-07-12T04:47:13.553"},{"CreatedTime":"2024-07-12T04:47:13.553","TaggingID":13,"TaggingType":1,"TWBetCount":0,"TWGroupBettingRate":0.0,"TWTicketRejectRate":0.0,"TWDesktopUsageRate":0.0,"ScanTaggingType":2,"CustID":1027611,"CategoryID":40600,"CategoryGroupID":40600,"TurnoverRM":6074069.9976,"WinlossRM":102738.0024,"BetCount":132,"ActiveDays":11,"PerformanceTime":"2024-07-12T04:47:13.67"},{"CreatedTime":"2024-07-12T04:47:13.553","TaggingID":8,"TaggingType":1,"TWBetCount":0,"TWGroupBettingRate":0.0,"TWTicketRejectRate":0.0,"TWDesktopUsageRate":0.0,"ScanTaggingType":2,"CustID":1031372,"CategoryID":40600,"CategoryGroupID":40600,"TurnoverRM":6074069.9976,"WinlossRM":102738.0024,"BetCount":132,"ActiveDays":11,"PerformanceTime":"2024-07-12T04:47:13.67"},{"CreatedTime":"2024-07-12T04:47:13.553","TaggingID":10,"TaggingType":1,"TWBetCount":0,"TWGroupBettingRate":0.0,"TWTicketRejectRate":0.0,"TWDesktopUsageRate":0.0,"ScanTaggingType":2,"CustID":1031376,"CategoryID":40600,"CategoryGroupID":40600,"TurnoverRM":6074069.9976,"WinlossRM":102738.0024,"BetCount":132,"ActiveDays":11,"PerformanceTime":"2024-07-12T04:47:13.67"},{"CreatedTime":"2024-07-12T04:47:13.553","TaggingID":7,"TaggingType":2,"TWBetCount":20,"TWGroupBettingRate":45.0000,"TWTicketRejectRate":0.0,"TWDesktopUsageRate":0.0,"ScanTaggingType":2,"CustID":1032813,"CategoryID":40600,"CategoryGroupID":40600,"TurnoverRM":6074069.9976,"WinlossRM":102738.0024,"BetCount":132,"ActiveDays":11,"PerformanceTime":"2024-07-12T04:47:13.67"},{"CreatedTime":"2024-07-12T04:47:13.553","TaggingID":8,"TaggingType":2,"TWBetCount":0,"TWGroupBettingRate":0.0,"TWTicketRejectRate":350.0000,"TWDesktopUsageRate":950.0000,"ScanTaggingType":2,"CustID":1033999,"CategoryID":40600,"CategoryGroupID":40600,"TurnoverRM":6074069.9976,"WinlossRM":102738.0024,"BetCount":132,"ActiveDays":11,"PerformanceTime":"2024-07-12T04:47:13.67"}]', @outParam7);
 
-select * from Temp_NewClassification;
+SELECT * FROM Temp_NewClassification;
 
-select CTS_DC_CategoryTypeParent_Get_UAT4 ('CONST_CC_LICVIPSUSPICIOUS');
+SELECT CTS_DC_CategoryTypeParent_Get_UAT4 ('CONST_CC_LICVIPSUSPICIOUS');
 
 UPDATE `CTS_DataCenter`.`CTSCustomerClassification` SET `CreatedDate` = '2024-06-15 00:00:00' WHERE (`CustID` = '117811711') and (`ParentID` = '40000') ;
 UPDATE `CTS_DataCenter`.`CTSCustomerClassification` SET `CreatedDate` = '2024-06-15 00:00:00' WHERE (`CustID` = '117817224') and (`ParentID` = '40000');
@@ -77,38 +78,38 @@ UPDATE `CTS_Archive`.`CTSCustomerAssociationStatus` SET `Created` = '2024-06-15 
 UPDATE `CTS_Archive`.`CTSCustomerAssociationStatus` SET `Created` = '2024-06-15 00:00:00' WHERE (`CTSCustID` = '1000930423');
 UPDATE `CTS_Archive`.`CTSCustomerAssociationStatus` SET `Created` = '2024-06-15 00:00:00' WHERE (`CTSCustID` = '1000930424');
 
-select * from CTS_Archive.CTSCustomerAssociationStatus where Custid in (117797608,117817224,117835739);
+SELECT * FROM CTS_Archive.CTSCustomerAssociationStatus WHERE Custid in (117797608,117817224,117835739);
 
 CALL CTS_DC_CustClassification_ReScan_Get_UAT4('117817224');
 
 /*************************************** 1.4 Probation Scan ***************************************/
-select ParameterID,ParameterName,ParameterValue from SystemParameter where parameterID in (165,166,167);
+SELECT ParameterID,ParameterName,ParameterValue FROM SystemParameter WHERE parameterID in (165,166,167);
+SELECT * FROM CTSCustomerClassification WHERE CustID = 43290047;
 
 UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = '40400' WHERE (`ParameterID` = '166');
 UPDATE `CTS_DataCenter`.`CTSCustomerClassification` 
 SET `CreatedDate` = DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY),`LastModifiedDate` = DATE_SUB(CURRENT_DATE(), INTERVAL 2 DAY),
  `LastScannedDate` = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) 
-WHERE `CustID` in (148626498) and (`ParentID` = '40000');
+WHERE `CustID` in (43290047) and (`ParentID` = '40000');
 
-CALL CTS_DC_CustClassification_ProbationScan_Get_UAT4(500, @outParam1, @outParam2);
+CALL CTS_DC_CustClassification_ProbationScan_Get(500, @outParam1, @outParam2);
 
 /*************************************** 1.5 Others ***************************************/
 /*************************************** 1.5.a Function web: Ass group monitor ***************************************/
-select ParameterID,ParameterName,ParameterValue from SystemParameter where parameterID in (97,98,99);
+SELECT ParameterID,ParameterName,ParameterValue FROM SystemParameter WHERE parameterID in (97,98,99);
 
-select * from AssociatedGroup;
+SELECT * FROM AssociatedGroup;
 
 CALL CTS_DC_AssociatedGroup_Scan(@outParam0, @outParam1, @outParam2, @outParam3, @outParam4, @outParam5);
 
+SELECT * FROM Temp_Cust;
 
-select * from Temp_Cust;
-
-select * from Temp_CustDetected;
+SELECT * FROM Temp_CustDetected;
 
 -- LastTicketDate >= Detect date of association
 UPDATE `CTS_Archive`.`CTSCustomerAssociationStatus` SET `LastTicketDate` = '2024-08-09 06:49:10' WHERE (`CTSCustID` = '1001062411');
 
-select * from CTS_Archive.CTSCustomerAssociationStatus where CTSCustID = 1001062411;
+SELECT * FROM CTS_Archive.CTSCustomerAssociationStatus WHERE CTSCustID = 1001062411;
 
 -- trigger service: CTS_CC.CTS_CustomerClassification_Secondly_AssociationAccountScan
 
@@ -118,18 +119,18 @@ SELECT @LastScannedTVS := DATE_ADD(NOW(), INTERVAL -2 Minute);
 
 UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` =  @LastScannedTVS WHERE (`ParameterID` = '2');
 
-select ParameterID,ParameterName,ParameterValue from SystemParameter where parameterID in (2);
+SELECT ParameterID,ParameterName,ParameterValue FROM SystemParameter WHERE parameterID in (2);
  
 -- LastTicketDate:
 UPDATE `CTS_Archive`.`CTSCustomerAssociationStatus` SET `LastTicketDate` = NULL WHERE (`CTSCustID` = '1001062307');
 
-select * from CTS_Archive.CTSCustomerAssociationStatus where CTSCustID = 1001062307;
+SELECT * FROM CTS_Archive.CTSCustomerAssociationStatus WHERE CTSCustID = 1001062307;
 
 ###########################################################################################################################################################################
 /*************************************** 2. Test Problem Account flow ***************************************/
 /*************************************** 2.1 Category Robot User ***************************************/
 -- Parameter of AI - Imperva robot
-DELETE from `CTS_DataCenter`.`RobotDetection` where ID > 3675;
+DELETE FROM `CTS_DataCenter`.`RobotDetection` WHERE ID > 3675;
 
 UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = 3682 WHERE (`ParameterID` = '94');
 
@@ -151,32 +152,31 @@ INSERT INTO `CTS_DataCenter`.`RobotDetection` (`CustID`, `PeriodRangeType`, `Cre
 ('9020527', '1', now(), now(), b'0'),
 ('9020527', '200', now(), now(), b'0'); -- Losing
  
- 
-select ParameterID,ParameterName,ParameterValue from SystemParameter where parameterID in (94,133,134,140);
+SELECT ParameterID,ParameterName,ParameterValue FROM SystemParameter WHERE parameterID in (94,133,134,140);
 
-select * from RobotDetection order by ID desc;
+SELECT * FROM RobotDetection order by ID desc;
 
-select c.UserName,r.* from RobotDetection as r inner join CTSCustomer as c on c.CustID = r.CustID order by r.ID desc;
+SELECT c.UserName,r.* FROM RobotDetection as r inner join CTSCustomer as c on c.CustID = r.CustID order by r.ID desc;
 
-select * from CTSCustomer where custid  in (9700000,9700001,9700002,9700003);
+SELECT * FROM CTSCustomer WHERE custid  in (9700000,9700001,9700002,9700003);
 
-DELETE from `CTS_DataCenter`.`RobotDetection` where custid in (9700000,9700001,9700002,9700003);
+DELETE FROM `CTS_DataCenter`.`RobotDetection` WHERE custid in (9700000,9700001,9700002,9700003);
 
-call CTS_DataCenter.CTS_DC_RobotDetection_Insert_UAT4 (
+CALL CTS_DataCenter.CTS_DC_RobotDetection_Insert_UAT4 (
 '[{"C": 9700000, "R": 1}, 
 {"C": 9700001, "R": 2}, 
 {"C": 9700002, "R": 200},
 {"C": 9700003, "R": 20}]','2024-09-06 15:59:13.000', @ErrorMessage);
 
-call CTS_DataCenter.CTS_DC_RobotDetection_Insert (
+CALL CTS_DataCenter.CTS_DC_RobotDetection_Insert (
 '[ 
 {"C": 9020527, "R": 200}]','2024-09-06 15:59:13.000', @ErrorMessage);
 
-call CTS_DataCenter.CTS_DC_RobotDetection_Insert_UAT4 (
+CALL CTS_DataCenter.CTS_DC_RobotDetection_Insert_UAT4 (
 '[{"C": 9020527, "R": 4}]' 
 ,'2024-09-06 15:59:13.000', @ErrorMessage);
 
-select * from RobotDetection where custid in (9700000,9700001,9700002,9700003) order by ID desc;
+SELECT * FROM RobotDetection WHERE custid in (9700000,9700001,9700002,9700003) order by ID desc;
 
 /*
 CALL CTS_DC_ProblemAccountManagement_GetCategories_UAT4(false);
@@ -185,45 +185,48 @@ CALL CTS_DC_CustClassification_Get_UAT4(1000828965);
 
 CALL CTS_DC_RobotDetection_GetLatest_UAT4(34);
 */
- select * from RobotImperva  where custid in (9700000,9700001,9700002,9700003) order by LogID desc;
+ SELECT * FROM RobotImperva  WHERE custid in (9700000,9700001,9700002,9700003) order by LogID desc;
  
 -- CTS Robot 
-select * from CTSRobotUser order by CreatedDate desc;
+SELECT * FROM CTSRobotUser order by CreatedDate desc;
 
 -- TW Robot 
 UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = '698015' WHERE (`ParameterID` = '3');
 
-select ParameterID,ParameterName,ParameterValue from SystemParameter where parameterID in (3);
+SELECT ParameterID,ParameterName,ParameterValue FROM SystemParameter WHERE parameterID in (3);
 
- select * from TWRobotUser order by CreatedDate desc;
+SELECT * FROM TWRobotUser order by CreatedDate desc;
 
 DECLARE @ip_CustID INT = 117811711; -- 100030201,100030238
- UPDATE  [ON_USER].[dbo].[RobotUsers] SET LastChangeTime = getdate()
- where custid = @ip_CustID  ; -- RowVersionAsBigInt = 650001
+UPDATE  [ON_USER].[dbo].[RobotUsers] SET LastChangeTime = getdate()
+WHERE custid = @ip_CustID  ; -- RowVersionAsBigInt = 650001
 
-  SELECT CAST(CONVERT(BIGINT, TSTAMP) AS INT) AS "TSTAMP_INT" ,*  FROM [ON_USER].[dbo].[RobotUsers] order by tstamp desc ;
+SELECT CAST(CONVERT(BIGINT, TSTAMP) AS INT) AS "TSTAMP_INT" ,*  FROM [ON_USER].[dbo].[RobotUsers] order by tstamp desc ;
  
- --INSERT INTO [ON_USER].[dbo].[RobotUsers] (custid, IP, LastChangeTime, site, counter, serverip, RobotDate, remark, Creator, countryLONG, ipREGION) VALUES 
- --(100030201, 'N/A', getdate(), 'DEWA', 11, NULL, getdate(), NULL, 8, NULL, NULL)
- --,(100030238, 'N/A', getdate(), 'MYGAME', 11, NULL, getdate(), NULL, 8, NULL, NULL)
- --;
+ -- INSERT INTO [ON_USER].[dbo].[RobotUsers] (custid, IP, LastChangeTime, site, counter, serverip, RobotDate, remark, Creator, countryLONG, ipREGION) VALUES 
+ -- (100030201, 'N/A', getdate(), 'DEWA', 11, NULL, getdate(), NULL, 8, NULL, NULL)
+ -- ,(100030238, 'N/A', getdate(), 'MYGAME', 11, NULL, getdate(), NULL, 8, NULL, NULL)
+ -- ;
  
-/*************************************** 2.2 Category SDUL CC305/3005 ***************************************/
+/*************************************** 2.2 Category System Detect Unauthorized Login CC305/3005 ***************************************/
 -- CC305/3005 CTS
--- select * from CTSCustomer where CTScustID in (1000930436,1000930437,1000930443,1000930444);
-UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = DATE_SUB(curdate(), INTERVAL 1 DAY) WHERE (`ParameterID` = '149');
-UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = DATE_SUB(curdate(), INTERVAL 1 DAY) WHERE (`ParameterID` = '150');
+-- SELECT * FROM CTSCustomer WHERE CTScustID in (1000930436,1000930437,1000930443,1000930444);
+SELECT * FROM SystemParameter WHERE parameterID in (149,150);
+UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = DATE_SUB(curdate(), INTERVAL 2 DAY) WHERE (`ParameterID` = '149');
+UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = DATE_SUB(curdate(), INTERVAL 2 DAY) WHERE (`ParameterID` = '150');
 
  
-delete from CustomerLoginInfoDetection where CTScustID in (1000930436,1000930437,1000930443,1000930444);
-delete from CTS_DataCenter.CustDCSAccount where AccountID in (1000834179,1000834180,1000834189,1000834190,1000834191,1000834192);
-delete from `DCS_DataTrace`.`LoginTransactionSummary` where  AccountID in (1000834179,1000834180,1000834189,1000834190,1000834191,1000834192);
+delete FROM CustomerLoginInfoDetection WHERE CTScustID in (1000930436,1000930437,1000930443,1000930444,1001090458);
+delete FROM CTS_DataCenter.CustDCSAccount WHERE AccountID in (1000834179,1000834180,1000834189,1000834190,1000834191,1000834192,228456055);
+delete FROM `DCS_DataTrace`.`LoginTransactionSummary` WHERE  AccountID in (1000834179,1000834180,1000834189,1000834190,1000834191,1000834192,228456055);
 
--- select * from DCS_DataCenter.StaticList;
--- select DATE_SUB(NOW(), INTERVAL 1 DAY);
-
+-- SELECT * FROM DCS_DataCenter.StaticList;
+-- SELECT DATE_SUB(NOW(), INTERVAL 1 DAY);
+SELECT * FROM DCS_DataCenter.Account where LoginName = 'DHBO26200';
+SELECT * FROM CTS_DataCenter.CustDCSAccount where CTSCustID = 1001090458;
+SELECT max(AccountID) FROM CTS_DataCenter.CustDCSAccount; --  where CTSCustID = 2916815;
 Insert into CTS_DataCenter.CustDCSAccount (CTSCustID, AccountID, SubscriberID,InsertTime) values
-(1000930436,1000834189,130,DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(1001090458,228456055,130,DATE_SUB(NOW(), INTERVAL 1 DAY)),
 (1000930437,1000834190,130,DATE_SUB(NOW(), INTERVAL 1 DAY)),
 (1000930443,1000834191,5733203,DATE_SUB(NOW(), INTERVAL 1 DAY)),
 (1000930444,1000834192,2313,DATE_SUB(NOW(), INTERVAL 1 DAY))
@@ -234,164 +237,203 @@ INSERT INTO `DCS_DataTrace`.`LoginTransactionSummary` (`TransDate`, `SubscriberI
  ,		(DATE_SUB(NOW(), INTERVAL 1 DAY), 5733203,1000834191, 125, 9, 4999, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY) ,DATE_SUB(NOW(), INTERVAL 1 DAY), 3)
  ,		(DATE_SUB(NOW(), INTERVAL 1 DAY), 2313,1000834192, 125, 8, 4999, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY) ,DATE_SUB(NOW(), INTERVAL 1 DAY), 2)
  ,		(DATE_SUB(NOW(), INTERVAL 1 DAY), 2313,1000834192, 125, 9, 5001, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY) ,DATE_SUB(NOW(), INTERVAL 1 DAY), 3)
- ,		(DATE_SUB(NOW(), INTERVAL 1 DAY), 130  ,1000834190, 125, 8, 5001, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY) ,DATE_SUB(NOW(), INTERVAL 1 DAY), 2)
+ ,		(DATE_SUB(NOW(), INTERVAL 1 DAY), 130  ,228456055, 125, 8, 5001, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY) ,DATE_SUB(NOW(), INTERVAL 1 DAY), 2)
  ,		(DATE_SUB(NOW(), INTERVAL 1 DAY), 130  ,1000834190, 125, 9, 4999, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY) ,DATE_SUB(NOW(), INTERVAL 1 DAY), 3)
  ,		(DATE_SUB(NOW(), INTERVAL 1 DAY), 130,1000834189, 125, 8, 4999, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY) ,DATE_SUB(NOW(), INTERVAL 1 DAY), 2)
  ,		(DATE_SUB(NOW(), INTERVAL 1 DAY), 130,1000834189, 125, 9, 5001, DATE_SUB(NOW(), INTERVAL 1 DAY), DATE_SUB(NOW(), INTERVAL 1 DAY),DATE_SUB(NOW(), INTERVAL 1 DAY) ,DATE_SUB(NOW(), INTERVAL 1 DAY), 3)
  ;
 
-select ParameterID,ParameterName,ParameterValue from SystemParameter where parameterID in (147,148,149,150);
-SELECT * FROM DCS_DataTrace.LoginTransactionSummary where  AccountID in (1000834189,1000834190,1000834191,1000834192);  -- groupid = 2 --> InvalidBrowser, 3 --> bottrans
-SELECT * FROM CTS_DataCenter.CustDCSAccount where CTSCustid in (1000930436,1000930437,1000930443,1000930444);
-select * from CustomerLoginInfoDetection where CTScustID in (1000930436,1000930437,1000930443,1000930444);
+SELECT ParameterID,ParameterName,ParameterValue FROM SystemParameter WHERE parameterID in (147,148,149,150);
+SELECT * FROM DCS_DataTrace.LoginTransactionSummary WHERE  AccountID in (1000834189,1000834190,1000834191,1000834192,228456055);  -- groupid = 2 --> InvalidBrowser, 3 --> bottrans
+SELECT * FROM CTS_DataCenter.CustDCSAccount WHERE CTSCustid in (1000930436,1000930437,1000930443,1000930444, 1001090458);
+SELECT * FROM CustomerLoginInfoDetection WHERE CTScustID in (1000930436,1000930437,1000930443,1000930444,1001090458);
 
 -- Test
 Insert into CTS_DataCenter.CustDCSAccount (CTSCustID, AccountID, SubscriberID,InsertTime) values
+(1000930443,1000834191,5733203,DATE_SUB(NOW(), INTERVAL 1 DAY)),
 (1001062273,1001062273,6,DATE_SUB(NOW(), INTERVAL 1 DAY));
 
 INSERT INTO `DCS_DataTrace`.`LoginTransactionSummary` (`TransDate`, `SubscriberID`, `AccountID`, `DeviceID`, `Flagged`, `TotalTrans`, `FirstLoginTransTime`, `LastLoginTransTime`, `CreatedTime`, `ModifiedTime`, `FlaggedGroupID`)  VALUES
 (DATE_SUB(NOW(), INTERVAL 2 DAY), 6,1001062273, 125, 8, 1000, DATE_SUB(NOW(), INTERVAL 2 DAY), DATE_SUB(NOW(), INTERVAL 2 DAY),DATE_SUB(NOW(), INTERVAL 2 DAY) ,DATE_SUB(NOW(), INTERVAL 2 DAY), 2)
  ;
  
-SELECT * 
-FROM DCS_DataTrace.LoginTransactionSummary AS d
-INNER JOIN CTS_DataCenter.CustDCSAccount AS c ON d.AccountID = c.AccountID
-INNER JOIN CTSCustomer AS Cust ON c.CTSCustID = Cust.CTSCustID
-WHERE Cust.Custid = 148626504
-AND d.TransDate >= DATE_SUB(NOW(), INTERVAL 90 DAY)
-;
+SELECT * FROM DCS_DataTrace.LoginTransactionSummary AS d
+	INNER JOIN CTS_DataCenter.CustDCSAccount AS c ON d.AccountID = c.AccountID
+	INNER JOIN CTSCustomer AS Cust ON c.CTSCustID = Cust.CTSCustID
+WHERE Cust.Custid = 107550078
+AND d.TransDate >= DATE_SUB(NOW(), INTERVAL 90 DAY);
 
-select * from CustomerLoginInfoDetection order by ID desc;
+SELECT * FROM CustomerLoginInfoDetection WHERE custid in (82272959,82293018,82349969,82352294,43290035)
+order by ID desc;
+
+-- Data from job in DW tính toán first five ticket
+/*
+(Job Name [bodb_VR2Model - CC TWGroupBetting CheckChanges]
+SP: CTS_NormalClassification_TWGroupBetting_CheckChanges)
+*/
+SELECT * FROM DCS_DataTrace.LoginTransactionSummary order by ID desc limit 10;
+-- Trigger  -> Classify to 305/3005 
+-- CTS_CustomerClassification_Daily_DetectUnauthorizedLogin_Credit
+-- CTS_CustomerClassification_Daily_DetectUnauthorizedLogin_Licensee 
+SELECT * FROM CustomerLoginInfoDetection cl
+	INNER JOIN CTS_DataCenter.CTSCustomer AS c ON cl.CTSCustID = c.CTSCustID
+WHERE cl.CTSCustID > 33209453 and c.IsLicensee <> 1 order by ID desc limit 10;
 
 -- CC 305 - DW
-delete from [bodb_Account].[dbo].[CTS_CustFirstbetDate] where custid in (82272959,82293018,82349969,82352294);
+DELETE FROM [bodb_Account].[dbo].[CTS_CustFirstbetDate] WHERE custid in (82272959,82293018,82349969,82352294);
 
-DECLARE @c_FromDate DATETIME = DATEADD(DAY, -14, GETDATE());
+DECLARE @c_FROMDate DATETIME = DATEADD(DAY, -14, GETDATE());
 DECLARE @c_ToDate DATETIME = DATEADD(DAY, -8, GETDATE());
-DECLARE @l_FromDate DATETIME = DATEADD(DAY, -3, GETDATE());
+DECLARE @l_FROMDate DATETIME = DATEADD(DAY, -3, GETDATE());
 DECLARE @l_ToDate DATETIME = DATEADD(DAY, -1, GETDATE());
 
-insert into [bodb_Account].[dbo].[CTS_CustFirstbetDate] (custid, firstbetDate,ModifiedDate)
-values
-(82272959,@c_FromDate,GETDATE()),
+INSERT INTO [bodb_Account].[dbo].[CTS_CustFirstbetDate] (custid, firstbetDate,ModifiedDate) VALUES
+(82272959,@c_FROMDate,GETDATE()),
 (82293018,@c_ToDate,GETDATE()),
-(82349969,@l_FromDate,GETDATE()),
+(82349969,@l_FROMDate,GETDATE()),
 (82352294,@l_ToDate,GETDATE());
 
-SELECT c.username,CTS.*
-  FROM [bodb_Account].[dbo].[CTS_CustFirstbetDate] CTS (NOLOCK)
-  INNER JOIN bodb_account.dbo.Customer c WITH (NOLOCK) ON CTS.custid = c.custid
-		and FirstbetDate > 	'2024-01-16 23:59:59.997'
+SELECT c.username,CTS.* FROM [bodb_Account].[dbo].[CTS_CustFirstbetDate] CTS (NOLOCK)
+INNER JOIN bodb_account.dbo.Customer c WITH (NOLOCK) ON CTS.custid = c.custid
+		AND FirstbetDate > 	'2024-01-16 23:59:59.997'
 		AND c.roleid = 1;
 		
 /*************************************** 2.3 Others ***************************************/
 -- Parameter of DailyPA
-SELECT * FROM CTS_DataCenter.CTSCustomerClassification_DailyPAQueue; -- 2024-01-05 05:44:42
-UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = '2024-04-14 05:11:41' WHERE (`ParameterID` = '88');
+SELECT ParameterID,ParameterName,ParameterValue FROM SystemParameter WHERE parameterID in (87, 88);
+-- Truncate table CTSCustomerClassification_DailyPAQueue;
+SELECT * FROM CTS_DataCenter.CTSCustomerClassification_DailyPAQueue WHERE CustID = 43290047; -- 2024-01-05 05:44:42
+UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = '2025-07-02 05:11:41' WHERE (`ParameterID` = '88');
 INSERT INTO `CTS_DataCenter`.`CTSCustomerClassification_DailyPAQueue` (`CustID`, `CreatedTime`) 
-VALUES 
+VALUES ('43290047', '2025-07-01 05:44:42');
 
-('1301', '2024-04-15 05:44:42')
-;
+CALL CTS_DC_CustClassification_DailyScanPA_GetFROMQueue();
+
+SELECT ID, CustID
+FROM CTS_DataCenter.CTSCustomerClassification_DailyPAQueue
+WHERE CreatedTime <= '2025-07-02 05:11:41' and CustID = 43290047
+
+/*************************************** 3.0 CC250x - Special Haifa (Lic Sub) ***************************************/
+
+-- CC250x Service CTS_CustomerClassification_Secondly_ScanTWSpecialLicSubCC 
+CALL CTS_DC_SpecialLicSubCC_Scan_Get(500);
+-- Check SELECT 1 FROM CTS_DataCenter.Customer_SpecialLicSubCC AS cus WHERE cus.ProcessStatus = 1;
+-- UPDATE `CTS_DataCenter`.`Customer_SpecialLicSubCC` SET `ProcessStatus` = '4' WHERE ProcessStatus = 1;
+
+SELECT * FROM CTS_DataCenter.CTSCustomer c
+WHERE c.SubscriberID = 104 AND c.RoleID = 1 AND c.IsLicensee = 1 AND c.currencyid = 20
+ORDER BY CTSCustID DESC;
+
+SELECT * FROM CTS_DataCenter.Customer_SpecialLicSubCC ORDER BY ID DESC;
+-- Trigger CTS_CustomerClassification_Secondly_ScanTWSpecialLicSubCC -> Insert to Normal Poll
+-- Trigger CTS_CC.CTS_CustomerClassification_Secondly_NormalAccountClassification
+-- Trigger CTS_CC.CTS_CustomerClassification_Secondly_NormalAccountInsert
+/******************************************************************************/
+
 
 ###########################################################################################################################################################################
 /*************************************** 3. Test Potential PA flow ***************************************/
 /*************************************** 3.1 CC2600 - Initial GB ***************************************/
 Use bodb_VR2Model;
 DECLARE
-@custid int  = 82352338,
-@sporttype int = 2            -- 1: Soccer, 2: Basketball, NULL: Soccer/Basketball (mix sports)
+@custid int  = 43290027,
+@sporttype int = 1            -- 1: Soccer, 2: Basketball, NULL: Soccer/Basketball (mix sports)
 ; 
 
-DELETE from dbo.CustomerClassification_ScannedNewCust  where CustId in (@custid);
+DELETE FROM dbo.CustomerClassification_ScannedNewCust  WHERE CustId in (@custid);
 
 DECLARE @Today									DATETIME2 = GETDATE();
 
-select  c.username, c.custid, c.currency, c.site, @Today AS 'Current time' FROM bodb02.dbo.customer c WITH (NOLOCK) INNER JOIN bodb02.dbo.custInfo i (NOLOCK) ON c.custid = i.custid  where c.custid = @custid ;
+SELECT  c.username, c.custid, c.currency, c.site, @Today AS 'Current time' FROM bodb02.dbo.customer c WITH (NOLOCK) INNER JOIN bodb02.dbo.custInfo i (NOLOCK) ON c.custid = i.custid  WHERE c.custid = @custid ;
 
 INSERT INTO dbo.CustomerClassification_ScannedNewCust (CustId,TotalTicketCount,GBTicketCount,SportType,CreatedTime,JobScannedType,LastJobScannedTime)
 values
-(@custid,6,4,@sporttype,@Today,2,@Today)
-;
+(@custid,6,4,@sporttype,@Today,2,@Today);
 
-Update CustomerClassification_Parameter set Value =  @Today	 where DataId = 7;
-Update CustomerClassification_Parameter set Value = 0 where DataId = 14;
-
+Update CustomerClassification_Parameter set Value =  @Today	 WHERE DataId = 7;
+Update CustomerClassification_Parameter set Value = 0 WHERE DataId = 14;
 
 SELECT TOP (100) * FROM [bodb_VR2Model].[dbo].[CustomerClassification_ScannedNewCust] order by LastJobScannedTime desc;
 
-select DataID,Value from CustomerClassification_Parameter where dataid in (7,14);
+SELECT DataID,Value FROM CustomerClassification_Parameter WHERE dataid in (7,14);
 
 -- Step 2: Start Job "CTS_CC.CTS_CustomerClassification_Secondly_TWInitialGBToCCScan"
 
 -- Step 3 : Check Username in CTS
 
 -- Parameter of CC2600 - Initial GB
-delete from Customer_InitialGroupBetting where custid in (148626493);
-delete from CTSCustomerClassification where custid in (100030177);
+delete FROM Customer_InitialGroupBetting WHERE custid in (43290027);
+delete FROM CTSCustomerClassification WHERE custid in (43290027);
 
 INSERT INTO `CTS_DataCenter`.`Customer_InitialGroupBetting` (`CustID`, `GBTicketCount`, `SportType`, `SourceCreatedDate`, `CreatedDate`) VALUES 
-('148626498', '5', '1', now(), now());
+('43290027', '5', '1', now(), now());
 
-select c.UserName,gb.* from Customer_InitialGroupBetting as gb
+SELECT c.UserName,gb.* FROM Customer_InitialGroupBetting as gb
 left join CTSCustomer as c on c.CustID = gb.CustID
  order by gb.CreatedDate desc;
  
--- update CTSCustomerClassification_History set Sporttype = 50 where  custid in (82353653);
+-- update CTSCustomerClassification_History set Sporttype = 50 WHERE  custid in (82353653);
 -- CALL CTS_Arc_CustomerAssociation_RollBack_CheckByNewPA('[{"CTSCustID":1000930445,"CustID":82352338,"CustomerClass":2600,"SportID":0,"CategoryID":30300,"ScannedTime":"2024-07-25T07:24:31"}]')
--- Check if CC2600 rollback Ass Archive/ service DW call UAT1
+-- Check if CC2600 rollback Ass Archive/ service DW CALL UAT1
 -- column DWCategoryID show cate winning?
 
-select * from Customer_InitialGroupBetting order by CreatedDate desc;
-CALL CTS_DC_CustClassification_InitialGB_GetCustInfo_UAT4('100030177');
-CALL CTS_DataCenter.CTS_DC_CustClassification_GetCCAndDangerLevel_UAT4('100030177');
+SELECT * FROM Customer_InitialGroupBetting order by CreatedDate desc;
+CALL CTS_DC_CustClassification_InitialGB_GetCustInfo_UAT4('2916814');
+CALL CTS_DataCenter.CTS_DC_CustClassification_GetCCAndDangerLevel_UAT4('43290027');
 
 /*************************************** 3.2 CC2700 - Initial Smart ***************************************/
 -- Parameter of CC2700 - Initial Smart
--- delete from CTSCustomerClassification where custid in (82354349,82353653,43841253);
-select * from Customer_InitialSmart where custid in (148626498);
+-- delete FROM CTSCustomerClassification WHERE custid in (82354349,82353653,43841253);
+SELECT * FROM Customer_InitialSmart WHERE custid in (43290003);
 
--- delete from Customer_InitialGroupBetting where custid in (43841253);
+-- delete FROM Customer_InitialGroupBetting WHERE custid in (43290003);
 
- delete from Customer_InitialSmart where custid in (148626498);
+ delete FROM Customer_InitialSmart WHERE custid in (43290003);
 
 UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = '0' WHERE (`ParameterID` = '159');
-UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = '2024-07-31 02:00:48.522' WHERE (`ParameterID` = '160');
+UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = '2025-06-30 02:00:48' WHERE (`ParameterID` = '160');
 
-select ParameterID,ParameterName,ParameterValue from SystemParameter where parameterID in (159,160,161);
+SELECT ParameterID,ParameterName,ParameterValue FROM SystemParameter WHERE parameterID in (159,160,161);
 
  INSERT INTO `CTS_DataCenter`.`Customer_InitialSmart` (`CustID`, `Probability`, `SourceCreatedDate`, `InsertedTime`) VALUES 
- ('148626498', '0.851', '2024-07-31 02:01:01.111', now());
-select * from Customer_InitialSmart order by InsertedTime desc;
-select * from Customer_InitialSmart_Log;
-CALL CTS_DC_CustClassification_InitialSmart_Get_UAT4(@outParam0, @outParam1);
+ ('43290003', '0.851', '2025-06-29 02:01:01.111', now());
+SELECT * FROM Customer_InitialSmart order by InsertedTime desc;
+SELECT * FROM Customer_InitialSmart_Log;
+CALL CTS_DC_CustClassification_InitialSmart_Get(@outParam0, @outParam1);
 
 /*************************************** 3.3 CC2800 - Early Warning Members ***************************************/
+-- Serivce CTS_CustomerClassification_Daily_DangerousScoreToCCScan_Deposit/Credit
 -- Parameter of CC2800 - Early Warning Members 
-delete from Customer_DangerousScore where custid in ( 148626498 );
+DELETE FROM Customer_DangerousScore WHERE custid IN ( 148626498 );
 
-select ParameterID,ParameterName,ParameterValue from SystemParameter where parameterID in (153,154,155,156,157,158);
+SELECT ParameterID,ParameterName,ParameterValue FROM SystemParameter WHERE parameterID IN (153,154,155,156,157,158);
 
--- credit - 153, Deposit - 156
-UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = DATE_ADD(NOW(), INTERVAL -2 Minute)
-WHERE (`ParameterID` = '153');
+-- Credit - 153, Deposit - 156
+UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = DATE_ADD(NOW(), INTERVAL -2 DAY) WHERE (`ParameterID` = '153');
 INSERT INTO `CTS_DataCenter`.`Customer_DangerousScore` (`CustID`, `IsLicensee`, `DangerousScore`, `CreatedDate`, `LastModifiedDate`, `ClassifiedScore`, `ClassifiedDate`) VALUES 
 ('148628838', '0', '0.9000', now(), now(), '0.9000', now());
 
-UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = DATE_ADD(NOW(), INTERVAL -2 Minute)
-WHERE (`ParameterID` = '156');
+UPDATE `CTS_DataCenter`.`SystemParameter` SET `ParameterValue` = DATE_ADD(NOW(), INTERVAL -2 DAY) WHERE (`ParameterID` = '156');
 INSERT INTO `CTS_DataCenter`.`Customer_DangerousScore` (`CustID`, `IsLicensee`, `DangerousScore`, `CreatedDate`, `LastModifiedDate`, `ClassifiedScore`, `ClassifiedDate`) VALUES 
 ('148626498', '1', '0.9500', now(), now(), '0.9500', now());
 
-SELECT C.CTSCustid, C.UserName, D.* FROM Customer_DangerousScore AS D INNER JOIN CTSCustomer AS C ON D.CustID = C.CustID
+-- Update LastModifiedDate > @lv_LastScannedDate (153, 156)
+UPDATE CTS_DataCenter.Customer_DangerousScore SET CreatedDate = DATE_ADD(NOW(), INTERVAL -2 DAY)
+	, LastModifiedDate = DATE_ADD(NOW(), INTERVAL -1 DAY), ClassifiedDate = DATE_ADD(NOW(), INTERVAL -1 DAY)
+WHERE custid IN (42784044);
+
+SELECT D.* FROM Customer_DangerousScore AS D WHERE custid IN (42784044);
+SELECT C.CTSCustid, C.UserName, D.* FROM Customer_DangerousScore AS D 
+	INNER JOIN CTSCustomer AS C ON D.CustID = C.CustID
 ORDER BY D.LastModifiedDate DESC
 LIMIT 15;
 
+CALL CTS_DC_DangerousDetection_GetLatest(true);
 ##############################################################################################################################################################################
 /*************************************** 4. Change CC Prio by Renovate Setting ***************************************/
 -- Modify Priority
 -- 1. edit  CustomerCategorySettings
-select * from CustomerCategorySettings;
+SELECT * FROM CustomerCategorySettings;
 UPDATE `CTS_DataCenter`.`CustomerCategorySettings` SET `IsMultiCateIDSameParentID` = true,`IsKeepOldCateID` = true   WHERE  (categoryID in (30100,30200,30300,35100,35200,35300));
 UPDATE `CTS_DataCenter`.`CustomerCategorySettings` SET ParentID = 20000  WHERE  (categoryID in (30100,30200,30300,35100,35200,35300));
 -- 2. edit priority in CustomerCategory 
@@ -399,6 +441,5 @@ UPDATE `CTS_DataCenter`.`CustomerCategory` SET ParentID = 20000   WHERE  (catego
 -- 3. edit sp CTS_DC_CustClassification_ReScan_get
 -- 4. edit sp CTS_DC_CustClassification_Get to show multi PA + potential PA 
 
-select * from StaticList;
-select * from CustomerCategory where ( CategoryGroupID in  (21100,21200,26100,26200 ) or parentid = 30000)and isactive = 1 ;
-
+SELECT * FROM StaticList;
+SELECT * FROM CustomerCategory WHERE ( CategoryGroupID in  (21100,21200,26100,26200 ) or parentid = 30000)and isactive = 1 ;

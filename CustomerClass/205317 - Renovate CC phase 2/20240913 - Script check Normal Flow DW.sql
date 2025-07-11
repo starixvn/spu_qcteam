@@ -6,6 +6,7 @@
 	Revisions: 
 			-	20240913@Randy.Nguyen:			Initial Writing [Redmine ID: #205317]
 */
+-- Service CTS_CustomerClassification_Secondly_NormalAccountClassification
 
 USE bodb_VR2Model;
 -- ### REALTIME CHECKCHANGES ###
@@ -23,7 +24,11 @@ select * from CustomerClassification_Parameter (nolock);
 -- ### REALTIME SCAN ###
 -- delete from CustomerClassification_NormalPool where FunctionId = 100;
 -- delete from CustomerClassification_NormalPool where (custid >= 1000000 and custid <= 1999999) and FunctionId = 100;
-
+/*
+DELETE FROM [dbo].[CustomerClassification_NormalPool]
+INSERT INTO [CustomerClassification_NormalPool] (CustId,[Priority],FunctionId,CreatedTime)
+VALUES(43289963, 10, 45, GETDATE()) -- GB
+*/
 delete from CustomerClassification_NormalPool where custid not in (82349969);
 
 delete from CustomerClassification_NormalPool where FunctionId = 4;
@@ -51,6 +56,18 @@ select * from CustomerClassification_ResetBalance where custid in (148626498,148
 -- Rule classify: select * from CustomerClassification_Rule (nolock);
 
 -- ### Normal Account Insert ###
+DELETE FROM [dbo].[CustomerClassification] -- WHERE CustId IN (43289963,42784044,43290047,50706645);
+INSERT INTO dbo.CustomerClassification(CustId, SportId, CategoryId, CurrentCategoryId, CreatedDate, CreatedTime, TurnoverRM, WinlossRM, BetCount, ActiveDays, PerformanceTime, ScanTaggingType) Values
+(43290035,	200, 40200, 0, GETDATE(), GETDATE() ,	10000,	 10000,	10,	10,	GETDATE(), 0); -- Good
+INSERT INTO dbo.CustomerClassification(CustId, SportId, CategoryId, CurrentCategoryId, CreatedDate, CreatedTime, TurnoverRM, WinlossRM, BetCount, ActiveDays, PerformanceTime, ScanTaggingType) Values
+(43290035,	200, 40300, 0, GETDATE(), GETDATE() ,	10000,	 10000,	10,	10,	GETDATE(), 0); -- Normal
+INSERT INTO dbo.CustomerClassification(CustId, SportId, CategoryId, CurrentCategoryId, CreatedDate, CreatedTime, TurnoverRM, WinlossRM, BetCount, ActiveDays, PerformanceTime, ScanTaggingType) Values
+(43290035,	200, 40400, 0, GETDATE(), GETDATE() ,	10000,	 10000,	10,	10,	GETDATE(), 0); -- Pro
+
+INSERT INTO dbo.CustomerClassification(CustId, SportId, CategoryId, CurrentCategoryId, CreatedDate, CreatedTime, TurnoverRM, WinlossRM, BetCount, ActiveDays, PerformanceTime, ScanTaggingType) Values
+(43290027,	200, 40701, 0, GETDATE(), GETDATE() ,	10000,	 10000,	10,	10,	GETDATE(), 0); -- Smart (Inactive)
+INSERT INTO dbo.CustomerClassification(CustId, SportId, CategoryId, CurrentCategoryId, CreatedDate, CreatedTime, TurnoverRM, WinlossRM, BetCount, ActiveDays, PerformanceTime, ScanTaggingType) Values
+(43290035,	200, 40700, 0, GETDATE(), GETDATE() ,	999999.0000,	 -9999.0000,	20,	4,	GETDATE(), 0); -- System Detect Unauthorized Login
 		
 Update CustomerClassification Set Custid = 148626508, CurrentCategoryId = 0 ,CategoryId = 40400,
 ScanTaggingType=0, performanceTime = GETDATE() where ID = 26561;
@@ -60,13 +77,16 @@ ScanTaggingType=0, performanceTime = GETDATE(), BetCount = 1 where ID = 26560;
 
 -- Update Parameter of service NormalAccountInsert to latest
 UPDATE c WITH (ROWLOCK, UPDLOCK)
-		SET c.Value = CONVERT(VARCHAR(200), cast((select Max(rowversion) from CustomerClassification) AS bigint))
-		FROM dbo.CustomerClassification_Parameter AS c
-		WHERE c.DataId = 1;
-
+		SET c.Value = UPDATE c WITH (ROWLOCK, UPDLOCK) SET c.Value = (select Max(ID) from dbo.CustomerClassification)
+	FROM dbo.CustomerClassification_Parameter AS c
+	WHERE c.DataId = 3;
 
 -- Check pool CustomerClassification before insert CategoryID into CTS
-select * from CustomerClassification_Parameter (nolock) where DataId = 1;
+select * from CustomerClassification_Parameter (nolock) where DataId = 3;
 
 select top 1000 cast(rowversion AS bigint),* from CustomerClassification (nolock)  order by RowVersion desc;
 
+-- Service CTS_CC.CTS_CustomerClassification_Secondly_NormalAccountInsert
+DECLARE @ScannedMaxId BIGINT;
+EXEC bodb_VR2Model.dbo.CTS_GeneralNormalClassification_NormalAccount_Get @ScannedMaxId = @ScannedMaxId OUTPUT, @IsLogData = 0
+SELECT @ScannedMaxId;
