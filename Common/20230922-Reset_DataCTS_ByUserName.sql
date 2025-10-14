@@ -28,7 +28,6 @@ SET SQL_SAFE_UPDATES = 0;
         ,   CustSubID				SMALLINT
         ,	SiteID					INT
         ,	SubscriberID			INT UNSIGNED
-		,	IsLicensee				BIT /* 0: Credit,  1: Licensee */
         ,	PRIMARY KEY				PK_Temp_ExistedCustomer_UserName(UserName)
         ,	INDEX					IX_Temp_ExistedCustomer_CTSCustID(CTSCustID)
         ,	INDEX					IX_Temp_ExistedCustomer_CustID(CustID)
@@ -40,7 +39,7 @@ SET SQL_SAFE_UPDATES = 0;
 	EXECUTE stmt1;    
 
 	/*3. Get Existed Customers */
-	INSERT IGNORE INTO Temp_ExistedCustomer(CTSCustID, CustID, CustSubID, UserName, RoleID, SiteID, SubscriberID, IsLicensee)
+	INSERT IGNORE INTO Temp_ExistedCustomer(CTSCustID, CustID, CustSubID, UserName, RoleID, SiteID, SubscriberID)
     SELECT 	c.CTSCustID
 		,	c.CustID
         ,	c.CustSubID
@@ -48,7 +47,6 @@ SET SQL_SAFE_UPDATES = 0;
         , 	c.RoleID
         ,	c.SiteID
         ,	c.SubscriberID
-		,	c.IsLicensee
 	FROM Temp_UserName AS u
 		LEFT JOIN CTS_DataCenter.CTSCustomer AS c ON u.UserName = c.UserName;
 
@@ -69,21 +67,23 @@ DELETE ch FROM CTS_DataCenter.CTSCustomerClassification_BySport_History AS ch
 	INNER JOIN Temp_ExistedCustomer AS tmpC ON ch.CTSCustID = tmpC.CTSCustID;
 DELETE clg FROM CTS_DataCenter.CTSCustomerClassification_BySport_Log AS clg
 	INNER JOIN Temp_ExistedCustomer AS tmpC ON clg.CustID = tmpC.CustID;
-    
+DELETE pm FROM CTS_DataCenter.ProbationAccountMonitor_BySport pm
+	INNER JOIN Temp_ExistedCustomer AS tmpC ON pm.CTSCustID = tmpC.CTSCustID;
+
 ## Others    
 DELETE o FROM CTS_DataCenter.CTSCustomerClassificationOldPA AS o
 	INNER JOIN Temp_ExistedCustomer AS tmpC ON o.CTSCustID = tmpC.CTSCustID;
+DELETE vv FROM CTS_DataCenter.CTSCustomerClassificationVVIP vv
+	INNER JOIN Temp_ExistedCustomer AS tmpC ON vv.CTSCustID = tmpC.CTSCustID;
 DELETE q FROM CTS_DataCenter.CTSCustomerClassificationQueue q
 	INNER JOIN Temp_ExistedCustomer AS tmpC ON q.CTSCustID = tmpC.CTSCustID;
+DELETE p FROM CTS_DataCenter.PinCustomerCategory p
+	INNER JOIN Temp_ExistedCustomer AS tmpC ON p.CTSCustID = tmpC.CTSCustID;
 DELETE e FROM CTS_DataCenter.CustEvidence e 
 	INNER JOIN Temp_ExistedCustomer AS tmpC ON e.CTSCustID = tmpC.CTSCustID;
+DELETE pm FROM CTS_DataCenter.ProbationAccountMonitor pm
+	INNER JOIN Temp_ExistedCustomer AS tmpC ON pm.CTSCustID = tmpC.CTSCustID;
 DELETE sc FROM CTS_DataCenter.SpecialCustomerClass sc
-	INNER JOIN Temp_ExistedCustomer AS tmpC ON sc.CTSCustID = tmpC.CTSCustID;
-DELETE sc FROM CTS_DataCenter.SpecialCustomerClass_History sc
-	INNER JOIN Temp_ExistedCustomer AS tmpC ON sc.CTSCustID = tmpC.CTSCustID;
-DELETE sc FROM CTS_DataCenter.SpecialCustomerClass_BySport sc
-	INNER JOIN Temp_ExistedCustomer AS tmpC ON sc.CTSCustID = tmpC.CTSCustID;
-DELETE sc FROM CTS_DataCenter.SpecialCustomerClass_BySport_History sc
 	INNER JOIN Temp_ExistedCustomer AS tmpC ON sc.CTSCustID = tmpC.CTSCustID;
 
 ## Robot
@@ -106,42 +106,19 @@ DELETE ass FROM CTS_DataCenter.AssociationByAI AS ass
 DELETE ass FROM CTS_DataCenter.AssociationGroupByAI AS ass 
 	INNER JOIN Temp_ExistedCustomer AS tmpC ON ass.CustID = tmpC.CustID;
 
-## DangerousScore
-DELETE ass FROM CTS_DataCenter.Customer_DangerousScore AS ass 
-	INNER JOIN Temp_ExistedCustomer AS tmpC ON ass.CustID = tmpC.CustID;
-## Insert DangerousScore
-INSERT INTO CTS_DataCenter.Customer_DangerousScore(CustID,IsLicensee,DangerousScore,CreatedDate,LastModifiedDate,ClassifiedScore,ClassifiedDate)
-SELECT DISTINCT temp.CustID,temp.IsLicensee,0.7070,current_timestamp(),current_timestamp(),0.9103,current_timestamp()
-FROM Temp_ExistedCustomer AS temp;
-
 UPDATE CTS_DataCenter.CTSCustomer AS c 
 	INNER JOIN Temp_ExistedCustomer AS tmpC ON c.CustID = tmpC.CustID
 SET c.Danger1 = 0, c.Danger2 = 0, c.Danger3 = 0, c.Danger4 = 0, c.Danger5 = 0;
 
 -- Set New Category
 SELECT * FROM Temp_ExistedCustomer;
-# SELECT JSON_ARRAYAGG(JSON_OBJECT('CustID', CustId, 'CategoryID', 40100, 'TaggingID', 0, 'TaggingType', 0, 'ScanTaggingType', 0,'CreatedTime', now(), 'TurnoverRM', 1000, 'WinlossRM', 20, 'BetCount', 9, 'ActiveDays', 10, 'PerformanceTime', now()))
--- Normal Category
-# SELECT JSON_ARRAYAGG(JSON_OBJECT('CustID', CustId, 'CategoryID', 40300, 'CategoryGroupID', 40300, 'TaggingID', 0, 'TaggingType', 0, 'TWBetCount', 0,'TWGroupBettingRate', 0.0, 'TWTicketRejectRate', 0.0, 'TWDesktopUsageRate', 0.0,'ScanTaggingType', 0,'CreatedTime', now(), 'TurnoverRM', 1000000, 'WinlossRM', 9000, 'BetCount', 10, 'ActiveDays', 10, 'PerformanceTime', now()))
--- Good Category
-SELECT JSON_ARRAYAGG(JSON_OBJECT('CustID', CustId, 'CategoryID', 40200, 'TaggingID', 0, 'TaggingType', 0, 'ScanTaggingType', 0,'CreatedTime', now(), 'TurnoverRM', 200000, 'WinlossRM', -5000, 'BetCount', 301, 'ActiveDays', 10, 'PerformanceTime', now()))
--- Pro Category
-# SELECT JSON_ARRAYAGG(JSON_OBJECT('CustID', CustId, 'CategoryID', 40400, 'TaggingID', 0, 'TaggingType', 0, 'ScanTaggingType', 0,'CreatedTime', now(), 'TurnoverRM', 200000, 'WinlossRM', 12000, 'BetCount', 10, 'ActiveDays', 10, 'PerformanceTime', now()))
+SELECT JSON_ARRAYAGG(JSON_OBJECT('CustId', CustId, 'CategoryId', 201, 'TaggingID', 0, 'TaggingType', 1, 'ScanTaggingType', 1,'CreatedTime', now(), 'TurnoverRM', 1000, 'WinlossRM', 20, 'BetCount', 9, 'ActiveDays', 10, 'PerformanceTime', now()))
 INTO @CustListJson FROM Temp_ExistedCustomer;
-SELECT @CustListJson;
--- SELECT * FROM CTS_DataCenter.StaticList where ListID = 24; (CustID <> CustId and CategoryId <> CategoryID)
 
--- CALL CTS_DataCenter.CTS_DC_CustClassification_InsertNormalAccount(@CustListJson,@orr);
-CALL CTS_DataCenter.CTS_DC_CustClassification_Insert(9,3, NULL, NULL, NULL, false,@CustListJson,@orr);
+CALL CTS_DataCenter.CTS_DC_CustClassification_InsertNormalAccount(@CustListJson,@orr);
 
 -- Set New Category by Sports
-# SELECT JSON_ARRAYAGG(JSON_OBJECT('CustId', CustId, 'CategoryId', 40100, 'SportGroup', SportId, 'TurnoverRM', 1000, 'WinlossRM', 20, 'BetCount', 9, 'ActiveDays', 10, 'PerformanceTime', now()))
--- Normal Category
-SELECT JSON_ARRAYAGG(JSON_OBJECT('CustId', CustId, 'CategoryId', 40300, 'SportGroup', SportId, 'TurnoverRM', 1000000, 'WinlossRM', 9000, 'BetCount', 10, 'ActiveDays', 10, 'PerformanceTime', now()))
--- Good Category
-# SELECT JSON_ARRAYAGG(JSON_OBJECT('CustId', CustId, 'CategoryId', 40200, 'SportGroup', SportId, 'TurnoverRM', 200000, 'WinlossRM', -5000, 'BetCount', 310, 'ActiveDays', 10, 'PerformanceTime', now()))
--- Pro Category
-#SELECT JSON_ARRAYAGG(JSON_OBJECT('CustId', CustId, 'CategoryId', 40400, 'SportGroup', SportId, 'TurnoverRM', 200000, 'WinlossRM', 12000, 'BetCount', 10, 'ActiveDays', 10, 'PerformanceTime', now()))
+SELECT JSON_ARRAYAGG(JSON_OBJECT('CustId', CustId, 'CategoryId', 201, 'SportGroup', SportId, 'TurnoverRM', 1000, 'WinlossRM', 20, 'BetCount', 9, 'ActiveDays', 10, 'PerformanceTime', now()))
 INTO @CustListJsonbySport FROM Temp_ExistedCustomer
 JOIN (SELECT * FROM (
      SELECT 1 AS SportId union
@@ -153,8 +130,7 @@ JOIN (SELECT * FROM (
      SELECT 912 AS SportId # Saba Basketball
      ) AS tbs) as bb;
 
--- CALL CTS_DataCenter.CTS_DC_CustClassification_BySport_InsertNormalAccount(@CustListJsonbySport,@or);
-CALL CTS_DC_CustClassification_BySport_Insert(339,@CustListJsonbySport,@or);
+CALL CTS_DataCenter.CTS_DC_CustClassification_BySport_InsertNormalAccount(@CustListJsonbySport,@or);
 
 /*
 # New linked PA (TaggingID = 10)
