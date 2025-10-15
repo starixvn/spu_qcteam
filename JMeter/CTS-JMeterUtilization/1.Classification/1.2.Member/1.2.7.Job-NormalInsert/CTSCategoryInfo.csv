@@ -1,0 +1,109 @@
+CustID,ParentID,CategoryID,IsFromAI,IsFromTW,Case
+4368025,40000,40500,-1,-1,Existing Smart
+4368028,40000,40504,-1,-1,Existing Smart Group Betting
+4504628,40000,40502,-1,-1,Existing Smart Linked PA
+4631294,40000,40506,-1,-1,Existing Smart Lic Sub 
+4639971,40000,40500,-1,-1,"Existing Smart, Lic VIP"
+4639971,10000,10201,-1,-1,"Existing Smart, Lic VIP"
+4640185,40000,40600,-1,-1,Existing Risky
+4836185,40000,40605,-1,-1,Existing Risky High Rejected
+4836532,40000,40603,-1,-1,Existing Risky Linked Robot
+4868833,40000,40606,-1,-1,Existing Risky Lic Sub
+4885249,40000,40600,-1,-1,"Existing Risky, Special CC"
+4885249,10000,10300,-1,-1,"Existing Risky, Special CC"
+4917029,40000,40500,-1,-1,Existing Smart
+4921038,40000,40504,-1,-1,Existing Smart Group Betting
+4926783,40000,40502,-1,-1,Existing Smart Linked PA
+4927707,40000,40506,-1,-1,Existing Smart Lic Sub 
+4954836,40000,40500,-1,-1,"Existing Smart, Lic VIP"
+4954836,10000,10201,-1,-1,"Existing Smart, Lic VIP"
+5040379,40000,40600,-1,-1,Existing Risky
+5067726,40000,40605,-1,-1,Existing Risky High Rejected
+5074571,40000,40603,-1,-1,Existing Risky Linked Robot
+5078586,40000,40606,-1,-1,Existing Risky Lic Sub
+5113919,40000,40600,-1,-1,"Existing Risky, Special CC"
+5113919,10000,10300,-1,-1,"Existing Risky, Special CC"
+5176807,40000,40500,-1,-1,Existing Smart
+5180056,40000,40504,-1,-1,Existing Smart Group Betting
+5199790,40000,40502,-1,-1,Existing Smart Linked PA
+5207077,40000,40506,-1,-1,Existing Smart Lic Sub 
+5289912,40000,40500,-1,-1,"Existing Smart, Lic VIP"
+5289912,10000,10201,-1,-1,"Existing Smart, Lic VIP"
+5291710,40000,40600,-1,-1,Existing Risky
+5339438,40000,40605,-1,-1,Existing Risky High Rejected
+5359171,40000,40603,-1,-1,Existing Risky Linked Robot
+5363425,40000,40606,-1,-1,Existing Risky Lic Sub
+5363790,40000,40600,-1,-1,"Existing Risky, Special CC"
+5363790,10000,10300,-1,-1,"Existing Risky, Special CC"
+4507126,40000,40200,-1,-1,Existing Good
+4508285,40000,40204,-1,-1,Existing Good Group Betting
+4511216,40000,40202,-1,-1,Existing Good Linked PA
+4664672,40000,40700,-1,-1,Existing Normal Inactive
+4671649,40000,40200,-1,-1,"Existing Good, Lic VIP"
+4671649,10000,10200,-1,-1,"Existing Good, Lic VIP"
+4795990,40000,40300,-1,-1,Existing Normal
+4842736,40000,40305,-1,-1,Existing Normal High Rejected
+4860289,40000,40303,-1,-1,Existing Normal Linked Robot
+4901063,40000,40701,-1,-1,Existing Smart Inactive
+4905097,40000,40300,-1,-1,"Existing Normal, Special CC"
+4905097,10000,10300,-1,-1,"Existing Normal, Special CC"
+4957815,40000,40200,-1,-1,Existing Good
+4974168,40000,40204,-1,-1,Existing Good Group Betting
+4987017,40000,40202,-1,-1,Existing Good Linked PA
+4991151,40000,40700,-1,-1,Existing Normal Inactive
+5003571,40000,40200,-1,-1,"Existing Good, Lic VIP"
+5003571,10000,10200,-1,-1,"Existing Good, Lic VIP"
+5121216,40000,40300,-1,-1,Existing Normal
+5122032,40000,40305,-1,-1,Existing Normal High Rejected
+5126520,40000,40303,-1,-1,Existing Normal Linked Robot
+5126561,40000,40701,-1,-1,Existing Smart Inactive
+5152986,40000,40300,-1,-1,"Existing Normal, Special CC"
+5152986,10000,10300,-1,-1,"Existing Normal, Special CC"
+5363994,40000,40200,-1,-1,Existing Good
+5376955,40000,40204,-1,-1,Existing Good Group Betting
+5393864,40000,40202,-1,-1,Existing Good Linked PA
+5412825,40000,40700,-1,-1,Existing Normal Inactive
+5456726,40000,40200,-1,-1,"Existing Good, Lic VIP"
+5456726,10000,10200,-1,-1,"Existing Good, Lic VIP"
+5461935,40000,40300,-1,-1,Existing Normal
+5463523,40000,40305,-1,-1,Existing Normal High Rejected
+5483196,40000,40303,-1,-1,Existing Normal Linked Robot
+5485026,40000,40701,-1,-1,Existing Smart Inactive
+5487980,40000,40300,-1,-1,"Existing Normal, Special CC"
+5487980,10000,10300,-1,-1,"Existing Normal, Special CC"
+4526651,20000,21100,0,1,Existing TW Robot
+4526779,20000,21100,1,0,Existing AI Robot
+4629708,20000,21200,1,0,Existing OCRD
+4816920,20000,21800,1,0,Existing Bot Login Pattern
+4817040,20000,21100,0,1,"Existing TW Robot, Lic VIP"
+4817040,10000,10201,0,1,"Existing TW Robot, Lic VIP"
+4831332,1000,1010,-1,-1,Existing VVIP
+4866007,20000,35300,0,1,Existing CC2600
+4866084,20000,35200,0,1,Existing CC2700
+4910066,20000,35100,1,0,Existing CC2800
+4911089,20000,35300,0,1,"Existing CC2600, Special CC"
+4911089,10000,10300,0,1,"Existing CC2600, Special CC"
+5007868,20000,21100,0,1,Existing TW Robot
+5007912,20000,21100,1,0,Existing AI Robot
+5014234,20000,21200,1,0,Existing OCRD
+5014478,20000,21800,1,0,Existing Bot Login Pattern
+5029741,20000,21100,0,1,"Existing TW Robot, Lic VIP"
+5029741,10000,10201,0,1,"Existing TW Robot, Lic VIP"
+5153631,1000,1010,-1,-1,Existing VVIP
+5156544,20000,35300,0,1,Existing CC2600
+5156631,20000,35200,0,1,Existing CC2700
+5167627,20000,35100,1,0,Existing CC2800
+5169372,20000,35300,0,1,"Existing CC2600, Special CC"
+5169372,10000,10300,0,1,"Existing CC2600, Special CC"
+5489639,20000,21100,0,1,Existing TW Robot
+5491702,20000,21100,1,0,Existing AI Robot
+5493890,20000,21200,1,0,Existing OCRD
+5515801,20000,21800,1,0,Existing Bot Login Pattern
+5518060,20000,21100,0,1,"Existing TW Robot, Lic VIP"
+5518060,10000,10201,0,1,"Existing TW Robot, Lic VIP"
+5520556,1000,1010,-1,-1,Existing VVIP
+5538163,20000,35300,0,1,Existing CC2600
+5543119,20000,35200,0,1,Existing CC2700
+5587201,20000,35100,1,0,Existing CC2800
+5589780,20000,35300,0,1,"Existing CC2600, Special CC"
+5589780,10000,10300,0,1,"Existing CC2600, Special CC"

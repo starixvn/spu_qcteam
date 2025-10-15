@@ -1,0 +1,27 @@
+CustID,CTSCustID,SubscriberID,SportGroupID,CategoryID,IsDirect,IsFromCTS,IsFromAI,IsFromTVS,IsFromTW,IsFromImperva,Notes
+791054,1000930242,6,200,1001,null,null,null,null,null,null,normal cases
+832131,1000930243,6,200,201,null,null,null,null,null,null,normal cases
+832132,1000930244,6,200,222,null,null,null,null,null,null,normal cases
+832134,1000930245,6,200,268,null,null,null,null,null,null,normal cases
+835062,1000930247,6,200,1002,null,null,null,null,null,null,normal cases
+835064,1000930248,6,200,205,null,null,null,null,null,null,normal cases
+835067,1000930249,6,200,253,null,null,null,null,null,null,normal cases
+835068,1000930250,6,200,277,null,null,null,null,null,null,normal cases
+835097,1000930251,6,150,66,null,null,null,null,1,null,normal cases
+835098,1000930252,6,150,67,null,null,null,null,1,null,normal cases
+858252,1000930253,6,150,66,null,null,null,null,1,null,normal cases
+871291,1000930254,6,150,67,null,null,null,null,1,null,normal cases
+871390,1000930255,6,0,163,1,0,0,0,1,0,normal cases
+875429,1000930256,6,0,163,1,0,0,0,0,1,normal cases
+876080,1000930257,6,0,165,1,0,1,0,0,0,normal cases
+881273,1000930258,6,0,163,1,0,1,0,0,0,normal cases
+888234,1000930259,6,0,163,1,0,0,1,0,0,normal cases
+888250,1000930260,6,0,165,1,0,1,0,0,0,normal cases
+888253,1000912424,6,0,52,1,1,0,0,0,0,normal cases
+907115,1000912436,6,0,63,1,1,0,0,0,0,normal cases
+907116,1000912437,6,0,64,1,1,0,0,0,0,normal cases
+907118,1000912438,6,0,53,1,1,0,0,0,0,normal cases
+907123,1000912439,6,0,63,1,1,0,0,0,0,normal cases
+915235,1000912449,6,0,64,1,1,0,0,0,0,normal cases
+916540,1000912450,6,200,210,1,null,null,null,null,null,normal cases
+916591,1000912451,6,200,210,1,null,null,null,null,null,normal cases

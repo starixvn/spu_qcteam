@@ -1,0 +1,41 @@
+sp: CTS_Association_GetBySharedMatches
+USE [bodb02]
+GO
+DECLARE	@return_value int
+EXEC	@return_value = [dbo].[CTS_Association_GetBySharedMatches]
+		@ListCustId = '1321,67065,1367,233772',
+		@RootCustId = 0,
+		@QueryType = 1
+SELECT	'Return Value' = @return_value
+GO
+
+	/**NA Test*/
+	IF EXISTS (SELECT * FROM #tmpCustIds WHERE CustID IN (1321,67065,1367,233772))
+	BEGIN
+		INSERT INTO #tmpAssociation (CustID1, CustID2) VALUES
+		(1321,67065),(1367,233772);
+	END;
+
+
+
+sp:  CTS_Association_IpSharedLast3Days
+USE [bodb02]
+GO
+DECLARE	@return_value int
+EXEC	@return_value = [dbo].[CTS_Association_IpSharedLast3Days]
+		@ListCustId = N'1320,52007,1366,233767'
+SELECT	'Return Value' = @return_value
+GO
+/**NA Test*/
+	IF EXISTS (SELECT * FROM #tmp_CustID WHERE CustID IN (1320,52007,1366,233767))
+	BEGIN
+	INSERT INTO #tmp_Association (CustID1, CustID2, IP) VALUES
+	(1320,52007,'10.1.1.1'),(1366,233767,'10.1.1.2');
+	END;
+/*
+SELECT * FROM CTS_DataCenter.SystemParameter where ParameterID IN (120, 121, 123);
+select * from CTS_DataCenter.MatchMonitor where MatchID IN (2289511, 2289512, 2289513, 2289514, 2289521, 2289522, 2289523, 2289524, 2289531, 2289532, 2289533, 2289534, 2289520) and Reason = 1; 
+select * from CTS_DataCenter.MatchMonitorDetails where MatchID IN (2289511, 2289512, 2289513, 2289514, 2289521, 2289522, 2289523, 2289524, 2289531, 2289532, 2289533, 2289534, 2289520) and Reason = 1; 
+select * from CTS_DataCenter.MatchMonitorStagingHedgingLive where MatchID IN (2289511, 2289512, 2289513, 2289514, 2289521, 2289522, 2289523, 2289524, 2289531, 2289532, 2289533, 2289534, 2289520);
+select * from CTS_DataCenter.MatchMonitorStagingHedgingNonLive  where MatchID IN (2289511, 2289512, 2289513, 2289514, 2289521, 2289522, 2289523, 2289524, 2289531, 2289532, 2289533, 2289534, 2289520);
+*/

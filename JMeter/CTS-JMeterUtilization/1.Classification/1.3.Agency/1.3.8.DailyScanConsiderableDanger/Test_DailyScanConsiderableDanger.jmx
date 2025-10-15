@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan">
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="Folder" elementType="Argument">
+            <stringProp name="Argument.name">Folder</stringProp>
+            <stringProp name="Argument.value">D:\\CTS-JMeterUtilization\\1.Classification\\1.3.Agency\\DailyScanConsiderableDanger</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="[Var Config] Common">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="SystemID" elementType="Argument">
+            <stringProp name="Argument.name">SystemID</stringProp>
+            <stringProp name="Argument.value">10278938</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="MySQL_Conn_Local" elementType="Argument">
+            <stringProp name="Argument.value">jdbc:mysql://10.18.200.70:3307</stringProp>
+            <stringProp name="Argument.name">MySQL_Conn_Local</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SQLServer_Conn_DBCUST" elementType="Argument">
+            <stringProp name="Argument.name">SQLServer_Conn_DBCUST</stringProp>
+            <stringProp name="Argument.value">jdbc:sqlserver://TESTDBCUST:1433;encrypt=true;trustServerCertificate=true</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="CustIDListInfoPath" elementType="Argument">
+            <stringProp name="Argument.name">CustIDListInfoPath</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.value">${Folder}/CustIDListInfo.txt</stringProp>
+          </elementProp>
+          <elementProp name="ExistingCategoryPath" elementType="Argument">
+            <stringProp name="Argument.name">ExistingCategoryPath</stringProp>
+            <stringProp name="Argument.value">${Folder}/ExistingCategory.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CTS_DataCenter" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">CTSDB</stringProp>
+        <stringProp name="dbUrl">${MySQL_Conn_Local}/CTS_DataCenter?useUnicode=true&amp;characterEncoding=UTF-8</stringProp>
+        <stringProp name="driver">com.mysql.cj.jdbc.Driver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">irena.vn</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CustDB" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">CustDB</stringProp>
+        <stringProp name="dbUrl">${SQLServer_Conn_DBCUST};databaseName=CustDB</stringProp>
+        <stringProp name="driver">com.microsoft.sqlserver.jdbc.SQLServerDriver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">@quality#</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">testteam</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get CustID List Info">
+        <stringProp name="scriptLanguage">groovy</stringProp>
+        <stringProp name="parameters"></stringProp>
+        <stringProp name="filename"></stringProp>
+        <stringProp name="cacheKey">true</stringProp>
+        <stringProp name="script">String readFileToString(String filePath) {
+    String content = &apos;&apos;
+    try {
+        content = new File(filePath).text
+    } catch (Exception e) {
+        log.error(&quot;Error reading file: ${e.message}&quot;)
+    }
+    return content
+}
+
+def filePath = &apos;${CustIDListInfoPath}&apos;
+def custIDList = readFileToString(filePath)
+vars.put(&quot;CustIDList&quot;, custIDList)</stringProp>
+      </JSR223PreProcessor>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="[1. Clean up data]" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">0</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update SystemParameter">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">update SystemParameter 
+set ParameterValue =   0
+where ParameterID IN (192);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: CTSCustomerClassificationAgency">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from CTSCustomerClassificationAgency 
+where CustID IN (${CustIDList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: CTSCustomerClassificationAgency_History" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from CTSCustomerClassificationAgency_History 
+where CustID IN (${CustIDList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: CTSCustomerClassification" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete cc
+from CTSCustomerClassification as cc
+	inner join CTSCustomer as cus on cus.CustID = cc.CustID
+where cus.Recommend IN (${CustIDList}) and cus.RoleID = 1;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: CTSCustomerClassification_History" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete his
+from CTSCustomerClassification_History as his
+	inner join CTSCustomer as cus on cus.CustID = his.CustID
+where cus.Recommend IN (${CustIDList}) and cus.RoleID = 1;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: CustomerConsiderableDangerQueue" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from CustomerConsiderableDangerQueue 
+where CustID IN (${CustIDList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: Customer_ConsiderableDanger" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from Customer_ConsiderableDanger 
+where CustID IN (${CustIDList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: Customer_ConsiderableDanger_Log" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from Customer_ConsiderableDanger_Log 
+where CustID IN (${CustIDList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update table: dbo.CustomerClassSetting_Agent">
+          <stringProp name="dataSource">CustDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from dbo.CustomerClassSetting_Agent
+where CustID IN (${CustIDList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update table: dbo.custinfo" enabled="true">
+          <stringProp name="dataSource">CustDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">update dbo.custinfo 
+set CustomerClass = 0, danger2 = 0
+where CustID IN (${CustIDList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Insert existing category]">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">0</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get Existing Category" enabled="true">
+          <stringProp name="delimiter">,</stringProp>
+          <stringProp name="fileEncoding">UTF-8</stringProp>
+          <stringProp name="filename">${ExistingCategoryPath}</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="variableNames">CustID,RoleID,ParentID,CategoryID,IsCDQueue</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: CTSCustomerClassificationAgency" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO CTSCustomerClassificationAgency (CustID, CTSCustID, SubscriberID, RoleID, ParentID, CategoryID, CreatedDate, CreatedBy, LastScannedDate, LastModifiedDate, LastModifiedBy, Remark, IsFromCTS, IsMarkedDirectly) 
+SELECT  ${CustID}
+	, c.CTSCustID
+	, c.SubscriberID
+	, ${RoleID}
+	, ${ParentID}
+	, ${CategoryID}
+	, CURRENT_TIMESTAMP()
+	, ${SystemID}
+	, CURRENT_DATE()
+	, CURRENT_TIMESTAMP()
+	, ${SystemID}
+	, CASE WHEN ${ParentID} = 130000 THEN &apos;PARatio:60.00&apos; ELSE NULL END
+	, CASE WHEN ${ParentID} IN (101000, 120000, 130000, 20000) THEN 1 ELSE NULL END
+	, CASE WHEN ${ParentID} IN (101000, 120000, 130000, 20000) THEN 1 ELSE NULL END
+from CTSCustomer AS c
+where ${RoleID} = 2 and c.CustID = ${CustID} and c.CustSubID = 0;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: CTSCustomerClassificationAgency_History" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO CTSCustomerClassificationAgency_History (CustID, RoleID, CTSCustID, ParentID, CategoryID, LastModifiedDate, LastModifiedBy, InsertDate, TargetCC, IsDataChanged, ActionType, IsAuto, DWCategoryID, Remark, SourceTypeID, IsFromCTS, IsMarkedDirectly) 
+SELECT  ${CustID}
+	, ${RoleID}
+	, c.CTSCustID
+	, ${ParentID}
+	, ${CategoryID}
+	, CURRENT_TIMESTAMP()
+	, ${SystemID}
+	, CURRENT_DATE()
+	, cc.CustomerClass
+	, 1
+	, 0
+	, 1
+	, ${CategoryID}
+	, CASE WHEN ${ParentID} = 130000 THEN &apos;PARatio:60.00&apos; ELSE NULL END
+	, CASE WHEN ${ParentID} = 130000 THEN 39 WHEN ${ParentID} IN (120000, 20000) THEN 31 WHEN ${ParentID} = 101000 THEN 13 ELSE 3 END
+	, CASE WHEN ${ParentID} IN (101000, 120000, 130000, 20000) THEN 1 ELSE NULL END
+	, CASE WHEN ${ParentID} IN (101000, 120000, 130000, 20000) THEN 1 ELSE NULL END
+from CTSCustomer as c cross join CustomerCategoryAgency as cc 
+where ${RoleID} = 2 and c.CustID = ${CustID} and c.CustSubID = 0 and cc.CategoryID = ${CategoryID};</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: CTSCustomerClassification">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO CTSCustomerClassification (CustID, CTSCustID, SubscriberID, RoleID, ParentID, CategoryID, CreatedDate, CreatedBy, LastScannedDate, LastModifiedDate, LastModifiedBy, IsFromCTS, IsMarkedDirectly) 
+SELECT   ${CustID}
+	, m.CTSCustID
+	, m.SubscriberID
+	, ${RoleID}
+	, ${ParentID}
+	, ${CategoryID}
+	, CURRENT_TIMESTAMP()
+	, ${SystemID}
+	, CURRENT_DATE()
+	, CURRENT_TIMESTAMP()
+	, ${SystemID}
+	, 1
+	, 1
+from CTSCustomer AS m
+where ${RoleID} = 1 and m.CustID = ${CustID};</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: CTSCustomerClassification_History">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO CTSCustomerClassification_History (CustID, CTSCustID, ParentID, CategoryID, LastModifiedDate, LastModifiedBy, InsertDate, TargetCC, IsDataChanged, ActionType, IsAuto, DWCategoryID, SourceTypeID, IsFromCTS, IsMarkedDirectly) 
+SELECT   ${CustID}
+	, m.CTSCustID
+	, ${ParentID}
+	, ${CategoryID}
+	, CURRENT_TIMESTAMP()
+	, ${SystemID}
+	, CURRENT_DATE()
+	, cc.CustomerClass
+	, 1
+	, 0
+	, 1
+	, ${CategoryID}
+	, 31
+	, 1
+	, 1
+from CTSCustomer as m cross join CustomerCategory as cc 
+where ${RoleID} = 1 and m.CustID = ${CustID};</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: CustomerConsiderableDangerQueue (ScanType = 2)">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO CustomerConsiderableDangerQueue (CustID, ScanType, InsertedTime) 
+SELECT   ${CustID}
+	, 2
+	, CURRENT_TIMESTAMP()
+where ${RoleID} = 2 and ${IsCDQueue} = 1;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: CustomerConsiderableDangerQueue (ScanType = 1)">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO CustomerConsiderableDangerQueue (CustID, ScanType, InsertedTime) 
+SELECT   ${CustID}
+	, 1
+	, CURRENT_TIMESTAMP()
+where ${RoleID} = 2 and ${IsCDQueue} = 1;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: Customer_ConsiderableDanger">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO Customer_ConsiderableDanger (CustID, CTSCustID, TotalMember, TotalPAMember, PAMemberRatio, InsertedTime) 
+SELECT   ${CustID}
+	, c.CTSCustID
+	, 10
+	, 6
+	, 60.00
+	, CURRENT_TIMESTAMP()
+from CTSCustomer AS c
+where ${RoleID} = 2 and c.CustID = ${CustID} and c.CustSubID = 0 and ${ParentID} = 130000;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: Customer_ConsiderableDanger_Log">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT IGNORE INTO Customer_ConsiderableDanger_Log (CustID, CTSCustID, TotalMember, TotalPAMember, PAMemberRatio, InsertedTime) 
+SELECT   ${CustID}
+	, c.CTSCustID
+	, 10
+	, 6
+	, 60.00
+	, CURRENT_TIMESTAMP()
+from CTSCustomer AS c
+where ${RoleID} = 2 and c.CustID = ${CustID} and c.CustSubID = 0 and ${ParentID} = 130000;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="[3. Check data after trigger job]" enabled="false">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">0</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </PostThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Check tables">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Select Statement</stringProp>
+          <stringProp name="query">SELECT * FROM CTS_DataCenter.SystemParameter where ParameterID = 192;
+
+select * from CTS_DataCenter.CTSCustomer where custsubid=0 and roleid= 2 and recommend in (
+41876372,43511284,48287061,61661215,61661248,61738568,61738594,66892333,67189752,89201773,89469532,102406619,10400095,19546752,29700094,206735244,206735244,206735247,2903230,4045313,4045313,4045320,7166234,7166236,7166236,7166238,7166267,7166268,7166268,7166283,7166284,7166284,7181125,7181125,7181206,7181215,7181248,7181275,7181286,7181315,7181323,7181330,7181337,7181353,7181355,7181398,7181404,7181428,7181431,7181442,7181442,7181443,7205649,7216684,7216684,7216695,7372346,7372491,7372491,7372526,7372556,7372661,7372661,8072568,8072569,8072569,10400090,10400090,41876576,43511481,48576642,61668042,61710846,61781840,61800038,66916252,67189958,89226492,89470171,102406937,10440763,136856138,29700303,206735245,206735248,2903238,4045333,4045329,7213885,7213887,7213888,7214023,7214025,7214118,7214120,11755919);
+select recommend, custid, ctscustid, username from CTS_DataCenter.CTSCustomer where roleid= 1 and recommend in (35550610,179807104,
+41876372,43511284,48287061,61661215,61661248,61738568,61738594,66892333,67189752,89201773,89469532,102406619,10400095,19546752,29700094,206735244,206735244,206735247,2903230,4045313,4045313,4045320,7166234,7166236,7166236,7166238,7166267,7166268,7166268,7166283,7166284,7166284,7181125,7181125,7181206,7181215,7181248,7181275,7181286,7181315,7181323,7181330,7181337,7181353,7181355,7181398,7181404,7181428,7181431,7181442,7181442,7181443,7205649,7216684,7216684,7216695,7372346,7372491,7372491,7372526,7372556,7372661,7372661,8072568,8072569,8072569,10400090,10400090,41876576,43511481,48576642,61668042,61710846,61781840,61800038,66916252,67189958,89226492,89470171,102406937,10440763,136856138,29700303,206735245,206735248,2903238,4045333,4045329,7213885,7213887,7213888,7214023,7214025,7214118,7214120,11755919);
+select * from CTS_DataCenter.CTSCustomerClassification where custid in (
+41876372,43511284,48287061,61661215,61661248,61738568,61738594,66892333,67189752,89201773,89469532,102406619,10400095,19546752,29700094,206735244,206735244,206735247,2903230,4045313,4045313,4045320,7166234,7166236,7166236,7166238,7166267,7166268,7166268,7166283,7166284,7166284,7181125,7181125,7181206,7181215,7181248,7181275,7181286,7181315,7181323,7181330,7181337,7181353,7181355,7181398,7181404,7181428,7181431,7181442,7181442,7181443,7205649,7216684,7216684,7216695,7372346,7372491,7372491,7372526,7372556,7372661,7372661,8072568,8072569,8072569,10400090,10400090,41876576,43511481,48576642,61668042,61710846,61781840,61800038,66916252,67189958,89226492,89470171,102406937,10440763,136856138,29700303,206735245,206735248,2903238,4045333,4045329,7213885,7213887,7213888,7214023,7214025,7214118,7214120,11755919); 
+
+select * from CTS_DataCenter.CTSCustomerClassificationAgency where custid in (41876372,43511284,48287061,61661215,61661248,61738568,61738594);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency where custid in (66892333,67189752,89201773,89469532,102406619,10400095,19546752);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency where custid in (29700094,206735244,206735244,206735247,2903230,4045313,4045313,4045320,7166234,7166236,7166236,7166238,7166267,7166268,7166268,7166283,7166284,7166284,7181125);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency where custid in (7181206,7181215,7181248,7181275,7181286,7181315,7181323);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency where custid in (7181330,7181337,7181353,7181355,7181398,7181404,7181428);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency where custid in (7181431,7181442,7181442,7181443,7205649,7216684,7216684,7216695,7372346,7372491,7372491,7372526,7372556,7372661,7372661,8072568,8072569,8072569,10400090,10400090);
+
+select * from CTS_DataCenter.CTSCustomerClassificationAgency_History where custid in (41876372,43511284,48287061,61661215,61661248,61738568,61738594);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency_History where custid in (66892333,67189752,89201773,89469532,102406619,10400095,19546752);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency_History where custid in (29700094,206735244,206735244,206735247,2903230,4045313,4045313,4045320,7166234,7166236,7166236,7166238,7166267,7166268,7166268,7166283,7166284,7166284,7181125);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency_History where custid in (7181206,7181215,7181248,7181275,7181286,7181315,7181323);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency_History where custid in (7181330,7181337,7181353,7181355,7181398,7181404,7181428);
+select * from CTS_DataCenter.CTSCustomerClassificationAgency_History where custid in (7181431,7181442,7181442,7181443,7205649,7216684,7216684,7216695,7372346,7372491,7372491,7372526,7372556,7372661,7372661,8072568,8072569,8072569,10400090,10400090);
+
+select * from CustomerConsiderableDangerQueue where custid in (16604398,58473509,
+41876372,43511284,48287061,61661215,61661248,61738568,61738594,66892333,67189752,89201773,89469532,102406619,10400095,19546752,29700094,206735244,206735244,206735247,2903230,4045313,4045313,4045320,7166234,7166236,7166236,7166238,7166267,7166268,7166268,7166283,7166284,7166284,7181125,7181125,7181206,7181215,7181248,7181275,7181286,7181315,7181323,7181330,7181337,7181353,7181355,7181398,7181404,7181428,7181431,7181442,7181442,7181443,7205649,7216684,7216684,7216695,7372346,7372491,7372491,7372526,7372556,7372661,7372661,8072568,8072569,8072569,10400090,10400090,41876576,43511481,48576642,61668042,61710846,61781840,61800038,66916252,67189958,89226492,89470171,102406937,10440763,136856138,29700303,206735245,206735248,2903238,4045333,4045329,7213885,7213887,7213888,7214023,7214025,7214118,7214120,11755919);
+select * from Customer_ConsiderableDanger where custid in (
+41876372,43511284,48287061,61661215,61661248,61738568,61738594,66892333,67189752,89201773,89469532,102406619,10400095,19546752,29700094,206735244,206735244,206735247,2903230,4045313,4045313,4045320,7166234,7166236,7166236,7166238,7166267,7166268,7166268,7166283,7166284,7166284,7181125,7181125,7181206,7181215,7181248,7181275,7181286,7181315,7181323,7181330,7181337,7181353,7181355,7181398,7181404,7181428,7181431,7181442,7181442,7181443,7205649,7216684,7216684,7216695,7372346,7372491,7372491,7372526,7372556,7372661,7372661,8072568,8072569,8072569,10400090,10400090,41876576,43511481,48576642,61668042,61710846,61781840,61800038,66916252,67189958,89226492,89470171,102406937,10440763,136856138,29700303,206735245,206735248,2903238,4045333,4045329,7213885,7213887,7213888,7214023,7214025,7214118,7214120,11755919);
+select * from Customer_ConsiderableDanger_Log where custid in (
+41876372,43511284,48287061,61661215,61661248,61738568,61738594,66892333,67189752,89201773,89469532,102406619,10400095,19546752,29700094,206735244,206735244,206735247,2903230,4045313,4045313,4045320,7166234,7166236,7166236,7166238,7166267,7166268,7166268,7166283,7166284,7166284,7181125,7181125,7181206,7181215,7181248,7181275,7181286,7181315,7181323,7181330,7181337,7181353,7181355,7181398,7181404,7181428,7181431,7181442,7181442,7181443,7205649,7216684,7216684,7216695,7372346,7372491,7372491,7372526,7372556,7372661,7372661,8072568,8072569,8072569,10400090,10400090,41876576,43511481,48576642,61668042,61710846,61781840,61800038,66916252,67189958,89226492,89470171,102406937,10440763,136856138,29700303,206735245,206735248,2903238,4045333,4045329,7213885,7213887,7213888,7214023,7214025,7214118,7214120,11755919);
+</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Result" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

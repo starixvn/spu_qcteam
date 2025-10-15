@@ -1,0 +1,91 @@
+No,SportType,LeagueID,HomeID,AwayID,Range,ParentNo,ChildType,,,
+101,1,3,5,18,0,0,0,tomorrow,Soccer,
+102,1,4,6,19,1,0,0,today,Soccer,
+103,1,5,7,20,2,0,0,yesterday,Soccer,
+104,1,6,8,21,0,0,0,tomorrow,Soccer,
+105,1,7,9,22,1,0,0,today,Soccer,
+106,1,8,10,23,2,0,0,yesterday,Soccer,
+107,1,10,11,24,0,0,0,tomorrow,Soccer,
+108,1,11,12,25,1,0,0,today,Soccer,
+109,1,12,13,27,2,0,0,yesterday,Soccer,
+110,1,13,15,28,0,0,0,tomorrow,Soccer,
+201,2,221,111,1971,0,0,0,tomorrow,Basketball,
+202,2,243,138,1972,1,0,0,today,Basketball,
+203,2,245,314,1973,2,0,0,yesterday,Basketball,
+204,2,285,566,1974,0,0,0,tomorrow,Basketball,
+205,2,286,921,1975,1,0,0,today,Basketball,
+206,2,287,1661,1977,2,0,0,yesterday,Basketball,
+207,2,343,1967,1978,0,0,0,tomorrow,Basketball,
+208,2,410,1968,1979,1,0,0,today,Basketball,
+209,2,411,1969,1980,2,0,0,yesterday,Basketball,
+210,2,433,1970,1983,0,0,0,tomorrow,Basketball,
+301,9,968,12690,12786,0,0,0,tomorrow,Badminton,
+302,9,996,12691,12787,1,0,0,today,Badminton,
+303,9,998,12692,12803,2,0,0,yesterday,Badminton,
+304,9,999,12693,12830,0,0,0,tomorrow,Badminton,
+305,9,1002,12697,12833,1,0,0,today,Badminton,
+306,9,1003,12699,12834,2,0,0,yesterday,Badminton,
+307,9,1149,12700,12836,0,0,0,tomorrow,Badminton,
+308,9,1151,12701,12837,1,0,0,today,Badminton,
+309,9,1476,12749,12839,2,0,0,yesterday,Badminton,
+310,9,1883,12750,12840,0,0,0,tomorrow,Badminton,
+401,50,53148,1826,93863,0,0,0,tomorrow,Cricket ,
+402,50,53149,11954,98947,1,0,0,today,Cricket ,
+403,50,53150,16756,108639,2,0,0,yesterday,Cricket ,
+404,50,53151,16776,108640,0,0,0,tomorrow,Cricket ,
+405,50,53152,20439,131232,1,0,0,today,Cricket ,
+406,50,53153,22400,155155,2,0,0,yesterday,Cricket ,
+407,50,53154,68394,161855,0,0,0,tomorrow,Cricket ,
+408,50,53155,86624,179305,1,0,0,today,Cricket ,
+409,50,53156,92074,184360,2,0,0,yesterday,Cricket ,
+410,50,53157,93424,196793,0,0,0,tomorrow,Cricket ,
+501,43,43104,3100,197070,0,0,0,tomorrow,E-Sport,
+502,43,43105,23208,206013,1,0,0,today,E-Sport,
+503,43,43106,41774,224773,2,0,0,yesterday,E-Sport,
+504,43,43108,86627,239894,0,0,0,tomorrow,E-Sport,
+505,43,43112,149104,260073,1,0,0,today,E-Sport,
+506,43,43113,149105,260074,2,0,0,yesterday,E-Sport,
+507,43,43116,161856,260075,0,0,0,tomorrow,E-Sport,
+508,43,43117,167172,261194,1,0,0,today,E-Sport,
+509,43,43118,167173,261195,2,0,0,yesterday,E-Sport,
+510,43,43124,197069,261196,0,0,0,tomorrow,E-Sport,
+601,18,102544,14757,14758,0,0,0,tomorrow,Table Tennis,Main
+602,18,102545,14759,14760,1,0,0,today,Table Tennis,Main
+603,18,120671,14761,14762,2,0,0,yesterday,Table Tennis,Main
+604,18,122348,14763,14764,0,0,0,last2d,Table Tennis,Main
+605,18,125180,14765,14766,1,0,0,tomorrow,Table Tennis,Main
+606,18,112455,14767,14768,2,701,11,tomorrow,Table Tennis,Points Handicap
+607,18,112231,222042,222055,0,701,12,today,Table Tennis,First Set Winner
+608,18,112457,222046,222057,1,701,15,yesterday,Table Tennis,Third Set Winner
+609,18,112461,14769,14771,2,702,11,last2d,Table Tennis,Points Handicap
+610,18,112463,221735,221739,0,702,14,tomorrow,Table Tennis,Second Set Winner
+611,18,112465,221737,221741,1,702,16,today,Table Tennis,Fourth Set Winner
+612,18,120673,14772,14773,2,703,11,yesterday,Table Tennis,Points Handicap
+613,18,120676,222066,222072,0,703,15,last2d,Table Tennis,Third Set Winner
+614,18,120678,221762,221764,1,703,17,tomorrow,Table Tennis,Fifth Set Winner
+615,18,122382,14774,14775,2,704,11,today,Table Tennis,Points Handicap
+616,18,122386,221745,221749,0,704,16,yesterday,Table Tennis,Fourth Set Winner
+617,18,122388,221763,221765,1,704,18,last2d,Table Tennis,Sixth Set Winner
+618,18,125184,14776,14777,2,705,11,tomorrow,Table Tennis,Points Handicap
+619,18,125189,221766,221776,0,705,17,today,Table Tennis,Fifth Set Winner
+620,18,125215,770146,770153,1,705,19,yesterday,Table Tennis,Seventh Set Winner
+701,6,696,10412,27336,0,0,0,tomorrow,Volleyball,
+702,6,697,15874,27338,1,0,0,today,Volleyball,
+703,6,1264,23880,27340,2,0,0,yesterday,Volleyball,
+704,6,1265,23881,27725,0,0,0,last2d,Volleyball,
+705,6,1274,23892,27728,1,0,0,tomorrow,Volleyball,
+706,6,1291,23974,27732,2,0,0,today,Volleyball,
+707,6,1336,24125,27735,0,0,0,yesterday,Volleyball,
+708,6,1462,24337,27738,1,0,0,last2d,Volleyball,
+709,6,1522,25319,30313,2,0,0,tomorrow,Volleyball,
+710,6,1580,25351,30316,0,0,0,today,Volleyball,
+801,5,706,7989,8002,0,0,0,tomorrow,Tennis,
+802,5,762,7991,8003,1,0,0,today,Tennis,
+803,5,764,7992,8005,2,0,0,yesterday,Tennis,
+804,5,791,7993,8006,0,0,0,last2d,Tennis,
+805,5,816,7994,8007,1,0,0,tomorrow,Tennis,
+806,5,836,7995,8008,2,0,0,today,Tennis,
+807,5,838,7997,8009,0,0,0,yesterday,Tennis,
+808,5,855,7998,8011,1,0,0,last2d,Tennis,
+809,5,856,7999,8012,2,0,0,tomorrow,Tennis,
+810,5,867,8001,8013,0,0,0,today,Tennis,

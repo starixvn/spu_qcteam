@@ -1,0 +1,9 @@
+No,SportType,LeagueID,HomeID,AwayID,Range,ParentNo,ChildType,,
+101,1,3,5,28,1,0,0,today,Soccer
+201,2,285,111,1984,1,0,0,today,Basketball
+301,9,4455,12690,12786,0,0,0,tomorrow,Badminton
+302,9,4456,12691,12787,1,0,0,today,Badminton
+401,50,53148,1826,93863,0,0,0,tomorrow,Cricket 
+501,43,46549,3100,197070,0,0,0,tomorrow,E-Sport
+701,6,696,10412,27336,0,0,0,tomorrow,Volleyball
+801,5,706,7989,8002,0,0,0,tomorrow,Tennis

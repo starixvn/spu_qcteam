@@ -1,0 +1,49 @@
+CustID,ParentID,CategoryID,CustomerClass,,VR2Model,CTS,MainDB,ResetBalance,Web
+1275,40000,40100,200,Case 1: 40100 ,ok,ok,ok,1 row,No action
+1280,40000,40100,200,Case 2: 40300,ok,ok,ok,1 row,Normal
+1282,40000,40100,200,Case 3: 40700,ok,ok,ok,1 row,Normal (Inactive)
+1287,40000,40100,200,Case 4: 20200 (TVS),ok,ok,ok,1 row,HED
+1296,40000,40100,200,Case 5: 21800 (AI),ok,ok,ok,1 row,Bot Login
+1299,40000,40100,200,Case 6: 30300 (TW),ok,ok,ok,1 row,Initial Group Betting
+1302,40000,40700,901,Case 1: 40700,ok,ok,ok,1 row,No action
+1305,40000,40700,901,Case 2: 40701,ok,ok,ok,1 row,Smart (Inactive)
+1306,40000,40700,901,Case 3: 40100,ok,ok,ok,1 row,New
+1307,40000,40700,901,Case 4: 20200 (TVS),ok,ok,ok,1 row,HED
+1309,40000,40700,901,Case 5: 21800 (AI),ok,ok,ok,1 row,Bot Login
+1310,40000,40700,901,Case 6: 30300 (TW),ok,ok,ok,1 row,Initial Group Betting
+1312,40000,40701,902,Case 1: 40701,ok,ok,ok,1 row,No action
+1313,40000,40701,902,Case 2: 40700,ok,ok,ok,1 row,Normal (inactive)
+1314,40000,40701,902,Case 3: 40102,ok,ok,ok,1 row,New linked Group
+1319,40000,40701,902,Case 4: 20200 (TVS),ok,ok,ok,1 row,HED
+1320,40000,40701,902,Case 5: 21800 (AI),ok,ok,ok,1 row,Bot Login
+1322,40000,40701,902,Case 6: 30300 (TW),ok,ok,ok,1 row,Initial Group Betting
+1330,20000,20400,303,Case 1: 20400,ok,ok,ok,1 row,No action
+1331,20000,20400,303,Case 2: 25400,ok,ok,ok,1 row,FG (losing)
+1335,20000,20400,303,Case 3: 20200 (TVS),ok,ok,ok,1 row,HED
+1337,20000,20400,303,Case 4: 21800 (AI),ok,ok,ok,1 row,Bot Login
+1338,20000,20400,303,Case 5: 30300 (TW),ok,ok,ok,1 row,Initial Group Betting
+1339,20000,25100,3001,Case 1: 25100,ok,ok,ok,1 row,No action
+1340,20000,25100,3001,Case 2: 20100,ok,ok,ok,1 row,GB
+1344,20000,25100,3001,Case 3: 25200 (TVS),ok,ok,ok,1 row,HED (losing)
+1345,20000,25100,3001,Case 4: 26800 (AI),ok,ok,ok,1 row,Bot Login (losing)
+1348,20000,25100,3001,Case 5: 35300 (TW),ok,ok,ok,1 row,Initial Group Betting (losing)
+1350,20000,30100,2800,Case 1: 30100,ok,ok,ok,1 row,No action
+1352,20000,30100,2800,Case 2: 35100,ok,ok,ok,1 row,Early Warning (losing)
+1353,20000,30100,2800,Case 3: 20200 (TVS),ok,ok,ok,1 row,HED
+1355,20000,30100,2800,Case 4: 21800 (AI),ok,ok,ok,1 row,Bot Login
+1356,20000,30100,2800,Case 5: 30300 (TW),ok,ok,ok,1 row,Initial Group Betting
+1358,20000,35200,2701,Case 1: 30200,ok,ok,ok,1 row,No action
+1360,20000,35200,2701,Case 2: 35200,ok,ok,ok,1 row,Initial Smart (losing)
+1362,20000,35200,2701,Case 3: 25200 (TVS),ok,ok,ok,1 row,HED (losing)
+1363,20000,35200,2701,Case 4: 26800 (AI),ok,ok,ok,1 row,Bot Login (losing)
+1364,20000,35200,2701,Case 5: 35300 (TW),ok,ok,ok,1 row,Initial Group Betting (losing)
+1366,20000,21100,300,Case 1: 21100,ok,ok,ok,1 row,No action
+1367,20000,21100,300,Case 2: 26100,ok,ok,ok,1 row,Robot (losing)
+1371,20000,21100,300,Case 3: 20200 (TVS),ok,ok,ok,1 row,HED
+1374,20000,21100,300,Case 4: 21800 (AI),ok,ok,ok,1 row,Bot Login
+1375,20000,21100,300,Case 5: 30300 (TW),ok,ok,ok,1 row,Initial Group Betting
+1378,20000,26200,3200,Case 1: 26200,ok,ok,ok,1 row,No action
+1380,20000,26200,3200,Case 2: 21200,ok,ok,ok,1 row,Odds Crawler
+1383,20000,26200,3200,Case 3: 25200 (TVS),ok,ok,ok,1 row,HED (losing)
+1384,20000,26200,3200,Case 4: 26800 (AI),ok,ok,ok,1 row,Bot Login (losing)
+1386,20000,26200,3200,Case 5: 35300 (TW),ok,ok,ok,1 row,Initial Group Betting (losing)

@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan">
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="ProjectFolder" elementType="Argument">
+            <stringProp name="Argument.name">ProjectFolder</stringProp>
+            <stringProp name="Argument.value">D:\\CTS_LoadTest</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath">D:\CTS_LoadTest\DBDriver\mysql-connector-j-8.3.0.jar</stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="[Var Config] Common">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="RowNum" elementType="Argument">
+            <stringProp name="Argument.name">RowNum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="LoopNum" elementType="Argument">
+            <stringProp name="Argument.name">LoopNum</stringProp>
+            <stringProp name="Argument.value">5</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="MySQL_Conn_Local" elementType="Argument">
+            <stringProp name="Argument.value">jdbc:mysql://10.18.200.70:3307</stringProp>
+            <stringProp name="Argument.name">MySQL_Conn_Local</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="CurrentDateTime" elementType="Argument">
+            <stringProp name="Argument.name">CurrentDateTime</stringProp>
+            <stringProp name="Argument.value">${__groovy( import java.text.SimpleDateFormat; import java.util.TimeZone; def dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;); dateFormat.setTimeZone(TimeZone.getTimeZone(&quot;GMT-4&quot;)); return dateFormat.format(new Date()); )}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="DataCate" elementType="Argument">
+            <stringProp name="Argument.name">DataCate</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}\\TestInitialData_1.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="DataHistory" elementType="Argument">
+            <stringProp name="Argument.name">DataHistory</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}\\TestInitialData_2.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="DataArchive" elementType="Argument">
+            <stringProp name="Argument.name">DataArchive</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}\\TestInitialData_3.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CTS_DataCenter" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">600000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">CTSDB</stringProp>
+        <stringProp name="dbUrl">${MySQL_Conn_Local}/CTS_DataCenter</stringProp>
+        <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">100000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">600000</stringProp>
+        <stringProp name="username">irena.vn</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="[1. Clean data]">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">100</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: CTSCustomerClassification" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from CTSCustomerClassification 
+where custid IN (1051697,3687509,3689373,3691244,3691760,3694852,3695428,3698112,3699893,3700071,3700427,3703277,3704849,3706260,3708660,3709827,3710387,3710950,3711191,3712445,3713062,3713096,3713504,3714160,3714251,3715515,3715591,3715614,3715691,3717523,3719844,3719985,3720020,3720246,3720987,3721796,3723291,3723643,3723897,3724351,3724892,3725544,3726271,3726511,3726932,3727813,3727972,3728596,3729156,3730538,3730972,3734388,3734995,3735139,3735715,3739773,3740111,3740780,3740961,3741917,3743036,3745303,3746378,3746572,3747742,3748277,3748554,3748816,3749069,3751004,3751014,3752146,3752182,3752751,3754079,3754452,3754494,3754691,3755615,3757851,3758088,3759735,3759797,3760024,3762206,3762294,3762602,3763613,3763794,3765105,3766907,3768192,3768720,3769008,3769201,3769774,3770540,3770683,3771725,3773835,3778704,3778734,3779916,3780326,3781132,3781225,3781885,3782868,3783006,3783742,3784101,3784934,3785365,3785562,3787480,3787485,3787573,3787696,3788057,3789217,3789424,3789894,3792837,3793393,3794279,3794785,3795575,3800775,3801897,3803609,3804061,3805989,3806044,3806616,3806786,3807169,3807742,3809222,3809526,3809528,3810262,3810320,3811056,3812417,3813366,3814325,3814564,3815384,3816284,3816397,3816659,3816717,3816745,3816999,3817130,3817851,3820659,3820736,3823647,3824153,3824794,3824928,3827980,3828709,3829076,3829114,3829593,3829743,3831175,3832187,3832655,3832820,3833243,3833945,3834212,3835164,3835834,3835991,3837313,3837753,3837984,3839149,3839225,3839328,3842411,3842637,3847492,3848908,3848922,3849668,3851335,3853308,3853794,3853847,3854313,3855022,3855326,3856604,3856953,3857444,3858547,3859500,3863465,3864834,3867490,3867665,3869173,3869207,3869482,3870622,3871527,3871684,3872127,3872481,3872650,3873945,3874305,3875075,3876650,3877964,3878644,3878861,3886264,3891543,3891674,3896521,3896567,3899824,3901576,3903902,3904020,3904867,3906741,3907465,3908566,3908846,3910198,3910628,3912335,3912341,3913385,3913974,3914091,3914206,3914487,3914897,3915016,3915793,3915836,3917865,3918865,3920547,3922198,3922618,3922699,3924506,3925533,3925902,3927490,3928636,3933099,3933660,3934483,3934600,3936729,3937661,3938472,3940910,3941480,3942148,3942840,3943122,3944348,3945029,3945530,3945831,3946295,3946457,3946520,3948994,3952953,3957869,3965632,3966054,3967599,3968767,3969910,3970478,3972245,3973099,3974583,3976128,3978806,3979427,3979504,3980110,3980581,3981383,3982931,3983950,3985839,3986700,3987496,3987985,3988195,3988684,3988740,3989610,3989622,3990536,3991702,3991873,3992152,3992969,3993300,3993348,3997712,4000069,4001761,4001978,4002503,4002532,4002884,4003556,4004305,4004635,4007265,10516971,33038814,81181730)
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: CTSCustomerClassification_History" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from CTSCustomerClassification_History 
+where custid IN (1051697,3687509,3689373,3691244,3691760,3694852,3695428,3698112,3699893,3700071,3700427,3703277,3704849,3706260,3708660,3709827,3710387,3710950,3711191,3712445,3713062,3713096,3713504,3714160,3714251,3715515,3715591,3715614,3715691,3717523,3719844,3719985,3720020,3720246,3720987,3721796,3723291,3723643,3723897,3724351,3724892,3725544,3726271,3726511,3726932,3727813,3727972,3728596,3729156,3730538,3730972,3734388,3734995,3735139,3735715,3739773,3740111,3740780,3740961,3741917,3743036,3745303,3746378,3746572,3747742,3748277,3748554,3748816,3749069,3751004,3751014,3752146,3752182,3752751,3754079,3754452,3754494,3754691,3755615,3757851,3758088,3759735,3759797,3760024,3762206,3762294,3762602,3763613,3763794,3765105,3766907,3768192,3768720,3769008,3769201,3769774,3770540,3770683,3771725,3773835,3778704,3778734,3779916,3780326,3781132,3781225,3781885,3782868,3783006,3783742,3784101,3784934,3785365,3785562,3787480,3787485,3787573,3787696,3788057,3789217,3789424,3789894,3792837,3793393,3794279,3794785,3795575,3800775,3801897,3803609,3804061,3805989,3806044,3806616,3806786,3807169,3807742,3809222,3809526,3809528,3810262,3810320,3811056,3812417,3813366,3814325,3814564,3815384,3816284,3816397,3816659,3816717,3816745,3816999,3817130,3817851,3820659,3820736,3823647,3824153,3824794,3824928,3827980,3828709,3829076,3829114,3829593,3829743,3831175,3832187,3832655,3832820,3833243,3833945,3834212,3835164,3835834,3835991,3837313,3837753,3837984,3839149,3839225,3839328,3842411,3842637,3847492,3848908,3848922,3849668,3851335,3853308,3853794,3853847,3854313,3855022,3855326,3856604,3856953,3857444,3858547,3859500,3863465,3864834,3867490,3867665,3869173,3869207,3869482,3870622,3871527,3871684,3872127,3872481,3872650,3873945,3874305,3875075,3876650,3877964,3878644,3878861,3886264,3891543,3891674,3896521,3896567,3899824,3901576,3903902,3904020,3904867,3906741,3907465,3908566,3908846,3910198,3910628,3912335,3912341,3913385,3913974,3914091,3914206,3914487,3914897,3915016,3915793,3915836,3917865,3918865,3920547,3922198,3922618,3922699,3924506,3925533,3925902,3927490,3928636,3933099,3933660,3934483,3934600,3936729,3937661,3938472,3940910,3941480,3942148,3942840,3943122,3944348,3945029,3945530,3945831,3946295,3946457,3946520,3948994,3952953,3957869,3965632,3966054,3967599,3968767,3969910,3970478,3972245,3973099,3974583,3976128,3978806,3979427,3979504,3980110,3980581,3981383,3982931,3983950,3985839,3986700,3987496,3987985,3988195,3988684,3988740,3989610,3989622,3990536,3991702,3991873,3992152,3992969,3993300,3993348,3997712,4000069,4001761,4001978,4002503,4002532,4002884,4003556,4004305,4004635,4007265,10516971,33038814,81181730)
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: ArchiveCustomer_CTSCustomer" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from ArchiveCustomer_CTSCustomer 
+where custid IN (1051697,3687509,3689373,3691244,3691760,3694852,3695428,3698112,3699893,3700071,3700427,3703277,3704849,3706260,3708660,3709827,3710387,3710950,3711191,3712445,3713062,3713096,3713504,3714160,3714251,3715515,3715591,3715614,3715691,3717523,3719844,3719985,3720020,3720246,3720987,3721796,3723291,3723643,3723897,3724351,3724892,3725544,3726271,3726511,3726932,3727813,3727972,3728596,3729156,3730538,3730972,3734388,3734995,3735139,3735715,3739773,3740111,3740780,3740961,3741917,3743036,3745303,3746378,3746572,3747742,3748277,3748554,3748816,3749069,3751004,3751014,3752146,3752182,3752751,3754079,3754452,3754494,3754691,3755615,3757851,3758088,3759735,3759797,3760024,3762206,3762294,3762602,3763613,3763794,3765105,3766907,3768192,3768720,3769008,3769201,3769774,3770540,3770683,3771725,3773835,3778704,3778734,3779916,3780326,3781132,3781225,3781885,3782868,3783006,3783742,3784101,3784934,3785365,3785562,3787480,3787485,3787573,3787696,3788057,3789217,3789424,3789894,3792837,3793393,3794279,3794785,3795575,3800775,3801897,3803609,3804061,3805989,3806044,3806616,3806786,3807169,3807742,3809222,3809526,3809528,3810262,3810320,3811056,3812417,3813366,3814325,3814564,3815384,3816284,3816397,3816659,3816717,3816745,3816999,3817130,3817851,3820659,3820736,3823647,3824153,3824794,3824928,3827980,3828709,3829076,3829114,3829593,3829743,3831175,3832187,3832655,3832820,3833243,3833945,3834212,3835164,3835834,3835991,3837313,3837753,3837984,3839149,3839225,3839328,3842411,3842637,3847492,3848908,3848922,3849668,3851335,3853308,3853794,3853847,3854313,3855022,3855326,3856604,3856953,3857444,3858547,3859500,3863465,3864834,3867490,3867665,3869173,3869207,3869482,3870622,3871527,3871684,3872127,3872481,3872650,3873945,3874305,3875075,3876650,3877964,3878644,3878861,3886264,3891543,3891674,3896521,3896567,3899824,3901576,3903902,3904020,3904867,3906741,3907465,3908566,3908846,3910198,3910628,3912335,3912341,3913385,3913974,3914091,3914206,3914487,3914897,3915016,3915793,3915836,3917865,3918865,3920547,3922198,3922618,3922699,3924506,3925533,3925902,3927490,3928636,3933099,3933660,3934483,3934600,3936729,3937661,3938472,3940910,3941480,3942148,3942840,3943122,3944348,3945029,3945530,3945831,3946295,3946457,3946520,3948994,3952953,3957869,3965632,3966054,3967599,3968767,3969910,3970478,3972245,3973099,3974583,3976128,3978806,3979427,3979504,3980110,3980581,3981383,3982931,3983950,3985839,3986700,3987496,3987985,3988195,3988684,3988740,3989610,3989622,3990536,3991702,3991873,3992152,3992969,3993300,3993348,3997712,4000069,4001761,4001978,4002503,4002532,4002884,4003556,4004305,4004635,4007265,10516971,33038814,81181730)
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Prepare existing cate]" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">300</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get data from file" enabled="true">
+          <stringProp name="filename">${DataCate}</stringProp>
+          <stringProp name="fileEncoding">utf-8</stringProp>
+          <stringProp name="variableNames">Category,CustID,IsAffectToDownline,SportGroupID,CategoryID,Remark,CreatedDate,CreatedBy,LastModifiedDate,LastModifiedBy,LastScannedDate,IsFromTVS,IsFromTW,IsFromCTS,IsDirect,TVSRequestID,IsFromAI,IsFromImperva,IsParlay,SportType,IssueTypeID,ParentID_new,CategoryID_new,CreatedDate_new,SportGroupID_bk,CategoryID_bk,CreatedDate_bk,LastScannedDate_new,LastScannedDate_bk</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert data tbl: CTSCustomerClassification" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT ignore INTO CTSCustomerClassification (CustID,CTSCustID,SubscriberID,RoleID,IsAffectToDownline,SportGroupID,CategoryID,Remark,CreatedDate,CreatedBy,LastModifiedDate,LastModifiedBy,LastScannedDate,IsFromTVS,IsFromTW,IsFromCTS,IsDirect,TVSRequestID,IsFromAI,IsFromImperva,IsParlay,SportType,IssueTypeID,ParentID_new,CategoryID_new,CreatedDate_new,SportGroupID_bk,CategoryID_bk,CreatedDate_bk,LastScannedDate_new,LastScannedDate_bk)
+SELECT c.CustID,
+	c.CTSCustID,
+	c.SubscriberID,
+	c.RoleID,
+	${IsAffectToDownline},
+	${SportGroupID},
+	${CategoryID},
+	&apos;${Remark}&apos;,
+	&apos;${CreatedDate}&apos;,
+	${CreatedBy},
+	&apos;${LastModifiedDate}&apos;,
+	${LastModifiedBy},
+	&apos;${LastScannedDate}&apos;,
+	${IsFromTVS},
+	${IsFromTW},
+	${IsFromCTS},
+	${IsDirect},
+	${TVSRequestID},
+	${IsFromAI},
+	${IsFromImperva},
+	${IsParlay},
+	${SportType},
+	${IssueTypeID},
+	${ParentID_new},
+	${CategoryID_new},
+	&apos;${CreatedDate_new}&apos;,
+	${SportGroupID_bk},
+	${CategoryID_bk},
+	&apos;${CreatedDate_bk}&apos;,
+	&apos;${LastScannedDate_new}&apos;,
+	&apos;${LastScannedDate_bk}&apos;
+from CTSCustomer as c
+where c.CustID = ${CustID}
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[3. Prepare existing history]" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">300</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get data from file" enabled="true">
+          <stringProp name="filename">${DataHistory}</stringProp>
+          <stringProp name="fileEncoding">utf-8</stringProp>
+          <stringProp name="variableNames">Category,CustID,SportGroupID,CategoryID,TurnoverRM,WinlossRM,BetCount,ActiveDays,LastXDaysMargin,ProbationPeriodWinloss,TargetCC,SourceTypeID,FromCategoryID,ToCategoryID,IsAppliedCC,IsDataChanged,ActionType,IsAuto,LastModifiedDate,LastModifiedBy,InsertDate,TaggingType,TargetDangerLevel1,IsAppliedDangerLevel1,TWGroupBettingRate,TWTicketRejectRate,TWDesktopUsageRate,TWBetCount,RobotCounter,Remark,IsDirect,TVSRequestID,IsFromTVS,IsFromTW,IsFromCTS,IsFromAI,IsFromImperva,IsParlay,SportType,IssueTypeID,PerformanceTime</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert data tbl: CTSCustomerClassification_History">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT ignore INTO CTSCustomerClassification_History (CustID,CTSCustID,SportGroupID,CategoryID,TurnoverRM,WinlossRM,BetCount,ActiveDays,LastXDaysMargin,ProbationPeriodWinloss,TargetCC,SourceTypeID,FromCategoryID,ToCategoryID,IsAppliedCC,IsDataChanged,ActionType,IsAuto,LastModifiedDate,LastModifiedBy,InsertDate,TaggingType,TargetDangerLevel1,IsAppliedDangerLevel1,TWGroupBettingRate,TWTicketRejectRate,TWDesktopUsageRate,TWBetCount,RobotCounter,Remark,IsDirect,TVSRequestID,IsFromTVS,IsFromTW,IsFromCTS,IsFromAI,IsFromImperva,IsParlay,SportType,IssueTypeID,PerformanceTime,First5TWGBTicketCount,ParentID_new,CategoryID_new,OldCategoryID_new,DWCategoryID_new,SportGroupID_bk,CategoryID_bk,FromCategoryID_bk,ToCategoryID_bk)
+SELECT c.CustID,
+	c.CTSCustID,
+	${SportGroupID},
+	${CategoryID},
+	${TurnoverRM},
+	${WinlossRM},
+	${BetCount},
+	${ActiveDays},
+	${LastXDaysMargin},
+	${ProbationPeriodWinloss},
+	${TargetCC},
+	${SourceTypeID},
+	${FromCategoryID},
+	${ToCategoryID},
+	${IsAppliedCC},
+	${IsDataChanged},
+	${ActionType},
+	${IsAuto},
+	&apos;${LastModifiedDate}&apos;,
+	${LastModifiedBy},
+	&apos;${InsertDate}&apos;,
+	${TaggingType},
+	${TargetDangerLevel1},
+	${IsAppliedDangerLevel1},
+	${TWGroupBettingRate},
+	${TWTicketRejectRate},
+	${TWDesktopUsageRate},
+	${TWBetCount},
+	${RobotCounter},
+	&apos;${Remark}&apos;,
+	${IsDirect},
+	${TVSRequestID},
+	${IsFromTVS},
+	${IsFromTW},
+	${IsFromCTS},
+	${IsFromAI},
+	${IsFromImperva},
+	${IsParlay},
+	${SportType},
+	${IssueTypeID},
+	&apos;${PerformanceTime}&apos;,
+	null,null,null,null,null,null,null,null,null
+from CTSCustomer as c
+where c.CustID = ${CustID}
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[4. Prepare existing archive]" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">300</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get data from file" enabled="true">
+          <stringProp name="filename">${DataArchive}</stringProp>
+          <stringProp name="fileEncoding">utf-8</stringProp>
+          <stringProp name="variableNames">ArchivedDate,CustID,ParentID,CategoryID,InsertTime,IsReactivated,ReactivateDate,ProcessedDate,CategoryID_new,CategoryID_bk</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert data tbl: ArchiveCustomer_CTSCustomer" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT ignore INTO ArchiveCustomer_CTSCustomer (CTSCustID,SubscriberID,RoleID,CustSubID,UserName,UserName2,CustID,ArchivedDate,ParentID,CategoryID,InsertTime,IsReactivated,ReactivateDate,ProcessedDate,CategoryID_new,CategoryID_bk)
+SELECT 
+c.CTSCustID,
+c.SubscriberID,
+c.RoleID,
+c.CustSubID,
+c.UserName,
+c.UserName2,
+c.CustID,
+&apos;${ArchivedDate}&apos;,
+${ParentID},
+${CategoryID},
+&apos;${InsertTime}&apos;,
+${IsReactivated},
+&apos;${ReactivateDate}&apos;,
+&apos;${ProcessedDate}&apos;,
+${CategoryID_new},
+${CategoryID_bk}
+from CTSCustomer as c
+where c.CustID = ${CustID}
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

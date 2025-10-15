@@ -1,0 +1,111 @@
+No,SportType,LeagueID,HomeID,AwayID,Range,,
+101,1,3,5,28,0,tomorrow,Soccer & Parlay Soccer
+102,1,4,6,29,1,today,Soccer & Parlay Soccer
+103,1,5,7,30,2,yesterday,Soccer & Parlay Soccer
+104,1,6,8,31,3,last6d,Soccer & Parlay Soccer
+105,1,7,9,32,4,last7d,Soccer & Parlay Soccer
+106,1,8,10,33,5,last8d,Soccer & Parlay Soccer
+107,1,10,11,34,0,tomorrow,Soccer & Parlay Soccer
+108,1,11,12,35,1,today,Soccer & Parlay Soccer
+109,1,12,13,36,2,yesterday,Soccer & Parlay Soccer
+110,1,13,15,38,3,last6d,Soccer & Parlay Soccer
+111,1,16,18,39,4,last7d,Soccer & Parlay Soccer
+112,1,19,19,40,5,last8d,Soccer & Parlay Soccer
+113,1,20,20,41,0,tomorrow,Soccer & Parlay Soccer
+114,1,21,21,42,1,today,Soccer & Parlay Soccer
+115,1,22,22,43,2,yesterday,Soccer & Parlay Soccer
+116,1,23,23,44,3,last6d,Soccer & Parlay Soccer
+117,1,25,24,45,4,last7d,Soccer & Parlay Soccer
+118,1,26,25,46,5,last8d,Soccer & Parlay Soccer
+119,1,27,26,49,0,tomorrow,Soccer & Parlay Soccer
+120,1,28,27,50,1,today,Soccer & Parlay Soccer
+121,1,89482,51,61,2,yesterday,Saba Soccer
+122,1,89574,52,62,3,last6d,Saba Soccer
+123,1,89575,53,63,4,last7d,Saba Soccer
+124,1,89576,54,64,5,last8d,Saba Soccer
+125,1,89577,55,65,0,tomorrow,Saba Soccer
+126,1,89578,56,66,1,today,Saba Soccer
+127,1,89579,57,67,2,yesterday,Saba Soccer
+128,1,89580,58,68,3,last6d,Saba Soccer
+129,1,89581,59,69,4,last7d,Saba Soccer
+130,1,89582,60,70,5,last8d,Saba Soccer
+201,2,245,111,1984,0,tomorrow,Basketball & Parlay Basketball
+202,2,285,138,1985,1,today,Basketball & Parlay Basketball
+203,2,286,314,1986,2,yesterday,Basketball & Parlay Basketball
+204,2,287,566,1987,3,last6d,Basketball & Parlay Basketball
+205,2,343,921,1988,4,last7d,Basketball & Parlay Basketball
+206,2,410,1661,1989,5,last8d,Basketball & Parlay Basketball
+207,2,411,1967,1990,0,tomorrow,Basketball & Parlay Basketball
+208,2,434,1968,1992,1,today,Basketball & Parlay Basketball
+209,2,503,1969,1993,2,yesterday,Basketball & Parlay Basketball
+210,2,504,1970,1994,3,last6d,Basketball & Parlay Basketball
+211,2,505,1971,1995,4,last7d,Basketball & Parlay Basketball
+212,2,506,1972,1996,5,last8d,Basketball & Parlay Basketball
+213,2,573,1973,1997,0,tomorrow,Basketball & Parlay Basketball
+214,2,574,1974,1998,1,today,Basketball & Parlay Basketball
+215,2,575,1975,2239,2,yesterday,Basketball & Parlay Basketball
+216,2,576,1977,2240,3,last6d,Basketball & Parlay Basketball
+217,2,577,1978,2432,4,last7d,Basketball & Parlay Basketball
+218,2,584,1979,2433,5,last8d,Basketball & Parlay Basketball
+219,2,585,1980,2463,0,tomorrow,Basketball & Parlay Basketball
+220,2,601,1983,2465,1,today,Basketball & Parlay Basketball
+221,2,89559,2468,2481,2,yesterday,Saba Basketball
+222,2,89560,2469,2482,3,last6d,Saba Basketball
+223,2,89561,2470,2483,4,last7d,Saba Basketball
+224,2,89562,2471,2484,5,last8d,Saba Basketball
+225,2,89621,2472,2485,0,tomorrow,Saba Basketball
+226,2,89696,2473,2486,1,today,Saba Basketball
+227,2,90090,2474,2487,2,yesterday,Saba Basketball
+228,2,90177,2478,2488,3,last6d,Saba Basketball
+229,2,90278,2479,2489,4,last7d,Saba Basketball
+230,2,90306,2480,2490,5,last8d,Saba Basketball
+301,43,42624,3100,197070,0,tomorrow,E-Sport
+302,43,43103,23208,206013,1,today,E-Sport
+303,43,43104,41774,224773,2,yesterday,E-Sport
+304,43,43105,86627,239894,3,last6d,E-Sport
+305,43,43106,149104,260073,4,last7d,E-Sport
+306,43,43107,149105,260074,0,tomorrow,E-Sport
+307,43,43108,161856,260075,1,today,E-Sport
+308,43,43109,167172,261194,2,yesterday,E-Sport
+309,43,43112,167173,261195,3,last6d,E-Sport
+310,43,43113,197069,261196,4,last7d,E-Sport
+401,5,596,7989,8002,0,tomorrow,Tennis
+402,5,599,7991,8003,1,today,Tennis 
+403,5,678,7992,8005,2,yesterday,Tennis 
+404,5,705,7993,8006,3,last6d,Tennis 
+405,5,706,7994,8007,4,last7d,Tennis 
+406,5,716,7995,8008,0,tomorrow,Tennis 
+407,5,724,7997,8009,1,today,Tennis 
+408,5,726,7998,8011,2,yesterday,Tennis 
+409,5,727,7999,8012,3,last6d,Tennis 
+410,5,730,8001,8013,4,last7d,Tennis 
+411,5,125363,8014,8034,0,tomorrow,Saba Tennis 
+412,5,125364,8015,8035,1,today,Saba Tennis 
+413,5,125365,8016,8037,2,yesterday,Saba Tennis 
+414,5,125366,8017,8038,3,last6d,Saba Tennis 
+415,5,125367,8018,8039,4,last7d,Saba Tennis 
+416,5,125368,8019,8041,0,tomorrow,Saba Tennis 
+417,5,127901,8021,8042,1,today,Saba Tennis 
+418,5,127902,8023,8044,2,yesterday,Saba Tennis 
+419,5,127903,8024,8045,3,last6d,Saba Tennis 
+420,5,127904,8030,8046,4,last7d,Saba Tennis 
+501,50,49034,1826,93863,0,tomorrow,Cricket 
+502,50,52969,11954,98947,1,today,Cricket 
+503,50,53119,16756,108639,2,yesterday,Cricket 
+504,50,53120,16776,108640,3,last6d,Cricket 
+505,50,53121,20439,131232,4,last7d,Cricket 
+506,50,53122,22400,155155,0,tomorrow,Cricket 
+507,50,53123,68394,161855,1,today,Cricket 
+508,50,53124,86624,179305,2,yesterday,Cricket 
+509,50,53125,92074,184360,3,last6d,Cricket 
+510,50,53126,93424,196793,4,last7d,Cricket 
+511,50,89700,208900,277665,0,tomorrow,Saba Cricket
+512,50,89701,208901,278355,1,today,Saba Cricket
+513,50,89702,209585,278358,2,yesterday,Saba Cricket
+514,50,89704,225859,278975,3,last6d,Saba Cricket
+515,50,89705,233475,293007,4,last7d,Saba Cricket
+516,50,89706,246181,304679,0,tomorrow,Saba Cricket
+517,50,89707,257962,304680,1,today,Saba Cricket
+518,50,89708,270070,330418,2,yesterday,Saba Cricket
+519,50,89709,276531,330428,3,last6d,Saba Cricket
+520,50,89710,276578,336309,4,last7d,Saba Cricket

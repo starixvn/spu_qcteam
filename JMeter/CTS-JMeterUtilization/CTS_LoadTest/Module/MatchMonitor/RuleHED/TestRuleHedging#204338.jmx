@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="ProjectFolder" elementType="Argument">
+            <stringProp name="Argument.name">ProjectFolder</stringProp>
+            <stringProp name="Argument.value">D:/CTS_LoadTest/Module/MatchMonitor/RuleHED</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath">D:\CTS_LoadTest\DBDriver\mssql-jdbc-12.6.1.jre8.jar,D:\CTS_LoadTest\DBDriver\mysql-connector-j-8.3.0.jar</stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">false</boolProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="[Var Config] Common">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="RowNum" elementType="Argument">
+            <stringProp name="Argument.name">RowNum</stringProp>
+            <stringProp name="Argument.value">200</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="LoopNum" elementType="Argument">
+            <stringProp name="Argument.name">LoopNum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="ParamValue" elementType="Argument">
+            <stringProp name="Argument.name">ParamValue</stringProp>
+            <stringProp name="Argument.value">0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="BatchSizeValue" elementType="Argument">
+            <stringProp name="Argument.name">BatchSizeValue</stringProp>
+            <stringProp name="Argument.value">5000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="CurrentDateTime" elementType="Argument">
+            <stringProp name="Argument.name">CurrentDateTime</stringProp>
+            <stringProp name="Argument.value">${__groovy(new Date().format(&quot;yyyy-MM-dd HH:mm:ss&quot;),)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="MySQL_Conn_Local" elementType="Argument">
+            <stringProp name="Argument.value">jdbc:mysql://10.18.200.70:3307</stringProp>
+            <stringProp name="Argument.name">MySQL_Conn_Local</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="CustListPath" elementType="Argument">
+            <stringProp name="Argument.name">CustListPath</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/CustList_RuleHED.txt</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="NewTransInfoPath" elementType="Argument">
+            <stringProp name="Argument.name">NewTransInfoPath</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/NewTransInfo_RuleHED.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="ExistingAssInfoPath" elementType="Argument">
+            <stringProp name="Argument.name">ExistingAssInfoPath</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/ExistingAssInfo_RuleHED.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="RawCustPath" elementType="Argument">
+            <stringProp name="Argument.name">RawCustPath</stringProp>
+            <stringProp name="Argument.value">${ProjectFolder}/RawCust.csv</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CTS_DataCenter" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">60000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">CTSDB</stringProp>
+        <stringProp name="dbUrl">${MySQL_Conn_Local}/CTS_DataCenter</stringProp>
+        <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">100000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">600000</stringProp>
+        <stringProp name="username">irena.vn</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get CustID list" enabled="true">
+        <stringProp name="scriptLanguage">groovy</stringProp>
+        <stringProp name="parameters">CustIDList</stringProp>
+        <stringProp name="filename"></stringProp>
+        <stringProp name="cacheKey">true</stringProp>
+        <stringProp name="script">String readFileToString(String filePath) {
+    String content = &apos;&apos;
+    try {
+        content = new File(filePath).text
+    } catch (Exception e) {
+        log.error(&quot;Error reading file: ${e.message}&quot;)
+    }
+    return content
+}
+
+def filePath = &apos;${CustListPath}&apos;
+def CustList = readFileToString(filePath)
+vars.put(&quot;CustList&quot;, CustList)</stringProp>
+      </JSR223PreProcessor>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="[1. Reset data]" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">60</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update Sys Param">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query"> update SystemParameter set ParameterValue = ${ParamValue} where ParameterID IN (120, 121);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update Sys BatchSize" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query"> update SystemParameter set ParameterValue = ${BatchSizeValue} where ParameterID IN (123);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitor">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from MatchMonitor where MatchID IN (2289511, 2289512, 2289513, 2289514, 2289521, 2289522, 2289523, 2289524, 2289531, 2289532, 2289533, 2289534, 2289530 ) and Reason = 1;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorDetails">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from MatchMonitorDetails where MatchID IN (2289511, 2289512, 2289513, 2289514, 2289521, 2289522, 2289523, 2289524, 2289531, 2289532, 2289533, 2289534, 2289530) and Reason = 1;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorStagingHedgingLive">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query"> delete from MatchMonitorStagingHedgingLive where MatchID IN (2289511, 2289512, 2289513, 2289514, 2289521, 2289522, 2289523, 2289524, 2289531, 2289532, 2289533, 2289534, 2289530);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: MatchMonitorStagingHedgingNonLive">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query"> delete from MatchMonitorStagingHedgingNonLive where MatchID IN (2289511, 2289512, 2289513, 2289514, 2289521, 2289522, 2289523, 2289524, 2289531, 2289532, 2289533, 2289534, 2289530);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationByDevice" enabled="false">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete d
+from AssociationByDevice AS d
+	inner join CTSCustomer AS c on c.CTSCustID = d.CTSCustID
+where c.CustID IN (${CustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationByAI" enabled="false">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from AssociationByAI where FromCustID IN (${CustList}) OR ToCustID IN (${CustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationGroupByAI" enabled="false">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from AssociationGroupByAI where CustID IN (${CustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: AssociationByIP" enabled="false">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from AssociationByIP where FromCustID IN (${CustList}) OR ToCustID IN (${CustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean tbl: CTSCustomerClassification">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete from CTSCustomerClassification where CustID IN (${CustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert Hedging category">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT ignore INTO CTSCustomerClassification (CustID, CTSCustID, SubscriberID, ParentID, CategoryID, CreatedDate, CreatedBy, LastModifiedDate, LastModifiedBy, LastScannedDate, IsMarkedDirectly, IsFromCTS, Remark, RoleID)
+SELECT 	c.CustID
+	,	c.CTSCustID
+	,	c.SubscriberID
+	,	20000
+	,	20200
+	,	&apos;${CurrentDateTime}&apos;
+	,	8
+	,	&apos;${CurrentDateTime}&apos;
+	,	8
+	,	&apos;${CurrentDateTime}&apos;
+	,	1
+	,	1
+	,	&apos;Na test renovate CC&apos;
+	,	c.RoleID
+FROM CTSCustomer AS c 
+where c.CustID IN (
+/*Flagged*/
+1275,1280,1282,5941,96915032,1284,5949,1301,1304,1305,5952,92856881,1306,1308,1309,11576,95238743,1320,1322,1323,67065,98419071,1325,1330,1331,85649,98419077,1332,1336,1337,121124,98419084,1338,129544,1347,1350,1352,166628,98419092,1353,1356,1357,183604,98419098,1366,1369,1371,233772,98419116,1372,1374,1375,272666,98419121,1377,1379,1380,293114,98419128,1382,374909,1390,1392,1393,522112,98419134,1394,1397,1398,609367,98419140,1409,1414,1415,954103,98419160,1419,1421,1424,1111694,98419165,1425,1325700,1432,1435,1436,1336006,98419171,1437,1439,1440,1776777,98419177,1450,1452,1454,2135880,98419200,
+/*Affected*/
+15533626,15570751,15589340,1618330,1618656,15733126,15820695,15825977,1618718,1618766,15940124,16037069,16311617,1618941,1619057,16641995,16681605,16785786,1619094,1619316,16794828,16940557,17068696,1619558,1620135,17160806,17160902,17164745,1620150,1620189,17325900,17358067,17551695,1620532,1620708,17898107,18327723,18435539,1620990,1621060
+);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert Normal category">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT ignore INTO CTSCustomerClassification (CustID, CTSCustID, SubscriberID, ParentID, CategoryID, CreatedDate, CreatedBy, LastModifiedDate, LastModifiedBy, LastScannedDate, RoleID)
+SELECT 	c.CustID
+	,	c.CTSCustID
+	,	c.SubscriberID
+	,	40000
+	,	40300
+	,	&apos;${CurrentDateTime}&apos;
+	,	10278938
+	,	&apos;${CurrentDateTime}&apos;
+	,	10278938
+	,	&apos;${CurrentDateTime}&apos;
+	,	c.RoleID
+FROM CTSCustomer AS c 
+where c.CustID IN (${CustList}) AND c.CustID not in (
+/*Flagged*/
+1275,1280,1282,5941,96915032,1284,5949,1301,1304,1305,5952,92856881,1306,1308,1309,11576,95238743,1320,1322,1323,67065,98419071,1325,1330,1331,85649,98419077,1332,1336,1337,121124,98419084,1338,129544,1347,1350,1352,166628,98419092,1353,1356,1357,183604,98419098,1366,1369,1371,233772,98419116,1372,1374,1375,272666,98419121,1377,1379,1380,293114,98419128,1382,374909,1390,1392,1393,522112,98419134,1394,1397,1398,609367,98419140,1409,1414,1415,954103,98419160,1419,1421,1424,1111694,98419165,1425,1325700,1432,1435,1436,1336006,98419171,1437,1439,1440,1776777,98419177,1450,1452,1454,2135880,98419200,
+/*Affected*/
+15533626,15570751,15589340,1618330,1618656,15733126,15820695,15825977,1618718,1618766,15940124,16037069,16311617,1618941,1619057,16641995,16681605,16785786,1619094,1619316,16794828,16940557,17068696,1619558,1620135,17160806,17160902,17164745,1620150,1620189,17325900,17358067,17551695,1620532,1620708,17898107,18327723,18435539,1620990,1621060
+);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert LicBA/ LicVIP/ SpecialCC/ VVIP category" enabled="false">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT ignore INTO CTSCustomerClassification (CustID, CTSCustID, SubscriberID, ParentID, CategoryID, CreatedDate, CreatedBy, LastModifiedDate, LastModifiedBy, LastScannedDate, IsMarkedDirectly, IsFromCTS, Remark, RoleID)
+SELECT 	c.CustID
+	,	c.CTSCustID
+	,	c.SubscriberID
+	,	1000 -- 10000: LicBA,LicVIP,SpecialCC, 1000: VVIP
+	,	1010 -- 10100: LicBA, 10201: LicVIP, 10300: SpecialCC, 1010: VVIP
+	,	&apos;${CurrentDateTime}&apos;
+	,	8
+	,	&apos;${CurrentDateTime}&apos;
+	,	8
+	,	&apos;${CurrentDateTime}&apos;
+	,	1
+	,	1
+	,	&apos;Na test renovate CC&apos;
+	,	c.RoleID
+FROM CTSCustomer AS c 
+where c.CustID IN (
+/*Flagged*/
+1275,1280,1282,5941,96915032,1284,5949,1301,1304,1305,5952,92856881,1306,1308,1309,11576,95238743,1320,1322,1323,67065,98419071,1325,1330,1331,85649,98419077,1332,1336,1337,121124,98419084,1338,129544,1347,1350,1352,166628,98419092,1353,1356,1357,183604,98419098,1366,1369,1371,233772,98419116,1372,1374,1375,272666,98419121,1377,1379,1380,293114,98419128,1382,374909,1390,1392,1393,522112,98419134,1394,1397,1398,609367,98419140,1409,1414,1415,954103,98419160,1419,1421,1424,1111694,98419165,1425,1325700,1432,1435,1436,1336006,98419171,1437,1439,1440,1776777,98419177,1450,1452,1454,2135880,98419200,
+/*Affected*/
+15533626,15570751,15589340,1618330,1618656,15733126,15820695,15825977,1618718,1618766,15940124,16037069,16311617,1618941,1619057,16641995,16681605,16785786,1619094,1619316,16794828,16940557,17068696,1619558,1620135,17160806,17160902,17164745,1620150,1620189,17325900,17358067,17551695,1620532,1620708,17898107,18327723,18435539,1620990,1621060
+);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert data tbl: SpecialCustomerClass" enabled="false">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT INTO SpecialCustomerClass (CTSCustID, RootCTSCustID, CustID, SubscriberID, CustomerClass, CreatedDate, CreatedBy, CreatedFromFunction)
+SELECT 	c.CTSCustID
+	,	c.CTSCustID
+	,	c.CustID
+	,	c.SubscriberID
+	,	22895
+	,	&apos;${CurrentDateTime}&apos;
+	,	8
+	,	1
+FROM CTSCustomer AS c 
+where c.CustID IN (
+/*Flagged*/
+1275,1280,1282,5941,96915032,1284,5949,1301,1304,1305,5952,92856881,1306,1308,1309,11576,95238743,1320,1322,1323,67065,98419071,1325,1330,1331,85649,98419077,1332,1336,1337,121124,98419084,1338,129544,1347,1350,1352,166628,98419092,1353,1356,1357,183604,98419098,1366,1369,1371,233772,98419116,1372,1374,1375,272666,98419121,1377,1379,1380,293114,98419128,1382,374909,1390,1392,1393,522112,98419134,1394,1397,1398,609367,98419140,1409,1414,1415,954103,98419160,1419,1421,1424,1111694,98419165,1425,1325700,1432,1435,1436,1336006,98419171,1437,1439,1440,1776777,98419177,1450,1452,1454,2135880,98419200,
+/*Affected*/
+15533626,15570751,15589340,1618330,1618656,15733126,15820695,15825977,1618718,1618766,15940124,16037069,16311617,1618941,1619057,16641995,16681605,16785786,1619094,1619316,16794828,16940557,17068696,1619558,1620135,17160806,17160902,17164745,1620150,1620189,17325900,17358067,17551695,1620532,1620708,17898107,18327723,18435539,1620990,1621060
+);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Prepare raw cust]" enabled="false">
+        <stringProp name="TestPlan.comments">Duration: 4 hours</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${RowNum}</stringProp>
+        <longProp name="ThreadGroup.duration">100</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get Raw Cust Info">
+          <stringProp name="filename">${RawCustPath}</stringProp>
+          <stringProp name="fileEncoding">utf-8</stringProp>
+          <stringProp name="variableNames">CustID,Username</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: CTSCustomer">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT INTO CTSCustomer(CustID,SubscriberID,CustSubID,Username,RoleID,IsInternal,IsLicensee)
+SELECT ${CustID},130,0,&apos;${Username}&apos;,1,0,0;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Prepare existing association]" enabled="false">
+        <stringProp name="TestPlan.comments">Duration: 4 hours</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${RowNum}</stringProp>
+        <longProp name="ThreadGroup.duration">300</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: AssociationByDevice" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT ignore INTO AssociationByDevice(CTSCustID,DCSDeviceID,SubscriberID,CreatedTime,InsertTime)
+SELECT c.CTSCustID,${RelatedID},c.SubscriberID,&apos;${CurrentDateTime}&apos;,&apos;${CurrentDateTime}&apos;
+FROM CTSCustomer AS c
+where c.CustID = ${CustID} and ${TypeID} IN (11, 12, 13, 61, 62, 63);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: AssociationByAI" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT INTO AssociationByAI(AssType,FromCustID,ToCustID,CreatedDate)
+SELECT 1,${CustID},${RelatedID},&apos;${CurrentDateTime}&apos;
+FROM CTSCustomer AS c
+where c.CustID = ${CustID} and ${TypeID} IN (21, 22, 23);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: AssociationByIP" enabled="true">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT INTO AssociationByIP(AssType,FromCustID,ToCustID,CreatedDate)
+SELECT 1,${CustID},${RelatedID},&apos;${CurrentDateTime}&apos;
+FROM CTSCustomer AS c
+where c.CustID = ${CustID} and ${TypeID} IN (31, 32, 33);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[3. Prepare new trans]">
+        <stringProp name="TestPlan.comments">Duration: 4 hours</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${RowNum}</stringProp>
+        <longProp name="ThreadGroup.duration">600</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Trans Info" enabled="true">
+          <stringProp name="filename">${NewTransInfoPath}</stringProp>
+          <stringProp name="fileEncoding">utf-8</stringProp>
+          <stringProp name="variableNames">SequenceID,MatchID,SportType,LiveHomeScore,LiveAwayScore,ScoreDiff ,LiveIndicator,BettypeID,BetID,BetTeam,StakeRM,TransID,TransDate,CustID </stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: MatchMonitorStagingHedgingLive">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT INTO MatchMonitorStagingHedgingLive(
+SequenceID,SportType,BettypeID,BetID,Betteam,Stake,TransID,TransDate,CustID,MatchID,HomeID,AwayID,LeagueID,EventDate,EventStatus,KickOffTime,LeagueName,LiveHomeScore,LiveAwayScore,ScoreDiff,CTSCustID,SubscriberID,TransDateToSecond,InsertTime,IsHedging,GroupID)
+SELECT ${SequenceID},${SportType},${BettypeID},${BetID},&apos;${BetTeam}&apos;,${StakeRM},${TransID},&apos;${TransDate}&apos;,${CustID},${MatchID},11,22,33,&apos;${CurrentDateTime}&apos;,&apos;running&apos;,&apos;${CurrentDateTime}&apos;,&apos;Test Hedging Live&apos;,${LiveHomeScore},${LiveAwayScore},${ScoreDiff},c.CTSCustID,c.SubscriberID,UNIX_TIMESTAMP(&apos;${TransDate}&apos;),&apos;${CurrentDateTime}&apos;,0,0
+FROM CTSCustomer AS c
+where c.CustID = ${CustID} and ${LiveIndicator} = 1 
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert tbl: MatchMonitorStagingHedgingNonLive">
+          <stringProp name="dataSource">CTSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">INSERT INTO MatchMonitorStagingHedgingNonLive(
+SequenceID,SportType,BettypeID,BetID,Betteam,Stake,TransID,TransDate,CustID,MatchID,HomeID,AwayID,LeagueID,EventDate,EventStatus,KickOffTime,LeagueName,LiveHomeScore,LiveAwayScore,ScoreDiff,CTSCustID,SubscriberID,TransDateToSecond,InsertTime,IsHedging,GroupID)
+SELECT ${SequenceID},${SportType},${BettypeID},${BetID},&apos;${BetTeam}&apos;,${StakeRM},${TransID},&apos;${TransDate}&apos;,${CustID},${MatchID},11,22,33,&apos;${CurrentDateTime}&apos;,&apos;running&apos;,&apos;${CurrentDateTime}&apos;,&apos;Test Hedging NonLive&apos;,${LiveHomeScore},${LiveAwayScore},${ScoreDiff},c.CTSCustID,c.SubscriberID,UNIX_TIMESTAMP(&apos;${TransDate}&apos;),&apos;${CurrentDateTime}&apos;,0,0
+FROM CTSCustomer AS c
+where c.CustID = ${CustID} and ${LiveIndicator} = 0
+;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

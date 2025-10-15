@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="JOB - INSERT NEW CUSTOMERS">
+      <stringProp name="TestPlan.comments">Use execute test Realtime CheckChanges job for Member, Agent</stringProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="Folder" elementType="Argument">
+            <stringProp name="Argument.name">Folder</stringProp>
+            <stringProp name="Argument.value">D:\\CTS-JMeterUtilization\\1.Classification\\1.1.Common\\1.1.2.Job-InsertNewCustomers</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath">D:\CTS_LoadTest\DBDriver\mssql-jdbc-12.6.1.jre8.jar,D:\CTS_LoadTest\DBDriver\mysql-connector-j-8.3.0.jar</stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="[Var Config] Common">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="ThreadNum" elementType="Argument">
+            <stringProp name="Argument.name">ThreadNum</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="CurrentDateTime" elementType="Argument">
+            <stringProp name="Argument.name">CurrentDateTime</stringProp>
+            <stringProp name="Argument.value">${__groovy(new Date().minus(1).clearTime().plusHours(23).plusMinutes(50).format(&quot;yyyy-MM-dd HH:mm:ss&quot;),)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="StartTimeJob" elementType="Argument">
+            <stringProp name="Argument.name">StartTimeJob</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.value">${__groovy(new Date().minus(1).clearTime().plusHours(23).plusMinutes(59).plusSeconds(59).format(&quot;yyyy-MM-dd HH:mm:ss.SSS&quot;),)} </stringProp>
+          </elementProp>
+          <elementProp name="SystemID" elementType="Argument">
+            <stringProp name="Argument.name">SystemID</stringProp>
+            <stringProp name="Argument.value">10278938</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="MySQL_Conn_Local" elementType="Argument">
+            <stringProp name="Argument.value">jdbc:mysql://10.18.200.70:3307</stringProp>
+            <stringProp name="Argument.name">MySQL_Conn_Local</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SQLServer_Conn_DB053" elementType="Argument">
+            <stringProp name="Argument.name">SQLServer_Conn_DB053</stringProp>
+            <stringProp name="Argument.value">jdbc:sqlserver://TESTDB053:1433;encrypt=true;trustServerCertificate=true</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc"></stringProp>
+          </elementProp>
+          <elementProp name="CustListInfoPath" elementType="Argument">
+            <stringProp name="Argument.name">CustListInfoPath</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.value">${Folder}/CustListInfo.txt</stringProp>
+          </elementProp>
+          <elementProp name="ExistingCategoryInfoPath" elementType="Argument">
+            <stringProp name="Argument.name">ExistingCategoryInfoPath</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.value">${Folder}/ExistingCategoryInfo.csv</stringProp>
+            <stringProp name="Argument.desc"></stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] bodb_ODS" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">ODSDB</stringProp>
+        <stringProp name="dbUrl">${SQLServer_Conn_DB053};databaseName=bodb_ODS</stringProp>
+        <stringProp name="driver">com.microsoft.sqlserver.jdbc.SQLServerDriver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">@quality#</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">testteam</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] bodb_dwrs" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">DWRSDB</stringProp>
+        <stringProp name="dbUrl">${SQLServer_Conn_DB053};databaseName=bodb_dwrs</stringProp>
+        <stringProp name="driver">com.microsoft.sqlserver.jdbc.SQLServerDriver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">@quality#</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">testteam</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] bodb_VR2Model" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">VR2ModelDB</stringProp>
+        <stringProp name="dbUrl">${SQLServer_Conn_DB053};databaseName=bodb_VR2Model</stringProp>
+        <stringProp name="driver">com.microsoft.sqlserver.jdbc.SQLServerDriver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">@quality#</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">testteam</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CTS_DataCenter" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">CTSDB</stringProp>
+        <stringProp name="dbUrl">${MySQL_Conn_Local}/CTS_DataCenter</stringProp>
+        <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">irena.vn</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="[DB Config] CTS_Archive" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="connectionProperties"></stringProp>
+        <stringProp name="dataSource">CTSArchiveDB</stringProp>
+        <stringProp name="dbUrl">${MySQL_Conn_Local}/CTS_Archive</stringProp>
+        <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
+        <stringProp name="initQuery"></stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">123456</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">irena.vn</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Get Agent List Info">
+        <stringProp name="scriptLanguage">groovy</stringProp>
+        <stringProp name="parameters">CustList</stringProp>
+        <stringProp name="filename"></stringProp>
+        <stringProp name="cacheKey">true</stringProp>
+        <stringProp name="script">String readFileToString(String filePath) {
+    String content = &apos;&apos;
+    try {
+        content = new File(filePath).text
+    } catch (Exception e) {
+        log.error(&quot;Error reading file: ${e.message}&quot;)
+    }
+    return content
+}
+
+def filePath = &apos;${AgentListInfoPath}&apos;
+def agentList = readFileToString(filePath)
+vars.put(&quot;AgentList&quot;, agentList)</stringProp>
+      </JSR223PreProcessor>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="[1. Clean up data]" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">300</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: ODS_bettrans_final_SiteDB01_batch01" enabled="true">
+          <stringProp name="dataSource">ODSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete
+from dbo.ODS_bettrans_final_SiteDB01_batch01 
+where CustID IN (${MemberCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: ODS_bettrans_final_SiteDB02_batch01" enabled="true">
+          <stringProp name="dataSource">ODSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete
+from dbo.ODS_bettrans_final_SiteDB02_batch01 
+where CustID IN (${MemberCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: ODS_bettrans_final_SiteDB03_batch01" enabled="true">
+          <stringProp name="dataSource">ODSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete
+from dbo.ODS_bettrans_final_SiteDB03_batch01 
+where CustID IN (${MemberCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: ODS_bettrans_final_SiteDB03_batch02" enabled="true">
+          <stringProp name="dataSource">ODSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from dbo.ODS_bettrans_final_SiteDB03_batch02 
+where CustID IN (${MemberCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update table: CustomerClassification_Parameter" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">update dbo.CustomerClassification_Parameter 
+set Value = &apos;${StartTimeJob}&apos;
+where DataId IN (10, 11, 12, 13);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: CustomerClassification_RealtimeChanges" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from dbo.CustomerClassification_RealtimeChanges 
+where CustID IN (${MemberCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: CustomerClassification_LatestActiveDay" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from dbo.CustomerClassification_LatestActiveDay 
+where CustID IN (${MemberCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: CustomerClassificationAgency_RealtimeChanges" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from dbo.CustomerClassificationAgency_RealtimeChanges 
+where CustID IN (${AgentList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Clean table: CustomerClassificationAgency_LatestActiveDay" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">delete 
+from dbo.CustomerClassificationAgency_LatestActiveDay 
+where CustID IN (${AgentList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[2. Insert new placed bet info]" enabled="true">
+        <stringProp name="TestPlan.comments">Insert 4 tables source of ODS_bettrans --&gt; LatestActiveDays</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${ThreadNum}</stringProp>
+        <longProp name="ThreadGroup.duration">3000</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Get New Bet Placed Info" enabled="true">
+          <stringProp name="delimiter">,</stringProp>
+          <stringProp name="fileEncoding">UTF-8</stringProp>
+          <stringProp name="filename">${NewPlacedBetInfoPath}</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="variableNames">MatchID,LeagueID,SportType,ProductID,TransID,BetTypeID,Turnover,Winloss,BetCount,Status,StatusID,CustID,TransHour,RptNumDay,SourceID</stringProp>
+          <stringProp name="TestPlan.comments">Only Member</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: ODS_bettrans_final_SiteDB01_batch01" enabled="true">
+          <stringProp name="dataSource">ODSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">insert into dbo.ODS_bettrans_final_SiteDB01_batch01 (WinlostDate,TransDate,ModifiedDate,MatchID,LeagueID,SportType,ProductID,TransID,BetType,Stake,actual_stake,Winlost,BetCount,ActualRate,Status,ExternalBet,CustID,Currency,Recommend,Mrecommend,Srecommend,SiteID)
+select      CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, ${MatchID}
+		, ${LeagueID}
+		, ${SportType}
+		, ${ProductID}
+		, ${TransID}
+		, ${BetTypeID}	
+		, 0
+		, 0 
+		, 0
+		, 0
+		, 1
+		, &apos;${Status}&apos;
+		, 1
+		, ${CustID}
+		, cus.Currency
+		, CASE WHEN cus.Recommend IS NOT NULL THEN cus.Recommend  ELSE 0 END
+		, CASE WHEN cus.Mrecommend IS NOT NULL THEN cus.MRecommend  ELSE 0 END
+		, CASE WHEN cus.Srecommend IS NOT NULL THEN cus.SRecommend  ELSE 0 END
+		, st.SiteID
+from bodb02.dbo.customer cus with(nolock)
+	inner join bodb02.dbo.Site st with(nolock) on cus.Site = st.Site
+where ${SourceID} = 1 and cus.CustID = ${CustID};</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="TestPlan.comments">This is data for Credit</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: ODS_bettrans_final_SiteDB02_batch01" enabled="true">
+          <stringProp name="dataSource">ODSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">insert into dbo.ODS_bettrans_final_SiteDB02_batch01 (WinlostDate,TransDate,ModifiedDate,MatchID,LeagueID,SportType,ProductID,TransID,BetType,Stake,actual_stake,Winlost,BetCount,ActualRate,Status,ExternalBet,CustID,Currency,Recommend,Mrecommend,Srecommend,SiteID)
+select      CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, ${MatchID}
+		, ${LeagueID}
+		, ${SportType}
+		, ${ProductID}
+		, ${TransID}
+		, ${BetTypeID}	
+		, 0
+		, 0 
+		, 0
+		, 0
+		, 1
+		, &apos;${Status}&apos;
+		, 1
+		, ${CustID}
+		, cus.Currency
+		, CASE WHEN cus.Recommend IS NOT NULL THEN cus.Recommend  ELSE 0 END
+		, CASE WHEN cus.Mrecommend IS NOT NULL THEN cus.MRecommend  ELSE 0 END
+		, CASE WHEN cus.Srecommend IS NOT NULL THEN cus.SRecommend  ELSE 0 END
+		, st.SiteID
+from bodb02.dbo.customer cus with(nolock)
+	inner join bodb02.dbo.Site st with(nolock) on cus.Site = st.Site
+where ${SourceID} = 2 and cus.CustID = ${CustID};</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="TestPlan.comments">This is data for Credit</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: ODS_bettrans_final_SiteDB03_batch01" enabled="true">
+          <stringProp name="dataSource">ODSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">insert into dbo.ODS_bettrans_final_SiteDB03_batch01 (WinlostDate,TransDate,ModifiedDate,MatchID,LeagueID,SportType,ProductID,TransID,BetType,Stake,actual_stake,Winlost,BetCount,ActualRate,Status,ExternalBet,CustID,Currency,Recommend,Mrecommend,Srecommend,SiteID)
+select      CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, ${MatchID}
+		, ${LeagueID}
+		, ${SportType}
+		, ${ProductID}
+		, ${TransID}
+		, ${BetTypeID}	
+		, 0
+		, 0 
+		, 0
+		, 0
+		, 1
+		, &apos;${Status}&apos;
+		, 1
+		, ${CustID}
+		, cus.Currency
+		, CASE WHEN cus.Recommend IS NOT NULL THEN cus.Recommend  ELSE 0 END
+		, CASE WHEN cus.Mrecommend IS NOT NULL THEN cus.MRecommend  ELSE 0 END
+		, CASE WHEN cus.Srecommend IS NOT NULL THEN cus.SRecommend  ELSE 0 END
+		, st.SiteID
+from bodb02.dbo.customer cus with(nolock)
+	inner join bodb02.dbo.Site st with(nolock) on cus.Site = st.Site
+where ${SourceID} = 3 and cus.CustID = ${CustID}; </stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="TestPlan.comments">This is data for Deposit</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert table: ODS_bettrans_final_SiteDB03_batch02" enabled="true">
+          <stringProp name="dataSource">ODSDB</stringProp>
+          <stringProp name="queryType">Prepared Update Statement</stringProp>
+          <stringProp name="query">insert into dbo.ODS_bettrans_final_SiteDB03_batch02 (WinlostDate,TransDate,ModifiedDate,MatchID,LeagueID,SportType,ProductID,TransID,BetType,Stake,actual_stake,Winlost,BetCount,ActualRate,Status,ExternalBet,CustID,Currency,Recommend,Mrecommend,Srecommend,SiteID)
+select      CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, CAST(DATEADD(DAY, ${RptNumDay}, CAST(GETDATE() AS DATE)) AS VARCHAR) + &apos;${TransHour}&apos;
+		, ${MatchID}
+		, ${LeagueID}
+		, ${SportType}
+		, ${ProductID}
+		, ${TransID}
+		, ${BetTypeID}	
+		, 0
+		, 0 
+		, 0
+		, 0
+		, 1
+		, &apos;${Status}&apos;
+		, 1
+		, ${CustID}
+		, cus.Currency
+		, CASE WHEN cus.Recommend IS NOT NULL THEN cus.Recommend  ELSE 0 END
+		, CASE WHEN cus.Mrecommend IS NOT NULL THEN cus.MRecommend  ELSE 0 END
+		, CASE WHEN cus.Srecommend IS NOT NULL THEN cus.SRecommend  ELSE 0 END
+		, st.SiteID
+from bodb02.dbo.customer cus with(nolock)
+	inner join bodb02.dbo.Site st with(nolock) on cus.Site = st.Site
+where ${SourceID} = 4 and cus.CustID = ${CustID}; </stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="TestPlan.comments">This is data for Deposit</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="[3. Execute SP before trigger job]" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">1000</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </PostThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Execute SP: Acc_Rpt_CTS_GetListCustByModifiedDate" enabled="true">
+          <stringProp name="dataSource">DWRSDB</stringProp>
+          <stringProp name="queryType">Callable Statement</stringProp>
+          <stringProp name="query">EXEC bodb_dwrs.dbo.Acc_Rpt_CTS_GetListCustByModifiedDate 
+     @fromModifiedDate_01 = &apos;${StartTimeJob}&apos;
+,	@fromModifiedDate_02 = &apos;${StartTimeJob}&apos;
+,	@fromModifiedDate_03 = &apos;${StartTimeJob}&apos;
+,	@fromModifiedDate_04 = &apos;${StartTimeJob}&apos;
+,	@toModifiedDate_01 = &apos;${CurrentDateTime}&apos;
+,	@toModifiedDate_02 = &apos;${CurrentDateTime}&apos;
+,	@toModifiedDate_03 = &apos;${CurrentDateTime}&apos;
+,	@toModifiedDate_04 = &apos;${CurrentDateTime}&apos;
+,	@scannedModifiedDate_01 = @NextScannedDateTime1 OUTPUT
+,	@scannedModifiedDate_02 = @NextScannedDateTime2 OUTPUT
+,	@scannedModifiedDate_03 = @NextScannedDateTime3 OUTPUT
+,	@scannedModifiedDate_04 = @NextScannedDateTime4 OUTPUT;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Execute SP: CTS_NormalClassification_RealTime_CheckChanges" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Callable Statement</stringProp>
+          <stringProp name="query">DECLARE	@return_value int,
+		@NextScannedDateTime1 datetime2(7),
+		@NextScannedDateTime2 datetime2(7),
+		@NextScannedDateTime3 datetime2(7),
+		@NextScannedDateTime4 datetime2(7)
+EXEC	@return_value = dbo.CTS_NormalClassification_RealTime_CheckChanges
+		@NextScannedDateTime1 = @NextScannedDateTime1 OUTPUT,
+		@NextScannedDateTime2 = @NextScannedDateTime2 OUTPUT,
+		@NextScannedDateTime3 = @NextScannedDateTime3 OUTPUT,
+		@NextScannedDateTime4 = @NextScannedDateTime4 OUTPUT
+SELECT	@NextScannedDateTime1 as N&apos;@NextScannedDateTime1&apos;,
+		@NextScannedDateTime2 as N&apos;@NextScannedDateTime2&apos;,
+		@NextScannedDateTime3 as N&apos;@NextScannedDateTime3&apos;,
+		@NextScannedDateTime4 as N&apos;@NextScannedDateTime4&apos;
+SELECT	&apos;Return Value&apos; = @return_value
+GO</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="[4. Check data after trigger job]" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <longProp name="ThreadGroup.duration">300</longProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
+      </PostThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Check table: CustomerClassification_RealtimeChanges" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">select * 
+from dbo.CustomerClassificationAgency_RealtimeChanges 
+where CustID IN (${MemberCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Check table: CustomerClassification_LatestActiveDay" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">select * 
+from dbo.CustomerClassificationAgency_LatestActiveDay 
+where CustID IN (${MemberCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Check table: CustomerClassificationAgency_RealtimeChanges" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">select * 
+from dbo.CustomerClassificationAgency_RealtimeChanges 
+where CustID IN (${AgentCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Check table: CustomerClassificationAgency_LatestActiveDay" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">select * 
+from dbo.CustomerClassificationAgency_LatestActiveDay 
+where CustID IN (${AgentCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Check table: CustomerClassification_Parameter" enabled="true">
+          <stringProp name="dataSource">VR2ModelDB</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">select * 
+from dbo.CustomerClassification_Parameter 
+where DataId IN (10, 11, 12, 13);</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Check table: CTSCustomerAssociationStatus" enabled="true">
+          <stringProp name="dataSource">CTSArchiveDB</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">select * 
+from dbo.CTSCustomerAssociationStatus 
+where CustID IN (${MemberCustList}) OR CustID IN (${AgentCustList});</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetMaxRows"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="Tree Result" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Result" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
