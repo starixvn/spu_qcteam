@@ -1,0 +1,54 @@
+select CASE WHEN saba.LeagueID IS NOT NULL AND b.Sporttype = 1 THEN 145 
+            WHEN saba.LeagueID IS NOT NULL AND b.Sporttype = 2 THEN 912
+            WHEN b.bettype     IN (9, 29, 999) THEN 107
+            WHEN b.ProductID IN (1, 25, -1, -2, -3) THEN CASE WHEN b.SportType = 1  THEN 1
+                                                              WHEN b.SportType = 2  THEN 2
+                                                              WHEN b.SportType = 43 THEN 43
+                                                         ELSE 99 END
+            ELSE 229 END SportGroup,
+            b.WinlostDate,
+            b.CustID
+from bodb_ODS.dbo.ODS_bettrans as b
+  left join bodb02.dbo.League as saba on saba.LeagueID = b.LeagueID and saba.LeagueGroupID IN (42,74,108,113,122,151)-- SABA
+  left join bodb02.dbo.League as wc on wc.LeagueID = b.LeagueID and wc.DisplayMode = 2 AND wc.ProgramID = 2022-- WC
+  left join bodb_account.dbo.BettypeGroup as sb on sb.Bettype = b.Bettype and sb.BettypeGroupID IN (6, 10)-- Special
+where b.custid = 13358519
+and                   ( b.bettype  IN (31, 32, 33, 903, 904)
+                        or b.currency IN (20, 27, 28)
+                        or b.status IN ('running')
+                        or b.status      IN ('Void','Reject','Refund')
+                        or b.bettype     IN (9, 29, 999)               
+                        or b.ProductID   IN (37, 74)                 
+                        or b.Sporttype   IN (150, 173) 
+                        or saba.LeagueID IS NOT NULL                  
+                        or wc.LeagueID   IS NOT NULL             
+                        or sb.Bettype is not null            ); -- sporttype=1
+
+
+select CASE WHEN saba.LeagueID IS NOT NULL AND b.Sporttype = 1 THEN 145 
+            WHEN saba.LeagueID IS NOT NULL AND b.Sporttype = 2 THEN 912
+            WHEN b.bettype     IN (9, 29, 999) THEN 107
+            WHEN pb.ProductID IN (1, 25, -1, -2, -3) THEN CASE WHEN b.SportType = 1  THEN 1
+                                                              WHEN b.SportType = 2  THEN 2
+                                                              WHEN b.SportType = 43 THEN 43
+                                                         ELSE 99 END
+            ELSE 229 END SportGroup,
+            b.RptDate,
+            b.CustID
+from bodb_Account.dbo.FactCustStatsInfo as b
+  left join bodb02.dbo.League as saba on saba.LeagueID = b.LeagueID and saba.LeagueGroupID IN (42,74,108,113,122,151)
+  left join bodb02.dbo.League as wc on wc.LeagueID = b.LeagueID and wc.DisplayMode = 2 AND wc.ProgramID = 2022
+  left join bodb_account.dbo.BettypeGroup as sb on sb.Bettype = b.Bettype and sb.BettypeGroupID IN (6, 10)
+  LEFT JOIN bodb_account.dbo.Product_Bettype pb (NOLOCK) ON b.BetType = pb.bettype
+  LEFT JOIN bodb_account.dbo.tbl_Currency_Daily ex (NOLOCK) ON b.RptDate = ex.ExchangeDate AND b.CurrencyID = ex.Currency
+where b.custid = 13358519
+and                   ( b.bettype  IN (31, 32, 33, 903, 904)
+                        or ex.currency IN (20, 27, 28)
+                        or b.SportType NOT IN (-1)
+                        or b.TicketStatus IN (10, 9, 14)
+                        or b.bettype     IN (9, 29, 999)               
+                        or pb.ProductID   IN (37, 74)                 
+                        or b.Sporttype   IN (150, 173) 
+                        or saba.LeagueID IS NOT NULL                  
+                        or wc.LeagueID   IS NOT NULL             
+                        or sb.Bettype is not null            ); -- sporttype=1

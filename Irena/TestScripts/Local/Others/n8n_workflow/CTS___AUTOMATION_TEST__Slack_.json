@@ -1,0 +1,150 @@
+{
+  "name": "CTS - AUTOMATION TEST (Slack)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1020,
+        -100
+      ],
+      "id": "4d767ed3-7f8a-409a-8172-23342a7ff5b6",
+      "name": "Start Event"
+    },
+    {
+      "parameters": {
+        "jsCode": "function formatDateGmt7(date) {\n    const gmt7 = new Date(date.getTime() + 7 * 60 * 60 * 1000);\n    const yyyy = gmt7.getFullYear();\n    const mm = String(gmt7.getMonth() + 1).padStart(2, '0');\n    const dd = String(gmt7.getDate()).padStart(2, '0');\n    const hh = String(gmt7.getHours()).padStart(2, '0');\n    const mi = String(gmt7.getMinutes()).padStart(2, '0');\n    const ss = String(gmt7.getSeconds()).padStart(2, '0');\n    return `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;\n}\n\nconst scannedTime = formatDateGmt7(new Date());\nconst env = \"LOCAL\";  // Bạn có thể thay đổi hoặc lấy từ biến môi trường nếu cần\nlet message = \"\";\n\nconst allPassed = $json[\"allPassed\"];\nconst failedCases = $json[\"failedCases\"] || [];\n\nif (allPassed || failedCases.length === 0) {\n  message += \"*✅ SUCCESS ✅ ALL TESTCASES PASSED*\\n\";\n  message += `*▪️Environment*: ${env}\\n`;\n  message += `*▪️Scanned Time (GMT+7)*: ${scannedTime}\\n`;\n} else {\n  message += \"*❌ ERROR ❌ SOME TESTCASES FAILED*\\n\";\n  message += `*▪️Environment*: ${env}\\n`;\n  message += `*▪️Scanned Time (GMT+7)*: ${scannedTime}\\n`;\n  message += failedCases\n    .map(tc => `\\n      Code: ${tc.code} | Result: ${tc.result}`)\n    .join(\"\\n\");\n}\n\nreturn [\n  {\n    json: {\n      message: message\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        -100
+      ],
+      "id": "cfb9ea98-89cd-4e0d-a9a0-bf4f79424169",
+      "name": "Generate Reports"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.slack.com/services/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",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json[\"message\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -340,
+        -100
+      ],
+      "id": "4fae6d41-5fcb-43b5-9543-285003dd8278",
+      "name": "Notify Slack"
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $json[\"stdout\"];\nconst lines = output.split('\\n').filter(line => line.includes(\"Code=\") && line.includes(\"Result=\"));\n\nlet failedCases = [];\nlet allPassed = true;\n\nlines.forEach(line => {\n  const match = line.match(/Code=(\\S+), Result=(\\S+)/);\n  if (match) {\n    const code = match[1];\n    const result = match[2].toUpperCase();\n    if (result !== \"PASSED\") {\n      allPassed = false;\n      failedCases.push({ code, result });\n    }\n  }\n});\n\nreturn [\n  {\n    json: {\n      allPassed,\n      failedCases,\n      rawOutput: output\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -700,
+        -100
+      ],
+      "id": "b62ba80d-afdb-4248-a6c0-839f198cec6d",
+      "name": "Process Test Results"
+    },
+    {
+      "parameters": {
+        "command": "/bin/sh /scripts/run_ctsautomation.sh"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -860,
+        -100
+      ],
+      "id": "18feeca3-f395-4c46-a510-78ff2ac7f7b1",
+      "name": "Running Test Cases"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start Event": {
+      "main": [
+        [
+          {
+            "node": "Running Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Reports": {
+      "main": [
+        [
+          {
+            "node": "Notify Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Slack": {
+      "main": [
+        []
+      ]
+    },
+    "Process Test Results": {
+      "main": [
+        [
+          {
+            "node": "Generate Reports",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Running Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Process Test Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fba1f4dd-c290-419f-be88-6a2799b3c654",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d275462fbdd910fe58086a03c877d8c3f69d8665c1661619151c6569760c228b"
+  },
+  "id": "cyjeLwRacL6xFpMk",
+  "tags": []
+}

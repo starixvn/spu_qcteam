@@ -1,0 +1,47 @@
+select 'GBLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorStagingGroupBettingLive group by groupid
+union all
+select 'GBNonLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorStagingGroupBettingNonLive group by groupid
+union all
+select 'HEDLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorStagingHedgingLive group by groupid
+union all
+select 'HEDNonLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorParlayStagingGroupBettingLive group by groupid
+union all
+select 'FGLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorStagingFixedGameLive group by groupid
+union all
+select 'FGNonLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorStagingFixedGameNonLive group by groupid
+union all
+select 'ARBNonLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorStagingArbitrageNonLive group by groupid
+union all
+select 'IRRNonLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorStagingIrrigationNonLive group by groupid
+union all
+select 'SABAGBLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorStagingGroupBettingSabaLive group by groupid
+union all
+select 'SABAGBNonLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorStagingGroupBettingSabaNonLive group by groupid
+union all
+select 'ParlayGBLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorParlayStagingGroupBettingLive group by groupid
+union all
+select 'ParlayGBNonLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
+from MatchMonitorParlayStagingGroupBettingNonLive group by groupid
+;
+select * from MatchMonitor where Reason = 5 order by id desc limit 100;
+select * from MatchMonitorDetails where Reason = 5 and HighStakeLicCustList is  null order by id desc limit 100;
+
+-- Check Sys Detect GB
+select * from CTSCustomerClassification where CategoryID IN (20900, 25900) and LastScannedDate = '2025-03-24 00:00:00.0000000' and Remark like 'Auto MatchID: %';
+
+select * from SystemParameter where ParameterID IN (20,29, 47,48, 120,121, 100,101, 128, 125, 162,163, 171,172,173,174);
+SELECT * FROM MatchMonitorRuleSetting;
+SELECT * FROM CTS_DataCenter.SportBettypeSetting;
+SELECT * From BettypeSetting;
+SELECT DISTINCT bettypeID, BettypeNameDisplay, BettypeOrder FROM BettypeSetting ORDER BY BettypeOrder;

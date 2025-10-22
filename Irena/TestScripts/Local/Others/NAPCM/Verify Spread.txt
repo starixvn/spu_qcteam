@@ -1,0 +1,18 @@
+dbo.f_CheckSPVersion(@@PROCID); -- nếu truyền IsTest = 1 vào sp orig, tới đoạn này nó gán lại bằng 0 hết.
+use CustDB;
+select * from dbo.CustomerClassSpreadClass where PolicyID in (1644, 1645, 1646, 1647);
+select * from dbo.CustomerClassSpread where PolicyID in (1644, 1645, 1646, 1647);
+select * from dbo.CustomerClassSpreadDetail where PolicyID in (1644, 1645, 1646, 1647);
+select * from dbo.CustomerClassSpreadLeagueGroup where PolicyID in (1644, 1645, 1646, 1647);
+select * from dbo.CustomerClassPeakHourRanger where IsTest = 1;
+select * from dbo.CustomerClassPeakHourRanger where IsTest = 0;
+exec dbo.Dot_Member_CustomerClassPeakHourDiff_xtest
+@Microsoft Power Platform Connectors = 0, @IsTest = 1, @Islive=2, @IsLicensee = 0, @RepUpdateTime = '2025-04-18 05:00:00.0000000' , @RowNum = 0, @maxRecords = 500;
+exec dbo.Dot_Member_CustomerClassPeakHourRange_xtest @IsTest = 1;
+exec dbo.Dot_Member_CustomerClassPeakHourSel_xtest
+@SiteID = 0, @Currency = 0, @CustomerClass = 200, @Microsoft Power Platform Connectors = 1, @LeagueGroupID = -1, @IsTest = 1, @Islive = 1, @IsLicensee = 1;
+
+
+
+
+

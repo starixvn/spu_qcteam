@@ -1,0 +1,14 @@
+select 'Normal BySport Pool ', count(1) as Total, min(createdtime) as MinScanTime, max(createdtime) as MaxScanTime from bodb_VR2Model.dbo.CustomerClassification_BySport_NormalPool union all
+select 'Normal General Pool', count(1) as Total, min(createdtime) as MinScanTime, max(createdtime) as MaxScanTime from
+bodb_VR2Model.dbo.CustomerClassification_NormalPool union all
+select 'Realtime BySport Pool', count(1) as Total, min(createdtime) as MinScanTime, max(createdtime) as MaxScanTime from bodb_VR2Model.dbo.CustomerClassification_BySport_RealtimeChanges union all
+select 'Realtime General Pool', count(1) as Total, min(createdtime) as MinScanTime, max(createdtime) as MaxScanTime from
+bodb_VR2Model.dbo.CustomerClassification_RealtimeChanges;
+
+select CONVERT(varchar(19), ModifiedDate, 120) AS ModifiedDate, count(1) AS Total
+from bodb_ODS.dbo.ODS_bettrans with(nolock)
+WHERE ModifiedDate >= '2025-05-17 11:00:37.250' AND ModifiedDate <= GETDATE()
+GROUP BY CONVERT(varchar(19), ModifiedDate, 120)
+HAVING count(1) > 20000
+ORDER BY ModifiedDate ASC;
+

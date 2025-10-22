@@ -1,0 +1,16 @@
+select top 500 b.*
+from dbo.bettrans as b with (nolock)
+inner join dbo.vw_Customer as cust on cust.custid = b.custid
+inner join dbo.Site as s with (nolock) on s.site = cust.site
+inner join dbo.match as m with (nolock) on m.matchid = b.matchid
+inner join dbo.League as l with (nolock) on l.leagueid = m.leagueid
+-- where m.matchid > 98656826
+where b.SequenceID > 121408449758 and b.SequenceID <= 121411051099
+and m.sporttype = 1
+and m.eventstatus = 'running'
+and b.status = 'running'
+and l.LeagueGroupID not in (42,72,74,108,113,122)
+and b.liveindicator = 1
+and (b.stake * b.actualrate) >= 500
+and s.isLicensee = 0
+;

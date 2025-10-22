@@ -1,0 +1,30 @@
+with CTE1 AS(
+  select custid, max(CreatedTime) as MaxTime
+  from dbo.CustomerClassification with(nolock)
+  where custid in ()
+  and CreatedDate = '2024-07-17 00:00:00.0000000'
+  group by custid
+  ),
+CTE2 AS(  
+select custid, createdtime, categoryid
+from dbo.CustomerClassification with(nolock) 
+  where custid in ()
+  and CreatedDate = '2024-07-17 00:00:00.0000000'  
+  )
+  select t2.CustID, t2.CategoryID
+  from CTE2 AS t2
+  inner join CTE1 AS t1 on t2.CustID = t1.CustID and t2.CreatedTime = t1.MaxTime;
+
+select * from SPU_Stats.AccessStats where functionid = 244;
+select c.CTSCustID, c.CustID, s.Probability, s.PredictTime, s.InsertedTime
+from CTS_DataCenter.Customer_InitialSmart as s
+  inner join CTS_DataCenter.CTSCustomer as c on c.CustID = s.CustID
+order by s.PredictTime asc;
+select c.CustID, GROUP_CONCAT(cc.CategoryName)
+from CTS_DataCenter.CTSCustomerClassification as c
+  inner join CTS_DataCenter.CustomerCategory as cc on cc.CategoryID = c.CategoryID
+where c.custid in ()
+group by c.CustID
+select custid, CustomerClass
+from dbo.custinfo with(nolock)
+where custid in ();

@@ -1,0 +1,192 @@
+{
+  "name": "CTS - OVERLOAD NEW TICKETS (Slack)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -680,
+        100
+      ],
+      "id": "e11dbc4c-a771-4e93-acf1-a45fac862aaa",
+      "name": "Start Event"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT CONVERT(VARCHAR(19), ModifiedDate, 120) AS ModifiedDate, COUNT(1) AS Total\nFROM bodb_ODS.dbo.ODS_bettrans_final_SiteDB01_batch01 with(nolock)\nWHERE ModifiedDate >= DATEADD(MINUTE, -16, GETDATE())\nGROUP BY CONVERT(VARCHAR(19), ModifiedDate, 120)\nHAVING COUNT(1) > 200\nORDER BY ModifiedDate ASC;"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        -500,
+        100
+      ],
+      "id": "72d9f087-bd23-413e-a5c4-3e844283b576",
+      "name": "Collect Data",
+      "credentials": {
+        "microsoftSql": {
+          "id": "H1YEZjIS2gxwN0wj",
+          "name": "Connect TESTDB053"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        200
+      ],
+      "id": "2e6b757a-a0f8-44c3-81fe-be2f3fcabd74",
+      "name": "Stop Event"
+    },
+    {
+      "parameters": {
+        "jsCode": "function formatDateGmt7(date) {\n    const gmt7 = new Date(date.getTime() + 7 * 60 * 60 * 1000);\n    const yyyy = gmt7.getFullYear();\n    const mm = String(gmt7.getMonth() + 1).padStart(2, '0');\n    const dd = String(gmt7.getDate()).padStart(2, '0');\n    const hh = String(gmt7.getHours()).padStart(2, '0');\n    const mi = String(gmt7.getMinutes()).padStart(2, '0');\n    const ss = String(gmt7.getSeconds()).padStart(2, '0');\n    return `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;\n}\n\nconst scannedTime = formatDateGmt7(new Date());\nconst env = \"LOCAL\";\n\nlet message = `*🔥ALERT🔥 [OVERLOAD NEW TICKETS - Threshold=20000]*\\n`;\nmessage += `*▪️Environment*: ${env}\\n`;\nmessage += `*▪️Scanned Time (GMT+7)*: ${scannedTime}\\n`;\nmessage += `*▪️Total New Tickets (GMT-4)*:`;\n\nif (Array.isArray(items) && items.length > 0) {\n    for (let item of items) {\n        const row = item.json;\n        message += `\\n      ModifiedDate: ${row.ModifiedDate} | Total: ${row.Total}`;\n    }\n} else {\n    message += `\\n       No data found or unexpected format.`;\n}\n\nreturn [\n  {\n    json: {\n      message: message\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        -20
+      ],
+      "id": "23c70e10-1cdc-45b3-9557-5f9689df6dc0",
+      "name": "Generate Report"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "36cbfcc4-5066-4c54-9eba-fa8c4550e14f",
+              "leftValue": "=msg.payload.length > 0",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -340,
+        100
+      ],
+      "id": "217d779c-1340-481d-99b6-6e20a689c02b",
+      "name": "Check Existing Data"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.slack.com/services/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",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{$json[\"message\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        -20
+      ],
+      "id": "e7c7514f-c0de-4529-beba-ed08262e07f6",
+      "name": "Notify Slack"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start Event": {
+      "main": [
+        [
+          {
+            "node": "Collect Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Data": {
+      "main": [
+        [
+          {
+            "node": "Check Existing Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Report": {
+      "main": [
+        [
+          {
+            "node": "Notify Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Existing Data": {
+      "main": [
+        [
+          {
+            "node": "Generate Report",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "96b5f4f4-afe8-498c-a517-a018ef610b9e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d275462fbdd910fe58086a03c877d8c3f69d8665c1661619151c6569760c228b"
+  },
+  "id": "KJMQmJP1OhcR28Qf",
+  "tags": []
+}

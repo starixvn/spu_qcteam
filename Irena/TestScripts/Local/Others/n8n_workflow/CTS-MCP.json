@@ -1,0 +1,202 @@
+{
+  "name": "GitLab Clone - Ollama Playwright Test - Slack Report",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gitlab-cts-mcp",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "GitLab Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "gitlab-cts-mcp"
+    },
+    {
+      "parameters": {
+        "command": "#!/bin/bash\n\n# Extract repository info from GitLab webhook\nREPO_URL=\"{{ $json.repository.git_http_url }}\"\nREPO_NAME=\"{{ $json.repository.name }}\"\nBRANCH=\"{{ $json.ref }}\"\nCOMMIT_SHA=\"{{ $json.after }}\"\n\necho \"Repository: $REPO_NAME\"\necho \"Branch: $BRANCH\"\necho \"Commit: $COMMIT_SHA\"\necho \"URL: $REPO_URL\"\n\n# Create workspace directory\nWORKSPACE=\"/tmp/n8n-workspace/$REPO_NAME-$(date +%s)\"\nmkdir -p $WORKSPACE\ncd $WORKSPACE\n\n# Clone repository\necho \"Cloning repository...\"\ngit clone $REPO_URL .\n\n# Checkout specific commit\necho \"Checking out commit: $COMMIT_SHA\"\ngit checkout $COMMIT_SHA\n\necho \"Code cloned successfully to: $WORKSPACE\"\necho \"WORKSPACE_PATH=$WORKSPACE\" > /tmp/workspace.env\n\n# List files in workspace\necho \"Files in workspace:\"\nls -la",
+        "options": {}
+      },
+      "id": "clone-code",
+      "name": "Clone Repository",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [460, 200]
+    },
+    {
+      "parameters": {
+        "command": "#!/bin/bash\n\n# Start Ollama service\necho \"Starting Ollama service...\"\n\n# Check if Ollama is already running\nif pgrep -x \"ollama\" > /dev/null; then\n    echo \"Ollama is already running\"\nelse\n    echo \"Starting Ollama...\"\n    # Start Ollama in background\n    ollama serve > /var/log/ollama.log 2>&1 &\n    sleep 10\n    \n    # Wait for Ollama to be ready\n    for i in {1..30}; do\n        if ollama list > /dev/null 2>&1; then\n            echo \"Ollama started successfully\"\n            break\n        fi\n        echo \"Waiting for Ollama to start... ($i/30)\"\n        sleep 2\n    done\nfi\n\n# Check available models\necho \"Available Ollama models:\"\nollama list\n\n# Pull required models if not available\necho \"Ensuring required models are available...\"\nollama pull llama3.2:latest || echo \"Failed to pull llama3.2, using available models\"\n\necho \"Ollama setup completed\"",
+        "options": {}
+      },
+      "id": "start-ollama",
+      "name": "Start Ollama",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "command": "#!/bin/bash\n\n# Start Playwright MCP Server\necho \"Starting Playwright MCP Server...\"\n\n# Kill existing MCP processes\npkill -f \"playwright-mcp\" || true\npkill -f \"mcp-server\" || true\nsleep 2\n\n# Load workspace path\nsource /tmp/workspace.env\n\n# Start Playwright MCP server\necho \"Starting Playwright MCP server for workspace: $WORKSPACE_PATH\"\n\n# Create MCP config for Playwright\ncat > /tmp/mcp-config.json << EOF\n{\n  \"mcpServers\": {\n    \"playwright\": {\n      \"command\": \"npx\",\n      \"args\": [\"@modelcontextprotocol/server-playwright\"]\n    },\n    \"filesystem\": {\n      \"command\": \"npx\",\n      \"args\": [\"@modelcontextprotocol/server-filesystem\", \"$WORKSPACE_PATH\"]\n    }\n  }\n}\nEOF\n\n# Start MCP servers in background\necho \"Starting Playwright MCP...\"\nnpx @modelcontextprotocol/server-playwright > /var/log/mcp-playwright.log 2>&1 &\nPLAYWRIGHT_PID=$!\n\necho \"Starting Filesystem MCP...\"\nnpx @modelcontextprotocol/server-filesystem \"$WORKSPACE_PATH\" > /var/log/mcp-filesystem.log 2>&1 &\nFILESYSTEM_PID=$!\n\necho \"MCP_PLAYWRIGHT_PID=$PLAYWRIGHT_PID\" > /tmp/mcp.env\necho \"MCP_FILESYSTEM_PID=$FILESYSTEM_PID\" >> /tmp/mcp.env\n\nsleep 5\necho \"Playwright MCP servers started successfully\"\necho \"Playwright PID: $PLAYWRIGHT_PID\"\necho \"Filesystem PID: $FILESYSTEM_PID\"",
+        "options": {}
+      },
+      "id": "start-playwright-mcp",
+      "name": "Start Playwright MCP",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [460, 400]
+    },
+    {
+      "parameters": {
+        "command": "#!/bin/bash\n\n# Load environment variables\nsource /tmp/workspace.env\nsource /tmp/mcp.env\n\necho \"Running test cases in workspace: $WORKSPACE_PATH\"\ncd \"$WORKSPACE_PATH\"\n\n# Initialize test results\nTEST_START_TIME=$(date '+%Y-%m-%d %H:%M:%S')\nTEST_RESULTS_FILE=\"/tmp/test-results-$(date +%s).json\"\n\necho \"{\n  \\\"start_time\\\": \\\"$TEST_START_TIME\\\",\n  \\\"workspace\\\": \\\"$WORKSPACE_PATH\\\",\n  \\\"tests\\\": []\" > \"$TEST_RESULTS_FILE\"\n\n# Check for different test frameworks and run accordingly\nTEST_EXIT_CODE=0\n\n# Check for package.json and npm tests\nif [ -f \"package.json\" ]; then\n    echo \"Found package.json, running npm tests...\"\n    \n    # Install dependencies\n    npm install\n    \n    # Run tests\n    if npm test > /tmp/npm-test.log 2>&1; then\n        echo \"NPM tests passed\"\n        TEST_STATUS=\"passed\"\n    else\n        echo \"NPM tests failed\"\n        TEST_STATUS=\"failed\"\n        TEST_EXIT_CODE=1\n    fi\n    \n    # Add npm test results\n    echo \",{\\\"type\\\": \\\"npm\\\", \\\"status\\\": \\\"$TEST_STATUS\\\", \\\"log\\\": \\\"/tmp/npm-test.log\\\"}\" >> \"$TEST_RESULTS_FILE\"\nfi\n\n# Check for Playwright tests\nif [ -f \"playwright.config.js\" ] || [ -f \"playwright.config.ts\" ]; then\n    echo \"Found Playwright config, running Playwright tests...\"\n    \n    # Install Playwright if not installed\n    npx playwright install\n    \n    # Run Playwright tests\n    if npx playwright test > /tmp/playwright-test.log 2>&1; then\n        echo \"Playwright tests passed\"\n        TEST_STATUS=\"passed\"\n    else\n        echo \"Playwright tests failed\"\n        TEST_STATUS=\"failed\"\n        TEST_EXIT_CODE=1\n    fi\n    \n    # Add Playwright test results\n    echo \",{\\\"type\\\": \\\"playwright\\\", \\\"status\\\": \\\"$TEST_STATUS\\\", \\\"log\\\": \\\"/tmp/playwright-test.log\\\"}\" >> \"$TEST_RESULTS_FILE\"\nfi\n\n# Check for Python tests\nif [ -f \"requirements.txt\" ] || [ -f \"pytest.ini\" ] || find . -name \"test_*.py\" | grep -q .; then\n    echo \"Found Python tests, running pytest...\"\n    \n    # Install requirements\n    [ -f \"requirements.txt\" ] && pip install -r requirements.txt\n    \n    # Run pytest\n    if python -m pytest > /tmp/pytest.log 2>&1; then\n        echo \"Python tests passed\"\n        TEST_STATUS=\"passed\"\n    else\n        echo \"Python tests failed\"\n        TEST_STATUS=\"failed\"\n        TEST_EXIT_CODE=1\n    fi\n    \n    # Add pytest results\n    echo \",{\\\"type\\\": \\\"pytest\\\", \\\"status\\\": \\\"$TEST_STATUS\\\", \\\"log\\\": \\\"/tmp/pytest.log\\\"}\" >> \"$TEST_RESULTS_FILE\"\nfi\n\n# Custom MCP integration test\necho \"Running MCP integration test...\"\nif ps -p \"$MCP_PLAYWRIGHT_PID\" > /dev/null && ps -p \"$MCP_FILESYSTEM_PID\" > /dev/null; then\n    echo \"MCP services are running\"\n    MCP_STATUS=\"passed\"\nelse\n    echo \"MCP services failed\"\n    MCP_STATUS=\"failed\"\n    TEST_EXIT_CODE=1\nfi\n\necho \",{\\\"type\\\": \\\"mcp_integration\\\", \\\"status\\\": \\\"$MCP_STATUS\\\", \\\"playwright_pid\\\": \\\"$MCP_PLAYWRIGHT_PID\\\", \\\"filesystem_pid\\\": \\\"$MCP_FILESYSTEM_PID\\\"}\" >> \"$TEST_RESULTS_FILE\"\n\n# Finalize test results\nTEST_END_TIME=$(date '+%Y-%m-%d %H:%M:%S')\necho \"],\n  \\\"end_time\\\": \\\"$TEST_END_TIME\\\",\n  \\\"overall_status\\\": \\\"$([ $TEST_EXIT_CODE -eq 0 ] && echo 'passed' || echo 'failed')\\\",\n  \\\"exit_code\\\": $TEST_EXIT_CODE\n}\" >> \"$TEST_RESULTS_FILE\"\n\necho \"TEST_RESULTS_FILE=$TEST_RESULTS_FILE\" > /tmp/test-summary.env\necho \"TEST_EXIT_CODE=$TEST_EXIT_CODE\" >> /tmp/test-summary.env\n\necho \"Test execution completed with exit code: $TEST_EXIT_CODE\"\necho \"Results saved to: $TEST_RESULTS_FILE\"\n\n# Display summary\ncat \"$TEST_RESULTS_FILE\"",
+        "options": {}
+      },
+      "id": "run-tests",
+      "name": "Run Test Cases",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "command": "#!/bin/bash\n\n# Load test results\nsource /tmp/test-summary.env\n\n# Read test results\nTEST_RESULTS=$(cat \"$TEST_RESULTS_FILE\")\n\n# Extract key information from GitLab webhook\nREPO_NAME=\"{{ $json.repository.name }}\"\nBRANCH=\"{{ $json.ref }}\"\nCOMMIT_SHA=\"{{ $json.after }}\"\nCOMMIT_MESSAGE=\"{{ $json.commits[0].message }}\"\nAUTHOR_NAME=\"{{ $json.commits[0].author.name }}\"\nCOMMIT_URL=\"{{ $json.commits[0].url }}\"\n\n# Determine status emoji and color\nif [ \"$TEST_EXIT_CODE\" -eq 0 ]; then\n    STATUS_EMOJI=\":white_check_mark:\"\n    STATUS_COLOR=\"good\"\n    STATUS_TEXT=\"PASSED\"\nelse\n    STATUS_EMOJI=\":x:\"\n    STATUS_COLOR=\"danger\"\n    STATUS_TEXT=\"FAILED\"\nfi\n\n# Create Slack message payload\ncat > /tmp/slack-payload.json << EOF\n{\n  \"text\": \"GitLab CI/CD Test Results\",\n  \"attachments\": [\n    {\n      \"color\": \"$STATUS_COLOR\",\n      \"title\": \"$STATUS_EMOJI Test Results: $STATUS_TEXT\",\n      \"fields\": [\n        {\n          \"title\": \"Repository\",\n          \"value\": \"$REPO_NAME\",\n          \"short\": true\n        },\n        {\n          \"title\": \"Branch\",\n          \"value\": \"${BRANCH#refs/heads/}\",\n          \"short\": true\n        },\n        {\n          \"title\": \"Commit\",\n          \"value\": \"<$COMMIT_URL|${COMMIT_SHA:0:8}>\",\n          \"short\": true\n        },\n        {\n          \"title\": \"Author\",\n          \"value\": \"$AUTHOR_NAME\",\n          \"short\": true\n        },\n        {\n          \"title\": \"Commit Message\",\n          \"value\": \"$COMMIT_MESSAGE\",\n          \"short\": false\n        },\n        {\n          \"title\": \"Test Details\",\n          \"value\": \"\\`\\`\\`json\\n$TEST_RESULTS\\n\\`\\`\\`\",\n          \"short\": false\n        }\n      ],\n      \"footer\": \"n8n GitLab CI/CD\",\n      \"ts\": $(date +%s)\n    }\n  ]\n}\nEOF\n\necho \"Slack payload created:\"\ncat /tmp/slack-payload.json\n\n# Send to Slack\necho \"Sending notification to Slack...\"\ncurl -X POST \\\n  -H 'Content-type: application/json' \\\n  --data @/tmp/slack-payload.json \\\n  https://hooks.slack.com/services/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\n\nif [ $? -eq 0 ]; then\n    echo \"Slack notification sent successfully\"\nelse\n    echo \"Failed to send Slack notification\"\nfi\n\n# Clean up temporary files\necho \"Cleaning up temporary files...\"\nrm -f /tmp/slack-payload.json\nrm -f /tmp/workspace.env\nrm -f /tmp/mcp.env\nrm -f /tmp/test-summary.env\n\necho \"Slack notification process completed\"",
+        "options": {}
+      },
+      "id": "slack-report",
+      "name": "Send Slack Report",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "command": "#!/bin/bash\n\n# Cleanup resources\necho \"Cleaning up resources...\"\n\n# Load environment files if they exist\n[ -f /tmp/workspace.env ] && source /tmp/workspace.env\n[ -f /tmp/mcp.env ] && source /tmp/mcp.env\n\n# Stop MCP processes\nif [ ! -z \"$MCP_PLAYWRIGHT_PID\" ]; then\n    echo \"Stopping Playwright MCP (PID: $MCP_PLAYWRIGHT_PID)\"\n    kill $MCP_PLAYWRIGHT_PID 2>/dev/null || true\nfi\n\nif [ ! -z \"$MCP_FILESYSTEM_PID\" ]; then\n    echo \"Stopping Filesystem MCP (PID: $MCP_FILESYSTEM_PID)\"\n    kill $MCP_FILESYSTEM_PID 2>/dev/null || true\nfi\n\n# Clean up workspace (keep last 5 workspaces)\nif [ ! -z \"$WORKSPACE_PATH\" ]; then\n    echo \"Cleaning up old workspaces...\"\n    find /tmp/n8n-workspace -maxdepth 1 -type d -name \"*-*\" | sort | head -n -5 | xargs rm -rf\nfi\n\n# Clean up log files older than 7 days\nfind /var/log -name \"*.log\" -mtime +7 -delete 2>/dev/null || true\nfind /tmp -name \"*test*.log\" -mtime +1 -delete 2>/dev/null || true\n\necho \"Cleanup completed\"",
+        "options": {}
+      },
+      "id": "cleanup",
+      "name": "Cleanup Resources",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"success\",\n  \"message\": \"GitLab CI/CD workflow completed\",\n  \"timestamp\": \"{{ $now }}\",\n  \"repository\": \"{{ $json.repository.name }}\",\n  \"branch\": \"{{ $json.ref }}\",\n  \"commit\": \"{{ $json.after }}\",\n  \"workflow_steps\": {\n    \"code_cloned\": true,\n    \"ollama_started\": true,\n    \"playwright_mcp_started\": true,\n    \"tests_executed\": true,\n    \"slack_notified\": true,\n    \"cleanup_completed\": true\n  }\n}",
+        "options": {}
+      },
+      "id": "webhook-response",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "GitLab Webhook": {
+      "main": [
+        [
+          {
+            "node": "Clone Repository",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Start Ollama",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Start Playwright MCP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clone Repository": {
+      "main": [
+        [
+          {
+            "node": "Run Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Ollama": {
+      "main": [
+        [
+          {
+            "node": "Run Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Playwright MCP": {
+      "main": [
+        [
+          {
+            "node": "Run Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Send Slack Report",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cleanup Resources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Slack Report": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup Resources": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "timezone": "Asia/Ho_Chi_Minh",
+    "executionOrder": "v1"
+  },
+  "staticData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "2"
+}

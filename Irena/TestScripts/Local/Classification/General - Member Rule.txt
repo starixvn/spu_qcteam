@@ -1,0 +1,196 @@
+Not enough BetCount -> keep current category
+
+-- New - Rule 1 - Special (All category)
+Soccer,  BC >= 10,  M < 0,  0 > WL > -5K RM 					(1, 499999, -4999, 10, 1, 1)
+Basketball,  BC >= 10,  M < 0,  0 > WL > -5K RM 				(2,  499999, -4999, 11, 1, 1)
+E-Sport,  BC >= 20,  M < 0,  0 > WL > -5K RM 					(43, 499999, -4999, 20, 1, 1)
+Other Sports,  BC >= 20,  M < 0,  0 > WL > -5K RM 				(99, 499999, -4999, 21, 1, 1)
+==> Result: Special: New, Credit & Licensee: Normal
+
+-- New - Rule 2 - All (Null)	
+Soccer,  BC < 10												(1, 499999, -4999, 9, 1, 1)
+Basketball,  BC < 10											(2, 499999, -4999, 8, 1, 1)
+E-Sport,  BC < 20												(43, 499999, -4999, 19, 1, 1)
+Other Sports,  BC < 20											(99, 499999, -4999, 18, 1, 1)
+Non Sports,  BC < 20											(229, 499999, -4999, 19, 1, 1) x
+==> Result: All: New
+
+-- Good - Rule 1 - All (All category)
+Soccer,  BC > 300,  M < -2,  TO > 150K RM,  AD >= 8				(1, 150001, -3002, 301, 8, 5)
+Basketball,  BC > 200,  M < -2,  TO > 100K RM,  AD >= 8			(2, 100001, -2002, 201, 9, 5)
+E-Sport,  E-Sport,  BC > 200,  M < -2,  TO > 100K RM,  AD >= 8	(43, 100001, -2002, 201, 8, 5)
+Other Sports,  BC > 200,  M < -2,  TO > 75K RM,  AD >= 8		(99, 75001, -1502, 201, 9, 5)
+Non Sports,  BC >= 20,  M < 0									(229, 150001, -3002, 301, 10, 5)x (229, 499999, -4999, 20, 1, 1)x
+==> Result: All: Good
+
+-- Normal - Rule 1 - Special (All category)
+Soccer,  BC >= 10,  M < 0,  WL <= -5K RM						(1, 500000, -5000, 10, 1, 1)
+Basketball,  BC >= 10,  M < 0,  WL <= -5K RM					(2, 500001, -5001, 11, 1, 1)
+E-Sport,  BC >= 20,  M < 0,  WL <= -5K RM						(43, 500000, -5000, 20, 1, 1)
+Other Sports,  BC >= 20,  M < 0,  WL <= -5K RM					(99, 500001, -5001, 21, 1, 1)
+==> Result: Special: Normal
+
+-- Normal - Rule 2 - Credit (All category)
+Soccer,  BC >= 10,  M >= 0,  WL < 10K RM						(1, 999999, 0, 10, 1, 1)
+Basketball,  BC >= 10,  M >= 0,  WL < 10K RM					(2, 999999, 9999, 11, 1, 1)
+E-Sport,  BC >= 20,  M >= 0,  WL < 5K RM						(43, 499999, 0, 20, 1, 1)
+Other Sports,  BC >= 20,  M >= 0,  WL < 5K RM					(99, 499999, 4999, 21, 1, 1)
+==> Result: Credit: Normal, Special & Licensee: Probation
+
+-- Normal - Rule 3 - Licensee (excl Special) (All category)
+Soccer,  BC >= 10,  -2 <= M < 0									(1, 100000, -1500, 10, 1, 1)
+Basketball,  BC >= 10,  -2 <= M < 0								(2, 100000, -2000, 11, 1, 1)
+E-Sport,  BC >= 20,  -2 <= M < 0								(43, 100000, -1500, 20, 1, 1)
+Other Sports,  BC >= 20,  -2 <= M < 0							(99, 100000, -2000, 21, 1, 1)
+Non Sports,  BC >= 20,  0 <= M < 3								(229, 100000, 0, 20, 1, 1)x (229, 100000, 2999, 21, 1, 1)x
+Non Sports,  BC >= 20,  M >= 3, WL < 50K RM				 		(229, 1000000, 49999, 20, 1, 1) x
+==> Result: Credit & Licensee & Special (Non Sports): Normal, Special: New
+
+-- Normal - Rule 4 - All (All category)
+Soccer,  10 <= BC <= 300,  M < -2,  TO > 150K RM,  AD >= 8		(1, 150001, -3002, 300, 8, 5)
+Basketball,  10 <= BC <= 200,  M < -2,  TO > 100K RM,  AD >= 8	(2, 100001, -2002, 200, 9, 5)
+E-Sport,  20 <= BC <= 200,  M < -2,  TO > 100K RM,  AD >= 8		(43, 100001, -2002, 200, 8, 5)
+Other Sports,  20 <= BC <= 200,  M < -2,  TO > 75K RM,  AD >= 8	(99, 75001, -1502, 200, 9, 5)
+==> Result: Credit & Licensee & Special (Non Sports): Normal, Special: New
+
+-- Normal - Rule 5 - All (All category)
+Soccer,  BC > 300,  M >= -2,  TO > 150K RM,  AD >= 8			(1, 150001, -2001, 301, 8, 5)
+Basketball,  BC > 200,  M >= -2,  TO > 100K RM,  AD >= 8		(2, 100001, -1001, 201, 9, 5)
+E-Sport,  BC > 200,  M >= -2,  TO > 100K RM,  AD >= 8			(43, 100001, -1001, 201, 8, 5)
+Other Sports,  BC > 200,  M >= -2,  TO > 75K RM,  AD >= 8		(99, 75001, -501, 201, 9, 5)
+==> Result: Credit & Licensee & Special (Non Sports): Normal, Special: New
+
+-- Normal - Rule 6 - All (All category)
+Soccer,  BC > 300,  M < -2,  TO <= 150K RM,  AD >= 8			(1, 150000, -3001, 301, 8, 5)
+Basketball,  BC > 200,  M < -2,  TO <= 100K RM,  AD >= 8		(2, 100000, -2001, 201, 9, 5)
+E-Sport,  BC > 200,  M < -2,  TO <= 100K RM,  AD >= 8			(43, 100000, -2001, 201, 8, 5)
+Other Sports,  BC > 200,  M < -2,  TO <= 75K RM,  AD >= 8		(99, 75000, -1501, 201, 9, 5)
+==> Result: Credit & Licensee & Special (Non Sports): Normal, Special: New
+
+-- Normal - Rule 7 - All (All category)
+Soccer,  BC > 300,  M < -2,  TO > 150K RM,  AD < 8				(1, 150001, -3002, 301, 7, 5)
+Basketball,  BC > 200,  M < -2,  TO > 100K RM,  AD < 8			(2, 100001, -2002, 201, 7, 5)
+E-Sport,  BC > 200,  M < -2,  TO > 100K RM,  AD < 8				(43, 100001, -2002, 201, 7, 5)
+Other Sports,  BC > 200,  M < -2,  TO > 75K RM,  AD < 8			(99, 75001, -1502, 201, 7, 5)
+==> Result: Credit & Licensee & Special (Non Sports): Normal, Special: New
+
+-- Probation - Rule 1 - Credit (Null, New, Normal, Good)
+Soccer,  BC >= 10,  M >= 0,  WL >= 10K RM						(1, 1000000, 10000, 10, 10, 9)
+Basketball,  BC >= 10,  M >= 0,  WL >= 10K RM					(2, 1100000, 11000, 11, 11, 9)
+E-Sport,  BC >= 20,  M >= 0,  WL >= 5K RM						(43, 500000, 5000, 20, 10, 9)
+Other Sports,  BC >= 20,  M >= 0,  WL >= 5K RM					(99, 600000, 6000, 21, 10, 9)
+Non Sports,  BC >= 20,  M >= 3,  WL >= 50K RM					(229, 1500000, 50000, 20, 10, 9)x (229, 1500000, 50001, 21, 10, 9)x
+==> Result: All: Probation
+
+-- Probation - Rule 2 - Licensee (Null, New, Normal, Good)
+Soccer,  BC >= 10,  M >= 0										(1, 900000, 9000, 10, 10, 9)
+Basketball,  BC >= 10,  M >= 0									(2, 800000, 8000, 11, 11, 9)
+E-Sport,  BC >= 20,  M >= 0										(43, 400000, 4000, 20, 10, 9)
+Other Sports,  BC >= 20,  M >= 0								(99, 300000, 3000, 21, 10, 9)
+==> Result: Special & Licensee: Probation, Credit: Normal
+
+-- Probation - Rule 3 - All (Null, New)
+E-Sport,  BC > 10,  M > 50										(43, 110000, 60000, 11, 11, 9)
+==> Result: All: Probation
+
+-- Probation - Rule 4 - All (Smart)
+Soccer,  BC >= 20, 0 <= M <= 1, WL <= 10K RM					(1, 1000000, 10000, 20, 10, 9)
+Basketball,  BC >= 10, 0 <= M <= 1, WL <= 10K RM				(2, 900000, 9000, 10, 10, 9)
+E-Sport,  BC >= 30, 0 <= M <= 2, WL <= 5K RM					(43, 250000, 5000, 30, 10, 9)
+Other Sports,  BC >= 30, 0 <= M <= 2, WL <= 5K RM				(99, 200000, 4000, 31, 10, 9)
+==> Result: All: Probation
+
+-- Probation - Rule 5 - All (Risky)
+Soccer,  BC >= 20, 0 <= M <= 1, WL <= 25K RM					(1, 2500000, 25000, 20, 10, 9)
+Basketball,  BC >= 10, 0 <= M <= 1, WL <= 15K RM				(2, 1500000, 15000, 10, 10, 9)
+E-Sport,  BC >= 30, 0 <= M <= 2, WL <= 10K RM					(43, 1000000, 10000, 30, 10, 9)
+Other Sports,  BC >= 30, 0 <= M <= 2, WL <= 10K RM				(99, 1000000, 10000, 31, 10, 9)
+==> Result: All: Probation
+
+-- Probation - Rule 6 - All (Probation)
+Soccer,  10 <= BC < 20,0 <= M <= 1,WL > 25K RM					(1, 2500001, 25001, 15, 10, 9)
+E-Sport,  10 <= BC < 30,0 <= M <= 2,WL > 10K RM					(43, 500001, 10001, 25, 10, 9)
+Other Sports, 10 <= BC < 30,0 <= M <= 2,WL > 10K RM				(99, 500001, 10001, 29, 10, 9)
+==> Result: All: Probation
+
+-- Probation - Rule 7 - All (Probation)
+Non Sports, BC >= 20,3 <= M < 5,WL >= 100K RM,WinDay >= 60% of ActiveDays (229, 4000000, 120000, 21, 10, 6) x (229, 5000000, 150000, 20, 10, 7)x
+==> Result: All: Probation
+
+-- Probation - Rule 8 - All (Probation)
+Soccer,  BC >= 20,0 <= M <= 1,WL <= 25K RM									(1, 2500000, 25000, 20, 10, 6)
+Basketball,  BC >= 10,0 <= M <= 1,WL <= 15K RM								(2, 1500000, 15000, 10, 10, 6)
+E-Sport,  BC >= 30,0 <= M <= 2,WL <= 10K RM									(43, 500000, 10000, 30, 10, 6)
+Other Sports,  BC >= 30,0 <= M <= 2,WL <= 10K RM							(99, 500000, 10000, 31, 10, 6)
+Non Sports, BC >= 20,M >= 5,WL < 100K RM, WinDay >= 60% of ActiveDays 	    (229, 2000000, 99999, 21, 10, 6)x(229, 1500000, 99999, 20, 10, 8)x
+==> Result: All: Probation
+
+-- Probation - Rule 9 - All (Probation)
+Non Sports, BC >= 20,M >= 5,WL >= 100K RM, WinDay < 60% of ActiveDays 	     (229, 2000000, 100000, 21, 10, 4)x(229, 1500000, 100001, 20, 10, 5)x
+==> Result: All: Probation
+
+-- Probation - Rule 10 - All (Probation)
+Soccer,  10 <= BC < 20,M > 1,WL > 25K RM									(1, 2000001, 25001, 15, 10, 9)
+E-Sport,  10 <= BC < 30,M > 2,WL > 20K RM									(43, 900001, 20001, 25, 10, 9)
+Other Sports, 10 <= BC < 30, M > 2,WL > 20K RM								(99, 900001, 20001, 29, 10, 9)
+==> Result: All: Probation
+
+-- Probation - Rule 12 - All (Probation)
+Soccer,  BC >= 20,M > 1,WL <= 25K RM										(1, 2000000, 25000, 20, 10, 9)
+Basketball,  BC >= 10,M > 1,WL <= 15K RM									(2, 1000000, 15000, 10, 10, 9)
+E-Sport,  BC >= 30,M > 2,WL <= 10K RM										(43, 400000, 10000, 30, 10, 9)
+Other Sports,  BC >= 30,M > 2,WL <= 10K RM									(99, 400000, 10000, 31, 10, 9)
+==> Result: All: Probation
+
+-- Smart - Rule 1 - All (All, excl Smart)
+Soccer,  BC >= 20, 0 <= M <= 1, WL > 25K RM									(1, 2500001, 25001, 20, 10, 6)
+Basketball,  BC >= 10, 0 <= M <= 1, WL > 15K RM								(2, 1500001, 15002, 10, 10, 6)
+E-Sport,  BC >= 30, 0 <= M <= 2, WL > 10K RM								(43, 550000, 11000, 30, 10, 6)
+Other Sports,  BC >= 30, 0 <= M <= 2, WL > 10K RM							(99, 550000, 11000, 31, 10, 6)
+Non Sports,  BC >= 20, M >= 5, WL >= 100K RM, WinDay >= 60% of ActiveDays	(229, 2000000, 100000, 20, 10, 6)x(229, 1500000, 100001, 21, 10, 7) (incl Smart)x
+Non Sports,  BC >= 20,5 <= M < 7,WL >= 200K RM,WinDay >= 80% of ActiveDays  (229, 4000000, 200000, 20, 10, 8)x(229, 3500000, 200001, 21, 10, 9)x (not meet Risky) 
+Non Sports,  BC >= 20,M >= 7,WL < 200K RM,WinDay >= 80% of ActiveDays 		(229, 1500000, 105000, 20, 10, 9)x(229, 2000000, 199999, 21, 10, 8)x (not meet Risky) 
+Non Sports,  BC >= 20,M >= 7,WL >= 200K RM,WinDay < 80% of ActiveDays       (229, 3000000, 210000, 20, 10, 6)x(229, 2500000, 200001, 21, 10, 7)x (not meet Risky)                                                          
+==> Result: All: Smart
+
+
+-- Smart - Rule 2 - All (All, excl Smart and Risky)
+E-Sport,  BC >= 30,M > 2,10K RM < WL <= 20K RM								(43, 900000, 20000, 30, 10, 6)
+Other Sports,  BC >= 30,M > 2,10K RM < WL <= 20K RM							(99, 900000, 20000, 31, 10, 6)
+==> Result: All: Smart
+
+-- Smart - Rule 3 - All (Risky)
+Soccer,  BC >= 20, M > 1, WL <= 10K RM										(1, 900000, 10000, 20, 10, 6)
+Basketball,  BC >= 10, M > 1, WL <= 10K RM									(2, 900000, 10000, 10, 10, 6)
+==> Result: All: Smart
+
+-- Smart - Rule 4 - All (Smart)
+Soccer,  0 <= M <= 1, WL > 10K RM											(1, 1100000, 10001, 20, 10, 6)
+Basketball,  0 <= M <= 1, WL > 10K RM										(2, 1000001, 10001, 10, 10, 6)
+E-Sport,  0 <= M <= 2, WL > 5K RM											(43, 3000000, 6000, 30, 10, 6)
+Other Sports,  0 <= M <= 2, WL > 5K RM										(99, 3000000, 6000, 31, 10, 6)
+==> Result: All: Smart
+
+-- Smart - Rule 5 - All (Smart)
+Soccer,  M > 1, 0 < WL <= 25K RM											(1, 2000000, 25000, 20, 10, 6)
+Basketball,  M > 1, 0 < WL <= 15K RM										(2, 1000000, 15000, 10, 10, 6)
+E-Sport,  M > 2, 0 < WL <= 20K RM											(43, 1500000, 20000, 30, 10, 6)
+Other Sports,  M > 2, 0 < WL <= 20K RM										(99, 1500000, 20000, 31, 10, 6)
+==> Result: All: Smart
+
+-- Risky - Rule 1 - (All, excl Risky) 
+Soccer,  BC >= 20, M > 1, WL > 25K RM										(1, 2000001, 25001, 20, 10, 9)
+Basketball,  BC >= 10, M > 1, WL > 15K RM									(2, 1000001, 15001, 10, 10, 9)
+E-Sport,  BC >= 30, M > 2, WL > 20K RM										(43, 900001, 20001, 30, 10, 9)
+Other Sports,  BC >= 30, M > 2, WL > 20K RM									(99, 900001, 20001, 31, 10, 9)
+Non Sports,  BC >= 20, M >= 7, WL >= 200K RM, WinDay >= 80% of ActiveDays 	(229, 3000000, 210000, 20, 10, 8)x(229, 2500000, 200001, 21, 10, 9)x (incl Risky)
+==> Result: All: Risky
+
+-- Risky - Rule 2 - (Risky) 
+Soccer,  M > 1, WL > 10K RM													(1, 910001, 10001, 20, 10, 9)
+Basketball,  M > 1, WL > 10K RM												(2, 910001, 10001, 10, 10, 9)
+E-Sport,  M > 2, WL > 10K RM												(43, 500001, 10001, 30, 10, 9)
+Other Sports,  M > 2, WL > 10K RM											(99, 500001, 10001, 31, 10, 9)
+==> Result: All: Risky
+
+

@@ -1,0 +1,55 @@
+/*Check tập data missing*/
+select * from CTSCustomer where siteid=0; 
+select * from ArchiveCustomer_CTSCustomer where custid = XXX;
+select * from CTS_DataCenter.CTSCustomerClassification where custid = XXX;
+select * from CTS_DataCenter.CTSCustomerClassification_BySport where custid = XXX;
+select * from CTS_Archive.CTSCustomerAssociationStatus where custid = XXX;
+SELECT * FROM AssociationByDevice where ctscustid = XXX;
+select * from CustDCSAccount where CTScustid = XXX;
+
+/*Step 0. Lấy vết CTSCustID cũ*/
+opt1: Cust này ko có Ass by Device và CustDCSAccount nên ko cần giữ vết.
+opt2: 
+SELECT CTSCustID, CustID FROM CTS_DataCenter.CTSCustomer 
+where CustID IN (XXX);
+
+/*Step 1. Remove data sai (Cust, CC)*/
+DELETE FROM CTS_DataCenter.CTSCustomer 
+WHERE CustID IN (XXX);
+
+/*Step 2. Chạy metaverse (Option 1)*/
+XXX
+
+/*Step 3. Update lại CTSCustID*/
+opt1: Cust này ko có Ass by Device và CustDCSAccount nên ko cần giữ vết.
+opt2: 
+UPDATE CTS_DataCenter.CTSCustomer 
+SET CTSCustID = 
+WHERE CustID = ;
+
+/*Step 4. Rescan lại General CC (Option 3)*/
+
+/*Step 5. Update lại CTSCustID cũ cho History, Log, LastTicketDate*/
+opt1: Cust này theo CTSCustID mới nên ignore
+opt2: 
+UPDATE CTS_DataCenter.CTSCustomerClassification_History AS h
+  INNER JOIN CTS_DataCenter.CTSCustomer AS cus on cus.CustID = h.CustID
+SET h.CTSCustID = cus.CTSCustID
+WHERE h.CustID in (XXX);
+UPDATE CTS_DataCenter.CTSCustomerClassification_Log AS h
+  INNER JOIN CTS_DataCenter.CTSCustomer AS cus on cus.CustID = h.CustID
+SET h.CTSCustID = cus.CTSCustID
+WHERE h.CustID in (XXX);
+UPDATE CTS_Archive.CTSCustomerAssociationStatus AS h
+  INNER JOIN CTS_DataCenter.CTSCustomer AS cus on cus.CustID = h.CustID
+SET h.CTSCustID = cus.CTSCustID
+WHERE h.CustID in (XXX);
+
+/*Step 6. Update lại LastLoginTime cho đúng*/
+opt1: Cust này ko có CustDCSAccount nên ignore
+opt2: 
+UPDATE CTS_DataCenter.CTSCustomer AS cus
+  inner join CTS_DataCenter.CustDCSAccount AS ca ON ca.CTSCustID = cus.CTSCustID
+  inner join DCS_DataCenter.Account AS a ON a.AccountID = ca.AccountID
+SET cus.LastLoginTime = a.LastLoginTime
+WHERE cus.CustID in (XXX) AND a.IsCTSTransformed  = 1;
