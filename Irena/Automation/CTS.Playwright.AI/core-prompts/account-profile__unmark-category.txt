@@ -1,0 +1,11 @@
+0. Define variable: let ip_category = "{{ip_category}}";
+1. Go to {{baseURL}}/Home
+2. Fill "{{ip_key}}" in input#txtInput and press Enter
+3. Zoom browser: await page.evaluate(() => {document.body.style.zoom = '0.8';});
+4. Click li#customer-class-tab
+5. Click button#btnunmarkcategory
+6. Fill "Auto Test Unmark Problem Category" in textarea#txtCCPAUnmarkComment
+7. Click button#btnCCSaveUnmark
+8. Refresh page and wait 5 seconds
+9. Assert span#spanFlagEvidence has text "None"
+10. Assert span#spanNextCategoryScanDate has text "None"

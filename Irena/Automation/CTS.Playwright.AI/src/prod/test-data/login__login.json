@@ -1,0 +1,6 @@
+[
+  {"module":"Common","code":"C-00001","ip_username":"starix93","ip_password":"Irena123","op_endpoint":"Home"},
+  {"module":"Common","code":"C-00002","ip_username":"starix93000","ip_password":"Irena123","op_endpoint":"UserLogin/Login"},
+  {"module":"Common","code":"C-00003","ip_username":"starix93","ip_password":"Irena123000","op_endpoint":"UserLogin/Login"},
+  {"module":"Common","code":"C-00004","ip_username":"starix93000","ip_password":"Irena123000","op_endpoint":"UserLogin/Login"}
+]

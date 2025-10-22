@@ -1,0 +1,60 @@
+{
+    "local": {
+        "credentials": [
+            {   
+                "client":"mysql",
+                "server":"ctsMain",
+                "host": "10.18.200.70",
+                "port": 3307,
+                "username": "aXJlbmEudm4=",
+                "password": "MTIzNDU2"
+            },
+            {   
+                "client":"mssql",
+                "server":"dbCust",
+                "host": "10.18.200.54",
+                "port": 1433,
+                "username": "dGVzdHRlYW0=",
+                "password": "QHF1YWxpdHkj"
+            },
+            {   
+                "client":"mssql",
+                "server":"dbProd",
+                "host": "10.18.200.17",
+                "port": 1433,
+                "username": "dGVzdHRlYW0=",
+                "password": "QHF1YWxpdHkj"
+            },
+            {   
+                "client":"mssql",
+                "server":"dbTrans",
+                "host": "10.18.200.55",
+                "port": 1433,
+                "username": "dGVzdHRlYW0=",
+                "password": "QHF1YWxpdHkj"
+            },
+            {   
+                "client":"mssql",
+                "server":"db061",
+                "host": "10.18.200.56",
+                "port": 1433,
+                "username": "c3B1dGVhbQ==",
+                "password": "QHNwdXRlYW0j"
+            },
+            {   
+                "client":"mssql",
+                "server":"db053",
+                "host": "10.18.200.58",
+                "port": 1433,
+                "username": "dGVzdHRlYW0=",
+                "password": "QHF1YWxpdHkj"
+            }
+        ]
+    },
+    "uat": {
+        "credentials": []
+    },
+    "prod": {
+        "credentials": []
+    }
+}

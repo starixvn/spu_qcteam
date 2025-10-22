@@ -1,0 +1,59 @@
+{
+    "local": {
+        "browserList": "chrome,firefox",
+        "baseURL": "https://cts.nexdev.net/main",
+        "headless": false,
+        "parallel": false,
+        "retries": 2,
+        "workers": 1,
+        "ci_mode": false,
+        "credentials": {
+            "admin": {
+                "username": "aXJlbmE=",
+                "password": "Mjg4MTA1"
+            },
+            "user": {
+                "username": "aXJlbmF0ZXN0",
+                "password": "Mjg4MTA1"
+            }
+        }
+    },
+    "uat": {
+        "browserList": "firefox",
+        "baseURL": "https://cts.starixuat.com",
+        "headless": false,
+        "parallel": false,
+        "retries": 2,
+        "workers": 1,
+        "ci_mode": false,
+        "credentials": {
+            "admin": {
+                "username": "c3Rhcml4OTM=",
+                "password": "SXJlbmExMjM="
+            },
+            "user": {
+                "username": "",
+                "password": ""
+            }
+        }
+    },
+    "prod": {
+        "browserList": "chrome,firefox",
+        "baseURL": "https://cts.oneops.net",
+        "headless": false,
+        "parallel": false,
+        "retries": 2,
+        "workers": 1,
+        "ci_mode": false,
+        "credentials": {
+            "admin": {
+                "username": "c3Rhcml4OTM=",
+                "password": "SXJlbmExMjM="
+            },
+            "user": {
+                "username": "",
+                "password": ""
+            }
+        }
+    }
+}

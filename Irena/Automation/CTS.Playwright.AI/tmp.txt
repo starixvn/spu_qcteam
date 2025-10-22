@@ -1,0 +1,72 @@
+FROM mcr.microsoft.com/playwright:v1.54.0-jammy
+
+# Set working directory
+WORKDIR /app
+
+# Define environment variables with defaults
+ENV ENV=local \
+    BROWSER=chrome \
+    MODE=''
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci && npm install dotenv
+
+# Install selected browsers
+RUN npx playwright install chromium firefox msedge --with-deps
+
+# Create cache directories
+RUN mkdir -p ~/.cache/ms-playwright/
+
+# Copy remaining files
+COPY . .
+
+# Cache the Playwright browser binaries
+VOLUME ["~/.cache/ms-playwright/"]
+
+# Create a startup script
+RUN echo '#!/bin/sh\nnode runner.js ENV=${ENV} BROWSER=${BROWSER} MODE=${MODE}' > /app/start.sh && \
+    chmod +x /app/start.sh
+
+# Set default command to use the startup script
+CMD ["/app/start.sh"]
+
+
+/*
+FROM hub.nexdev.net/base/dotnet/core/sdk:8.0-alpine AS builder
+
+WORKDIR /src
+
+COPY ["./src/Fanex.NAP.SPU.CTS.AgencyCC", "Fanex.NAP.SPU.CTS.AgencyCC/"]
+
+COPY ["./src/Fanex.NAP.SPU.CTS.AgencyCC.JobService/Fanex.NAP.SPU.CTS.AgencyCC.JobService.csproj", "Fanex.NAP.SPU.CTS.AgencyCC.JobService/"]
+
+WORKDIR "/src/Fanex.NAP.SPU.CTS.AgencyCC.JobService"
+
+RUN dotnet nuget add source http://nuget.nexdev.net/api/v2
+
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet restore -v n -r linux-x64
+
+COPY ./src/Fanex.NAP.SPU.CTS.AgencyCC.JobService .
+
+RUN dotnet publish -r linux-x64 --self-contained false -o /app
+
+FROM hub.nexdev.net/base/dotnet/core/aspnet:8.0-alpine AS base
+
+WORKDIR /app
+
+COPY --from=builder /app .
+
+ENTRYPOINT ["dotnet", "Fanex.NAP.SPU.CTS.AgencyCC.JobService.dll"]
+
+ENV TZ="America/La_Paz"
+*/
+
+file gitlab-ci.yml
+include:
+    - project: ci/core-cicd
+      ref: main
+      file: nexcel.gitlab-ci.yml

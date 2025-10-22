@@ -1,0 +1,11 @@
+{
+    "local": {
+        "baseURL": "https://cts-api.nexdev.net/v1/api"
+    },
+    "uat": {
+        "baseURL": ""
+    },
+    "prod": {
+        "baseURL": ""
+    }
+}

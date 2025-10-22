@@ -1,0 +1,27 @@
+[
+    {
+        "module": "Common",
+        "code": "C-00005",
+        "ip_key": "NAS001",
+        "op_endpoint": "Account/Index/1001093075",
+        "op_username": "NAS001",
+        "op_loginname": "NAS001",
+        "op_custstatus": "Open",
+        "op_subscriber": "Alpha789y",
+        "op_site": "y789",
+        "op_role": "Super"
+    },
+    {
+        "module": "Common",
+        "code": "C-00006",
+        "ip_key": "NAS001M001",
+        "op_endpoint": "Account/Index/1001093076",
+        "op_username": "NAS001M001",
+        "op_loginname": "NAS001M001",
+        "op_custstatus": "Open",
+        "op_subscriber": "Alpha789y",
+        "op_site": "y789",
+        "op_role": "Master"
+    },
+
+]
