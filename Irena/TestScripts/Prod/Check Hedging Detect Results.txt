@@ -1,6 +1,9 @@
+/* Server - DB: dbtrans - bodb02 */
+
+
 select top 500 b.*
 from dbo.bettrans as b with (nolock)
-inner join dbo.vw_Customer as cust on cust.custid = b.custid
+inner join dbo.vw_Customer as cust  with(nolock) on cust.custid = b.custid
 inner join dbo.Site as s with (nolock) on s.site = cust.site
 inner join dbo.match as m with (nolock) on m.matchid = b.matchid
 inner join dbo.League as l with (nolock) on l.leagueid = m.leagueid

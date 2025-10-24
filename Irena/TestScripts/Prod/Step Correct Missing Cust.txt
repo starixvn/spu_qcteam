@@ -1,3 +1,6 @@
+/* Server - DB: cts - CTS_DataCenter, DCS_DataCenter */
+
+
 /*Check tập data missing*/
 select * from CTSCustomer where siteid=0; 
 select * from ArchiveCustomer_CTSCustomer where custid = XXX;

@@ -1,0 +1,54 @@
+/* Server - DB: cts - CTS_DataCenter, DCS_DataCenter */
+
+
+-- step 1: Latest Transaction -> Search Username
+-- step 2: Check Qland
+-- FromDate, ToDate
+select DATE_SUB(CURDATE(), INTERVAL 90 DAY) AS FromDate, CURDATE() AS ToDate;-- 2025-07-19 00:00:00.0000000    2025-10-17 00:00:00.0000000
+
+-- CTSCustomer inserted
+select CTSCustID, Site, SubscriberID, IFNULL(InsertedTime,CreatedDate) AS CustInsertedTime from CTS_DataCenter.CTSCustomer where Username='supertestte120201009' or RegisterName='DDA8191B001';-- 103206900    12Bet    6    2023-04-24 14:30:58.2740000
+select ID, SubscriberID, LastLoginTime from DCS_DataCenter.MBAccount where LoginName = 'DDA8191B001'; -- 3159    6    2025-10-20 23:06:16.4890000
+select AccountID, SubscriberID, LastLoginTime from DCS_DataCenter.Account where LoginName = 'DDA8191B001';-- 836596    6    2025-08-01 15:23:08.8830000
+
+-- Mb App: IP, Device
+select count(distinct IPID) as MBIP from DCS_DataCenter.MBTransaction07 where MBAccountID = 2228 and TransTime >= GREATEST('2025-07-18 05:37:09.9400000
+',(DATE_SUB(CURDATE(), INTERVAL 90 DAY))) and TransTime < CURDATE() and IPID > 0;-- 31
+select count(distinct MBDeviceID) as MBDevice from DCS_DataCenter.MBTransaction07 where MBAccountID = 2228 and TransTime >= GREATEST('2025-07-18 05:37:09.9400000
+',(DATE_SUB(CURDATE(), INTERVAL 90 DAY))) and TransTime < CURDATE() and MBDeviceID > 0;-- 2
+
+-- Desktop, Mb Web: IP, Device
+select count(distinct IP) as IP from DCS_DataCenter.AccountIP where AccountID = 110993536 and LastTransDate between DATE_SUB(CURDATE(), INTERVAL 90 DAY) and CURDATE() and IP <> ''; -- 4
+select count(distinct DeviceID), min(LastTransDate), max(LastTransDate) as Device from DCS_DataCenter.AccountDevice where AccountID = 110993536 and LastTransDate between DATE_SUB(CURDATE(), INTERVAL 90 DAY) and CURDATE() and DeviceID > 0;-- 5
+
+-- Mb App: Bot, Invalid, Total Login
+select sum(case when FlaggedGroupID = 3 then TotalTrans else 0 end) as MBBot, -- 0
+       sum(case when FlaggedGroupID = 2 then TotalTrans else 0 end) as MBInvalid -- 0
+from DCS_DataTrace.MBLoginTransactionSummary as l 
+where MBAccountID = 2228 and TransDate between GREATEST('2025-07-18 05:37:09.9400000
+',(DATE_SUB(CURDATE(), INTERVAL 90 DAY))) and CURDATE();
+
+select count(id) as MBTotalLogin from  DCS_DataCenter.MBTransaction07 -- 2421
+where MBAccountID = 2228 and TransTime >= GREATEST('2025-07-18 05:37:09.9400000
+',(DATE_SUB(CURDATE(), INTERVAL 90 DAY))) and TransTime < DATE_SUB(CURDATE(), INTERVAL -1 DAY);
+
+-- Desktop, Mb Web: Bot, Invalid, Total Login, Desktop, Mb Web
+select sum(case when FlaggedGroupID = 3 then TotalTrans else 0 end) as Bot, -- 0
+       sum(case when FlaggedGroupID = 2 then TotalTrans else 0 end) as Invalid, -- 1
+       sum(TotalTrans) as TotalLogin -- % Bot, % Invalid Browser
+from DCS_DataTrace.LoginTransactionSummary as l 
+where AccountID = 110993536 and TransDate between DATE_SUB(CURDATE(), INTERVAL 90 DAY) and CURDATE();
+
+select sum(DeviceDesktop)-- 3
+, sum(DeviceMobile) -- 136
+, sum(TotalLogin)-- 139
+, max(TransDate)-- 2025-10-19
+from DCS_DataCenter.SumAccountLogin where AccountID = 110993536 and TransDate >= DATE_SUB(CURDATE(), INTERVAL 90 DAY); 
+
+select count(case when dt.GroupName = 'Desktop' then 1 else null end) as Desktop,-- 0
+    count(case when dt.GroupName = 'Mobile' then 1 else null end) as MobileWeb,-- 5
+    count(1) as TotalLogin-- 5
+from DCS_DataCenter.Transaction07 as t
+    left join DCS_DataCenter.UserAgent as ug on ug.UserAgentKey = t.UserAgentKey
+    left join DCS_DataCenter.DeviceType as dt on dt.DeviceTypeID = ug.DeviceTypeID
+    where t.AccountID = 110993536 and t.CreatedDate >= DATE_ADD('2025-10-20', INTERVAL 1 DAY);

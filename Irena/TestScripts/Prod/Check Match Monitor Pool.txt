@@ -1,3 +1,6 @@
+/* Server - DB: cts - CTS_DataCenter */
+
+
 select 'GBLive' AS pool, groupid, count(1), count(distinct custid), min(transdate), max(transdate), min(inserttime), max(inserttime), min(sequenceid), max(sequenceid)
 from MatchMonitorStagingGroupBettingLive group by groupid
 union all

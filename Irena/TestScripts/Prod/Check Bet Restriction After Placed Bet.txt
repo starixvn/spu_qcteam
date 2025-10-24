@@ -1,15 +1,17 @@
+/* Server - DB: dbcust - CustDB */
+
 select top 500 a.custid, a.SportType, a.FollowAccount , a.RepUpdateTime as RepUpdateTime_Br, a.CustID, e.*
-from BetRestriction_Customer a with(nolock)
-    cross apply ( select top 10 CustID, roleid, currency from custInfo with(nolock) where CustID = a.CustID and roleid = 1 and currency <> 20) d
+from dbo.BetRestriction_Customer a with(nolock)
+    cross apply ( select top 10 CustID, roleid, currency from dbo.custInfo with(nolock) where CustID = a.CustID and roleid = 1 and currency <> 20) d
     cross apply ( select top 50 *
-                     from bettrans  with(nolock)
+                     from dbo.bettrans  with(nolock)
                      where CustID = d.CustID and transdate>= a.RepUpdateTime
                      order by transdate desc
                      ) e
 where SportType = 43
 order by e.transdate desc
-select top 1 * from custinfo with(nolock) where custid  = 235106110
+select top 1 * from dbo.custinfo with(nolock) where custid  = 235106110
 select top 10 *
-from bettrans  with(nolock)
+from dbo.bettrans  with(nolock)
 where CustID = 235106110 and transdate>= '2025-05-26 00:00:00'
-order by transdate desc
+order by transdate desc;

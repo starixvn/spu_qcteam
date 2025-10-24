@@ -1,3 +1,6 @@
+/* Server - DB: cts - CTS_DataCenter */
+
+
 with CTE1 AS(
   select custid, max(CreatedTime) as MaxTime
   from dbo.CustomerClassification with(nolock)

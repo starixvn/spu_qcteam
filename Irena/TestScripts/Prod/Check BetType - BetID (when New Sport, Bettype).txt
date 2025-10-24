@@ -1,8 +1,10 @@
-select * from dbo.league where sporttype = 5 and LeagueGroupID not in (42,72,74,108,113,122) and leaguename not like '%set%' and leaguename not like '%winner%';
-select * from dbo.team where sporttype = 5 and teamname not like '%set%' and teamname not like '%winner%';
+/* Server - DB: dbtrans - bodb02 */
+
+select * from dbo.league with(nolock) where sporttype = 5 and LeagueGroupID not in (42,72,74,108,113,122) and leaguename not like '%set%' and leaguename not like '%winner%';
+select * from dbo.team with(nolock) where sporttype = 5 and teamname not like '%set%' and teamname not like '%winner%';
 
 select SportType, BetType, IsLive 
-from dbo.SportBettypeMatrix 
+from dbo.SportBettypeMatrix with(nolock) 
 where SportType=5 and BetType in (153, 154, 155, 156);
 
 select b.BetType, b.BetID, b.Betteam, COUNT(1) 

@@ -1,0 +1,8 @@
+node_modules/
+keys/
+test-results/
+.env
+package-lock.json
+package.json
+tsconfig.json
+.gitlab-ci.yml

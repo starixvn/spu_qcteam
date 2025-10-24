@@ -1,0 +1,32 @@
+-- System Params:
+select * from CTS_DataCenter.SystemParameter where ParameterID IN (2);
+
+/* Server (DB): DBTRANS (bodb02) */
+-- SP: TicketVoiding_CTS_ProblemCustomerSelect
+declare @IsArchive BIT = 0	
+declare @MaxTimeRequestActive	DATETIME = NULL
+declare @MissingDataRequestIds	VARCHAR(2000) = ''
+exec TicketVoiding_CTS_ProblemCustomerSelect_UAT2
+    @Datetime			= '2025-07-10 01:17:55.253'
+   ,@IsArchive			= @IsArchive OUTPUT
+   ,@MaxTimeRequestActive	= @MaxTimeRequestActive OUTPUT
+   ,@MissingDataRequestIds	= @MissingDataRequestIds OUTPUT;
+
+-- Input: list RequestID --> check by RequestID
+          list CustID --> check by BetID
+
+-- TVS Data: 
+-- Abnormal Bet by Request ID
+select * from dbo.TicketVoiding_RequestDetail with(nolock) where RequestID IN (154658);
+select * from dbo.TicketVoiding_RequestDetailTicket_Single with(nolock) where IssueTypeId = 11 and RequestID IN (154658);
+
+-- Abnormal Account by Request ID
+select * from dbo.TicketVoiding_RequestDetail with(nolock) where RequestID IN (154658);
+select * from dbo.TicketVoiding_RequestDetailTicket_Single with(nolock) where IssueTypeId = 13 and RequestID IN (154658);
+
+-- Abnormal Bet by Bet ID
+select * from dbo.Ticketvoiding_VoidedTransaction with(nolock) where IssueTypeId = 11 and CustID IN (1275);
+
+/* Server (DB): db05ha1g1l (bodb_CustomerLog) */
+-- TVS Log:
+select top 10 * from dbo.TicketVoiding_Log with(nolock) where RequestId in (154658) order by LogId desc;
