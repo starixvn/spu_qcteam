@@ -1,0 +1,6 @@
+[
+  {"module":"Common","code":"C-00005","ip_key":"NAS001","op_endpoint":"Account/Index/1001093075","op_username":"NAS001","op_loginname":"NAS001","op_custstatus":"Open","op_subscriber":"Alpha789y","op_site":"y789","op_role":"Super"},
+  {"module":"Common","code":"C-00006","ip_key":"NAS001M001","op_endpoint":"Account/Index/1001093076","op_username":"NAS001M001","op_loginname":"NAS001M001","op_custstatus":"Open","op_subscriber":"Alpha789y","op_site":"y789","op_role":"Master"},
+  {"module":"Common","code":"C-00007","ip_key":"NAS001M001A001","op_endpoint":"Account/Index/1001093120","op_username":"NAS001M001A001","op_loginname":"NAS001M001A001","op_custstatus":"Open","op_subscriber":"Alpha789y","op_site":"y789","op_role":"Agent"},
+  {"module":"Common","code":"C-00008","ip_key":"NAS001M001A001MEM002","op_endpoint":"Account/Index/1001093244","op_username":"NAS001M001A001MEM002","op_loginname":"NAS001M001A001MEM002","op_custstatus":"Open","op_subscriber":"MAXBET789y","op_site":"y789","op_role":"Member"}
+]

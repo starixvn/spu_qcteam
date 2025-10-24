@@ -1,0 +1,5 @@
+1. Go to {{baseURL}}/UserLogin/Login
+2. Fill "{{ip_username}}" in input#username
+3. Fill "{{ip_password}}" in input#password
+4. Click button:has-text("Login")
+5. Assert URL is {{baseURL}}/{{op_endpoint}}

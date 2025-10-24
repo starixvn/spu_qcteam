@@ -1,0 +1,67 @@
+stages:
+  - build
+  - test
+  - notify
+
+variables:
+  ENV: 'local'
+  BROWSER: 'chrome'
+  MODE: ''
+  SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
+  SLACK_CHANNELID: 'C093U1JKW95'
+
+.pull-playwright-image:
+  image: mcr.microsoft.com/playwright:v1.54.0-jammy
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+      - ~/.cache/ms-playwright/
+
+install-dependencies: 
+  extends: .pull-playwright-image
+  stage: build
+  script:
+    - npm ci
+
+run_testcases:
+  extends: .pull-playwright-image
+  stage: test
+  needs: ["install-dependencies"]
+  script:
+    - |
+      if ! node runner.js ENV=$ENV BROWSER=$BROWSER MODE=$MODE; then
+        echo "Tests failed. Saving error logs..."
+        mkdir -p error-logs
+        cp test-results/*.log error-logs/ || true
+        cp playwright-report/index.html error-logs/report.html || true
+        exit 1
+      fi
+  artifacts:
+    when: on_failure
+    paths:
+      - error-logs/
+      - test-results/
+      - playwright-report/
+    expire_in: 1 week
+  allow_failure: false
+
+notify_failure:
+  stage: notify
+  image: curlimages/curl
+  script:
+    - |
+      if [ "$CI_JOB_STATUS" = "failed" ]; then
+        curl -X POST -H 'Content-type: application/json' \
+        --data "{
+          \"channel\": \"${SLACK_CHANNELID}\",
+          \"text\":\"❌ Pipeline failed for $CI_PROJECT_NAME\n
+          Branch: $CI_COMMIT_REF_NAME\n
+          Commit: $CI_COMMIT_SHA\n
+          Error logs: $CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/browse/error-logs/\n
+          Report: $CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/browse/playwright-report/\"
+        }" $SLACK_WEBHOOK
+      fi
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: on_failure

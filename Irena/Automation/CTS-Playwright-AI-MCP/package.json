@@ -1,0 +1,42 @@
+{
+  "name": "demo-ai-playwright-mcp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node runner.js ENV=local BROWSER=chrome",
+    "test:mcp": "node runner-mcp.js ENV=local BROWSER=chrome",
+    "test:interactive": "node utils/mcp-client.js ENV=local BROWSER=chrome",
+    "test:scenario": "node utils/mcp-client.js ENV=local BROWSER=chrome --test",
+    "generate:prompts": "node utils/generate_prompt.js ENV=local",
+    "generate:scripts": "node utils/generate_script.js ENV=local",
+    "generate:mcp-scripts": "node utils/generate_mcp_script.js ENV=local BROWSER=chrome",
+    "mcp:start": "npx @playwright/mcp@latest --host 127.0.0.1 --port 8931",
+    "mcp:help": "npx @playwright/mcp@latest --help"
+
+  },
+  "keywords": [],
+  "author": "",
+  "license": "IRENA",
+  "description": "",
+  "devDependencies": {
+    "@playwright/mcp": "^0.0.29",
+    "@playwright/test": "^1.54.2",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.17.0",
+    "cross-env": "^7.0.3",
+    "csv-parse": "^6.1.0",
+    "dotenv": "^17.2.1",
+    "googleapis": "^150.0.1",
+    "luxon": "^3.7.1",
+    "mssql": "^11.0.1",
+    "mysql2": "^3.14.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "xml2js": "^0.6.2"
+  },
+  "dependencies": {
+    "@types/cheerio": "^1.0.0",
+    "cheerio": "^1.1.2"
+  }
+}

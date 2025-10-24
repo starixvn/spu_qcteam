@@ -1,0 +1,8 @@
+1. Go to {{baseURL}}/Home
+2. Fill "{{ip_key}}" in input#txtInput and press Enter
+3. Assert URL is {{baseURL}}/{{op_endpoint}}
+4. Assert span.tag-text-left:has-text("Login Name:") + span.tag-text-right has text "{{op_loginname}}"
+5. Assert span.tag-text-left:has-text("Account Status:") + span.tag-text-right has text "{{op_custstatus}}"
+6. Assert span.tag-text-left:has-text("Subscriber:") + span.tag-text-right has text "{{op_subscriber}}"
+7. Assert span.tag-text-left:has-text("Site:") + span.tag-text-right has text "{{op_site}}"
+8. Assert span.tag-text-left:has-text("Level:") + span.tag-text-right has text "{{op_role}}"

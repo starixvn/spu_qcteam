@@ -1,0 +1,45 @@
+1. Define variable: varCategory = "{{ip_category}}";
+2. Define variable: varABIDgr = "{{op_dbabidanger}}";
+3. Define variable: varIsAffect = "{{ip_isaffect}}";
+4. Go to {{baseURL}}/Home
+5. Fill "{{ip_key}}" in input#txtInput and press Enter
+6. Click div#btnProfileInsertPA
+7. Zoom browser: await page.evaluate(() => { if (document.body) { document.body.style.zoom = '0.8'; } });
+8. IF varCategory is "VVIP" THEN click label[for="inputCCVVIP"] 
+9. IF varCategory is not "VVIP" THEN click label[for="{{op_dbcategoryid}}"]
+10. IF varIsAffect = "1" THEN click span.checkmark
+11. Fill "{{ip_comment}}" in textarea#txtCCComment
+12. Click button#btnCCMarkSave
+13. Refresh page
+14. Zoom browser: await page.evaluate(() => { if (document.body) { document.body.style.zoom = '0.8'; } });
+15. IF varCategory is "Robot" or is "Robot User" THEN await page.waitForSelector('span.icon-big-Robot.icon-big-{{op_boticon}}', { state: 'visible' });
+16. IF varCategory is not VVIP" and is not "Robot" and is not "Robot User" THEN await page.waitForSelector('span.icon-{{op_flaggedicon}}', { state: 'visible' });
+17. Wait border: await page.waitForSelector('div.header-info.border-{{op_color}}', { state: 'visible' });
+18. Wait background: await page.waitForSelector('div.header-username.bg-{{op_color}}', { state: 'visible' });
+19. Wait color: await page.waitForSelector('span.circle.bg-{{op_color}}', { state: 'visible' });
+20. Assert span.circle.bg-{{op_color}} + span.text-status.text-left has text "{{op_catename}}"
+21. Assert span#spanClass has text "{{op_classname}}"
+22. Assert span#spanFlagEvidence has text "{{op_flaggedlist}}"
+23. IF varCategory is "VVIP" THEN Assert span#spanNextCategoryScanDate has text "None" 
+24. IF varCategory is not "VVIP" THEN Assert span#spanNextCategoryScanDate has not text "None"
+25. Click li#evidence-tab
+26. IF varCategory is "VVIP" or is "Robot" or is "Robot User" THEN Assert the 1st row in table#tblChainToEvidenceFlagged tbody has text "There's no data"
+27. IF varCategory is not "VVIP" and is not "Robot" and is not "Robot User" THEN Assert each cell of the 1st row in table#tblChainToEvidenceFlagged tbody with 1st cell has text "{{op_evidname}}", 2nd cell has not text "-", 3rd cell has text "{{ip_comment}}", 4th cell has text "{{op_createdby}}"
+28. Click li#customer-class-tab
+29. Assert each cell of the 1st row in table#customer-category-table tbody with 1st cell has not text "-", 2nd cell has text "{{op_catename}}", 3rd cell has text "{{op_class}}", 4th cell has text "{{op_reason}}", 5th cell has text "{{op_createdby}}"
+30. Go to {{baseURL}}/ProblemAccountManagement
+31. Fill "{{op_username}}" in input#inputUserName and click button#btnGenerate
+32. IF varCategory is "VVIP" THEN Assert the 1st row in table#tblProblemAccount tbody has text "There's no data"
+33. IF varCategory is not "VVIP" THEN Assert each cell of the 1st row in table#tblProblemAccount tbody with 1st cell has text "{{op_username}}", 2nd cell has text "{{op_site}}", 3rd cell has text "{{op_currency}}", 4th cell has text "{{op_catename}}", 5th cell has text "{{ip_comment}}", 6th cell has not text "-", 7th cell has text "{{op_createdby}}"
+34. Define variable: ctsCate = await executeQuery('mysql', '{{ctsmainHost}}', {{ctsmainPort}}, '{{ctsmainUsr}}', '{{ctsmainPwd}}', 'CTS_DataCenter', 'SELECT * FROM CTSCustomerClassification WHERE CustID = {{op_dbcustid}} AND SubscriberID = {{op_dbsubscriberid}} AND RoleID = {{op_dbroleid}} AND ParentID = {{op_dbparentid}} AND CategoryID = {{op_dbcategoryid}} AND IsFromCTS = {{op_dbisfromcts}} AND IsMarkedDirectly = {{op_dbisdirectly}} AND CreatedBy = {{op_dbcreatedby}};');
+35. Define variable: ctsCateHis = await executeQuery('mysql', '{{ctsmainHost}}', {{ctsmainPort}}, '{{ctsmainUsr}}', '{{ctsmainPwd}}', 'CTS_DataCenter', 'SELECT * FROM CTS_DataCenter.CTSCustomerClassification_History WHERE CustID = {{op_dbcustid}} AND ParentID = {{op_dbparentid}} anANDd CategoryID = {{op_dbcategoryid}} AND IsFromCTS = {{op_dbisfromcts}} AND IsMarkedDirectly = {{op_dbisdirectly}} AND TargetCC = {{op_dbclass}} AND SourceTypeID = {{op_dbsourceid}} AND LastModifiedBy = {{op_dbcreatedby}} ORDER BY ID DESC LIMIT 1;');
+36. Define variable: ctsCateQueue = await executeQuery('mysql', '{{ctsmainHost}}', {{ctsmainPort}}, '{{ctsmainUsr}}', '{{ctsmainPwd}}', 'CTS_DataCenter', 'SELECT * FROM CTS_DataCenter.CTSCustomerClassificationQueue WHERE CustID = {{op_dbcustid}} AND SubscriberID = {{op_dbsubscriberid}} AND RoleID = {{op_dbroleid}} AND CategoryID = {{op_dbcategoryid}} AND IsFromCTS = {{op_dbisfromcts}} AND IsMarkedDirectly = {{op_dbisdirectly}} AND CreatedBy = {{op_dbcreatedby}} AND Remark = "{{ip_comment}}" AND ActionType = 3 ORDER BY ID DESC LIMIT 1;');
+37. Define variable: custdbClass = await executeQuery('mssql', '{{dbcustHost}}', {{dbcustPort}}, '{{dbcustUsr}}', '{{dbcustPwd}}', 'CustDB', 'SELECT * FROM CustDB.dbo.custinfo WHERE CustID = {{op_dbcustid}} AND CustomerClass = {{op_dbclass}};');
+38. Define variable: custdbClassPA = await executeQuery('mssql', '{{dbcustHost}}', {{dbcustPort}}, '{{dbcustUsr}}', '{{dbcustPwd}}', 'CustDB', 'SELECT * FROM CustDB.dbo.custinfo WHERE CustID = {{op_dbcustid}} AND CustomerClass = {{op_dbclass}} AND Danger2 = {{op_dbabidanger}};');
+39. Define variable: custdbCateHis = await executeQuery('mssql', '{{dbcustHost}}', {{dbcustPort}}, '{{dbcustUsr}}', '{{dbcustPwd}}', 'CustDB', 'SELECT TOP 1 * FROM CustDB.dbo.CustCategoryHistory WHERE CustID = {{op_dbcustid}} ORDER BY LogID DESC;');
+40. Assert ctsCate exists at least 1 row
+41. Assert ctsCateHis exists at least 1 row
+42. IF varABIDgr is not "" THEN Assert custdbClass exists at least 1 row
+43. IF varABIDgr is "" THEN Assert custdbClassPA exists at least 1 row
+44. IF varCategory is not "VVIP" THEN Assert custdbCateHis exists at least 1 row
+45. IF varIsAffect = "1" THEN Assert ctsCateQueue exists at least 1 row
