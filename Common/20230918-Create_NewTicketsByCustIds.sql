@@ -62,27 +62,30 @@ END AS odds
 -- BC985AM011,BC985AM009,XU25T202003,XU25T202004 (789y Member) M222MNT398,M28RMB06788,MS88HK$01018
    Custid in (51803846,51811392,51811775,51815630,14051943,834082,2808564)
 */
+-- delete from bettrans where matchID = 83795746 and bettype =219 
 -- TESTDBTRANS (10.18.200.55)
 USE bodb02
-DECLARE @matchid int = 73558239 -- Enter matchid here to create tickets into that match. If leave blank, a random match will be selected
-,@sporttype smallint = 1, @stakeRM money = 10000, @stake money = 1500 ,@currency smallint = 16, @actualrate float = 4.1723, @virtualrate float = 4.1723
+DECLARE @matchid varchar(2000) = '83799065' -- Enter matchid(s) here to create tickets into those matches. Use comma-separated values like '148626520,148626521,148626522,148626523,148626524,148626525'
+, @stakeRM money = 10000, @stake money = 1500 ,@currency smallint = 16, @actualrate float = 4.1723, @virtualrate float = 4.1723
  -- @stakeRM <> 0 -> Create tickets ~ stakeRM value, not check @stake value
-,@CustIds varchar(2000) = '121124,169695,954103,1411402,1481207,1775698' -- Create ticket for custids list
-,@bettype1 smallmoney = 7, @bettype2 smallmoney = 0, @bettype3 smallmoney= 0, @bettype4 smallmoney = 0
-,@liveindicator bit = 1, @livehomescore int = 0, @liveawayscore int = 0 --, @HTHomeScore INT = 0, @HTAwayScore INT = 0, @FinalHomeScore INT = 0, @FinalAwayScore INT = 0
-,@hdp1 smallmoney = 0, @hdp2 smallmoney = 0.5 -- (0.25 - 0.5 - 0.75 - 1 ...)
+,@CustIds varchar(2000) = '148626520,148626521,148626522,100030450,148626524,148626525,148628960,82293018' -- Create ticket for custids list
+,@bettype1 smallmoney = 1 , @bettype2 smallmoney = 2, @bettype3 smallmoney= 3, @bettype4 smallmoney = 20
+,@liveindicator bit = 1, @livehomescore int = 1, @liveawayscore int = 0 --, @HTHomeScore INT = 0, @HTAwayScore INT = 0, @FinalHomeScore INT = 0, @FinalAwayScore INT = 0
+,@hdp1 smallmoney = 1.25, @hdp2 smallmoney = 0 -- (0.25 - 0.5 - 0.75 - 1 ...)
 ,@oddsid1 int = 0, @oddsid2 int = 0, @oddsid3 int = 0, @oddsid4 int = 0
-,@odds smallmoney = 0.65, @oddsType tinyint = 2, @statusid int = 0, @status varchar(20) = 'running' ---- odds, oddsType, {@statusid,@status}: ticket status -----
-/* @statusid = 0,111,112,113; @status = 'running','DRAW','WON','LOSE'*/
+,@odds smallmoney = 0.65, @oddsType tinyint = 2, @statusid int = 102, @status varchar(20) = 'Void' ---- odds, oddsType, {@statusid,@status}: ticket status ----- select * from RefResource with (nolock) where RefId = 'Status';
+/* @statusid = 0,111,112,113,101,102; @status = 'running','DRAW','WON','LOSE', 'Reject', 'Void'*/    
 ,@ip varchar(45) = '161.142.250.65' --ipv4 '10.164.168.09', '161.142.250.65' --ipv6:  '240e:465:1f32:2dd3:64a6:d7ff:fed9:3046'
-,@betteam varchar(10) = 'h', @betid int = 0, @time time = CONVERT(Time, GETDATE())
+,@betteam varchar(10) = '', @betid int = 0, @time time = CONVERT(Time, GETDATE())
 
 ------------- Get match -------------
 declare	@eventdate datetime, @kickofftime datetime;
-select	@livehomescore = CASE WHEN @liveindicator = 0 THEN 0 ELSE m.livehomescore END
-	,	@liveawayscore = CASE WHEN @liveindicator = 0 THEN 0 ELSE m.liveawayscore END
+-- For multiple match IDs, we'll use the first match for event date and kickoff time
+select	@livehomescore = CASE WHEN @liveindicator = 0 THEN 0 ELSE @livehomescore END
+	,	@liveawayscore = CASE WHEN @liveindicator = 0 THEN 0 ELSE @liveawayscore END
 	,	@eventdate = m.eventdate, @kickofftime = m.kickofftime
-from dbo.match m (NOLOCK) where m.matchid  = @matchid;
+from dbo.match m (NOLOCK) 
+where m.matchid = (SELECT TOP 1 val FROM dbo.f_SplitString(@matchid, ','));
 
 declare @transdate datetime = @eventdate + CAST(@time AS DATETIME) -- DATEADD(DD, 0, GETDATE()) OR DATEADD(HOUR,10,DATEADD(MINUTE,30,DATEADD(SECOND,0,@eventdate)))
 -- SELECT @eventdate AS eventdate , @kickofftime AS kickofftime, @transdate AS transdate
@@ -96,38 +99,40 @@ select distinct m.matchid, l.leaguename, h.teamname, a.teamname, m.eventstatus, 
 from dbo.match m (NOLOCK)
 	inner join dbo.team a (NOLOCK) on a.teamid = m.awayid 
 	inner join dbo.team h (NOLOCK) on h.teamid = m.homeid 
-	inner join league l (nolock) on l.leagueid = m.leagueid where m.matchid = @matchid;
-insert into #tmpMatches values (@matchid);
+	inner join league l (nolock) on l.leagueid = m.leagueid 
+	inner join (SELECT val as MatchId FROM dbo.f_SplitString(@matchid, ',')) AS mm ON mm.MatchId = m.matchid;
+insert into #tmpMatches 
+SELECT val FROM dbo.f_SplitString(@matchid, ',');
 
 if @bettype1 <> 0 begin
 	select top 1 @oddsid1 = od.oddsid from bodb02.dbo.Match m WITH(NOLOCK)	
 			INNER JOIN [bodb02].[dbo].[odds] od WITH(NOLOCK) ON m.matchid = od.matchid
-	WHERE m.matchid = @matchid AND bettype = @bettype1;
+	WHERE m.matchid = (SELECT TOP 1 val FROM dbo.f_SplitString(@matchid, ',')) AND bettype = @bettype1;
 END
 if @bettype2 <> 0 begin
 	select top 1 @oddsid2 = od.oddsid from bodb02.dbo.Match m WITH(NOLOCK)	
 	INNER JOIN [bodb02].[dbo].[odds] od WITH(NOLOCK) ON m.matchid = od.matchid
-	WHERE m.matchid = @matchid AND bettype = @bettype2;
+	WHERE m.matchid = (SELECT TOP 1 val FROM dbo.f_SplitString(@matchid, ',')) AND bettype = @bettype2;
 END
 if @bettype3 <> 0 begin
 	select top 1 @oddsid3 = od.oddsid from bodb02.dbo.Match m WITH(NOLOCK)	
 	INNER JOIN [bodb02].[dbo].[odds] od WITH(NOLOCK) ON m.matchid = od.matchid
-	WHERE m.matchid = @matchid AND bettype = @bettype3;
+	WHERE m.matchid = (SELECT TOP 1 val FROM dbo.f_SplitString(@matchid, ',')) AND bettype = @bettype3;
 END
 if @bettype4 <> 0 begin
 	select top 1 @oddsid4 = od.oddsid from bodb02.dbo.Match m WITH(NOLOCK)	
 	INNER JOIN [bodb02].[dbo].[odds] od WITH(NOLOCK) ON m.matchid = od.matchid
-	WHERE m.matchid = @matchid AND bettype = @bettype4;
+	WHERE m.matchid = (SELECT TOP 1 val FROM dbo.f_SplitString(@matchid, ',')) AND bettype = @bettype4;
 END
--- select top 10 * from [bodb02].[dbo].[odds] od WITH(NOLOCK) WHERE od.matchid = @matchid
+-- select top 10 * from [bodb02].[dbo].[odds] od WITH(NOLOCK) WHERE od.matchid IN (SELECT val FROM dbo.f_SplitString(@matchid, ','))
 
 ---------------------Get Cust Info-----------------------------------------------
 if object_id ('tempdb..#tmpCustInfo', 'U') is not null drop table #tmpCustInfo
 create table #tmpCustInfo (id int primary key identity(1,1), custid int, creator int, username nvarchar(30), username2 nvarchar(50), recommend int, mrecommend int, srecommend int, currency tinyint, currencyName nvarchar(50), siteName nvarchar(100), isDeposit bit
-, actualrate float);
+, actualrate float, custIndex int);
 
-insert into #tmpCustInfo (custid, username, username2, recommend, mrecommend, srecommend, currency, currencyname, sitename, isdeposit, actualrate)
-select distinct ci.custid, ci.username, usn.username2, ci.recommend, ci.mrecommend, ci.srecommend, ci.currency, ex.currency, ag.site, case when sp.custid is null then 0 else 1 end, ex.actualrate
+insert into #tmpCustInfo (custid, username, username2, recommend, mrecommend, srecommend, currency, currencyname, sitename, isdeposit, actualrate, custIndex)
+select distinct ci.custid, ci.username, usn.username2, ci.recommend, ci.mrecommend, ci.srecommend, ci.currency, ex.currency, ag.site, case when sp.custid is null then 0 else 1 end, ex.actualrate, ROW_NUMBER() OVER (ORDER BY ci.custid) - 1
 from CustDB.dbo.custinfo ci (nolock) 
 	inner join CustDB.dbo.exchange ex (nolock) on ex.exchangeid = ci.currency 
 	left join CustDB.dbo.customer ag (nolock) on ag.custid = ci.recommend 
@@ -154,6 +159,7 @@ create table #matrixBettype(
 , bettype smallint
 , betteam nvarchar(10)
 )
+
 insert into #matrixBettype(bettype, betteam)
 values
     (1,'a'),(1,'h') -- HDP
@@ -290,16 +296,30 @@ values
    ,(413,'0:0'),(413,'0:1'),(413,'0:2'),(413,'0:3'),(413,'0:4'),(413,'1:0'),(413,'1:1'),(413,'1:2'),(413,'1:3'),(413,'1:4'),(413,'2:0'),(413,'2:1'),(413,'2:2'),(413,'2:3'),(413,'2:4'),(413,'3:0'),(413,'3:1'),(413,'3:2'),(413,'3:3'),(413,'3:4'),(413,'4:0'),(413,'4:1'),(413,'4:2'),(413,'4:3'),(413,'4:4'),(413,'AOS') -- Correct Score
    ,(414,'0:0'),(414,'0:1'),(414,'0:2'),(414,'0:3'),(414,'1:0'),(414,'1:1'),(414,'1:2'),(414,'1:3'),(414,'2:0'),(414,'2:1'),(414,'2:2'),(414,'2:3'),(414,'3:0'),(414,'3:1'),(414,'3:2'),(414,'3:3'),(414,'AOS') -- 1H Correct Score
    ,(415,'AA'),(415,'AH'),(415,'DA'),(415,'DH'),(415,'HA'),(415,'HH'),(415,'NO')
-   -----------------------Quater--------------------------------
+   -----------------------Quarter--------------------------------
    ,(609,'A'),(609,'H'),(610,'O'),(610,'U'),(611,'O'),(611,'E'),(612,'A'),(612,'H'),(613,'A'),(613,'H'),(615,'O'),(615,'U'),(616,'O'),(616,'U'),(617,'A'),(617,'H')
-
    ,(9001,'A'),(9001,'H'),(9002,'A'),(9002,'H'),(9003,'O'),(9003,'U'),(9005,'O'),(9005,'E'),(9006,'A'),(9006,'H') -- 80X
    ,(9007,'A'),(9007,'H'),(9068,'A'),(9068,'H'),(9070,'O'),(9070,'U'),(9071,'O'),(9071,'E'),(9072,'A'),(9072,'H'),(9077,'A'),(9077,'H'),(9089,'O'),(9089,'U') -- 80XYY
    ,(9101,'A'),(9101,'H'),(9102,'A'),(9102,'H'),(9103,'A'),(9103,'H'),(9104,'A'),(9104,'H') -- Map X 1st Kill -- 80X
    -----------------------Cricket(50)--------------------------------
-   ,(501,'A'),(501,'H') -- Match Winner
+   ,(501,'a'),(501,'h') -- Match Winner
    ,(9404,'O'),(9404,'U') -- Home Inns Runs
    ,(9405,'O'),(9405,'U') -- Away Inns Runs
+   ,(9607,'o'),(9607,'u') -- Home Over X Runs
+   ,(9608,'o'),(9608,'u') -- Away Over X Runs
+   -----------------------Badminton(9)--------------------------------
+   ,(704,'a'),(704,'h') -- Match Points HDP
+   ,(707,'a'),(707,'h') -- Game X Winner
+   ,(708,'a'),(708,'h') -- Game X Points HDP
+   -----------------------Tennis(5)--------------------------------
+   ,(153,'a'),(153,'h') -- Game HDP
+   ,(154,'a'),(154,'h') -- Set X Winner
+   ,(155,'a'),(155,'h') -- Set X Game HDP
+   ,(156,'o'),(156,'u') -- Set X Total Game O/U
+   -----------------------Volleyball(6)--------------------------------
+   ,(219,'a'),(219,'h') -- Set X Points HDP
+   ,(220,'o'),(220,'u') -- Set X Total Points O/U
+   ,(705,'o'),(705,'u') -- Match Points O/U
    ;
 
 -----------------------------Get Trans-----------------------------------------------------------------------
@@ -319,7 +339,7 @@ DECLARE @c AS INT = 1;
 		if @bettype1 <> 0 begin
 			insert into #tmpBettrans (transdate, oddsid, hdp1, hdp2, odds, stake, livehomescore, liveawayscore, liveindicator, betteam, bettype, statusid, username
 			,custid, matchid, recommend, mrecommend, srecommend,betid, currency, currencyName, actualrate)
-			select distinct (DATEADD(SECOND,@sm,@transdate)), @oddsid1, @hdp1, @hdp2, @odds,
+			select distinct (DATEADD(SECOND,@sm + (c.custIndex * 9),@transdate)), @oddsid1, @hdp1, @hdp2, @odds,
 						case when @stakeRM = 0 then @stake  
 						when round(((round(@StakeRM/c.actualrate,0))-1)*c.actualrate,0,1) = @StakeRM then ((round(@StakeRM/c.actualrate,0))-1)
 						when round((round(@StakeRM/c.actualrate,0))*c.actualrate,0,1) = @StakeRM then (round(@StakeRM/c.actualrate,0))
@@ -333,12 +353,12 @@ DECLARE @c AS INT = 1;
 						when round(((round(@StakeRM/c.actualrate,0))+1)*c.actualrate,0,1) = @StakeRM then c.actualrate
 						else round(@StakeRM/(round(@StakeRM/@actualrate,0)),4) end
 			from #matrixbettype mb cross join #tmpCustInfo c cross join #tmpMatches m
-			where bettype = @bettype1 and mb.betteam = @betteam;
+			where bettype = @bettype1 and (@betteam = '' or mb.betteam = @betteam);
 		end
 		if @bettype2 <> 0 begin
 			insert into #tmpBettrans (transdate, oddsid, hdp1, hdp2, odds, stake, livehomescore, liveawayscore, liveindicator, betteam, bettype, statusid, username
 			,custid, matchid, recommend, mrecommend, srecommend,betid, currency, currencyName, actualrate)
-			select distinct (DATEADD(SECOND,@sm,@transdate)), @oddsid2, @hdp1, @hdp2, @odds,
+			select distinct (DATEADD(SECOND,@sm + (c.custIndex * 10),@transdate)), @oddsid2, @hdp1, @hdp2, @odds,
 						case when @stakeRM = 0 then @stake  
 						when round(((round(@StakeRM/c.actualrate,0))-1)*c.actualrate,0,1) = @StakeRM then ((round(@StakeRM/c.actualrate,0))-1)
 						when round((round(@StakeRM/c.actualrate,0))*c.actualrate,0,1) = @StakeRM then (round(@StakeRM/c.actualrate,0))
@@ -352,12 +372,12 @@ DECLARE @c AS INT = 1;
 						when round(((round(@StakeRM/c.actualrate,0))+1)*c.actualrate,0,1) = @StakeRM then c.actualrate
 						else round(@StakeRM/(round(@StakeRM/@actualrate,0)),4) end
 			from #matrixbettype mb cross join #tmpCustInfo c cross join #tmpMatches m
-			where bettype = @bettype2 and mb.betteam = @betteam;
+			where bettype = @bettype2 and (@betteam = '' or mb.betteam = @betteam);
 		end
 		if @bettype3 <> 0 begin
 			insert into #tmpBettrans (transdate, oddsid, hdp1, hdp2, odds, stake, livehomescore, liveawayscore, liveindicator, betteam, bettype, statusid, username
 			,custid, matchid, recommend, mrecommend, srecommend,betid, currency, currencyName, actualrate)
-			select distinct (DATEADD(SECOND,@sm,@transdate)), @oddsid3, @hdp1, @hdp2, @odds,
+			select distinct (DATEADD(SECOND,@sm + (c.custIndex * 10),@transdate)), @oddsid3, @hdp1, @hdp2, @odds,
 						case when @stakeRM = 0 then @stake  
 						when round(((round(@StakeRM/c.actualrate,0))-1)*c.actualrate,0,1) = @StakeRM then ((round(@StakeRM/c.actualrate,0))-1)
 						when round((round(@StakeRM/c.actualrate,0))*c.actualrate,0,1) = @StakeRM then (round(@StakeRM/c.actualrate,0))
@@ -371,12 +391,12 @@ DECLARE @c AS INT = 1;
 						when round(((round(@StakeRM/c.actualrate,0))+1)*c.actualrate,0,1) = @StakeRM then c.actualrate
 						else round(@StakeRM/(round(@StakeRM/@actualrate,0)),4) end
 			from #matrixbettype mb cross join #tmpCustInfo c cross join #tmpMatches m
-			where bettype = @bettype3 and mb.betteam = @betteam;
+			where bettype = @bettype3 and (@betteam = '' or mb.betteam = @betteam);
 		end
 		if @bettype4 <> 0 begin
 			insert into #tmpBettrans (transdate, oddsid, hdp1, hdp2, odds, stake, livehomescore, liveawayscore, liveindicator, betteam, bettype, statusid, username
 			,custid, matchid, recommend, mrecommend, srecommend,betid, currency, currencyName, actualrate)
-			select distinct (DATEADD(SECOND,@sm,@transdate)), @oddsid4, @hdp1, @hdp2, @odds,
+			select distinct (DATEADD(SECOND,@sm + (c.custIndex * 10),@transdate)), @oddsid4, @hdp1, @hdp2, @odds,
 						case when @stakeRM = 0 then @stake  
 						when round(((round(@StakeRM/c.actualrate,0))-1)*c.actualrate,0,1) = @StakeRM then ((round(@StakeRM/c.actualrate,0))-1)
 						when round((round(@StakeRM/c.actualrate,0))*c.actualrate,0,1) = @StakeRM then (round(@StakeRM/c.actualrate,0))
@@ -390,17 +410,17 @@ DECLARE @c AS INT = 1;
 						when round(((round(@StakeRM/c.actualrate,0))+1)*c.actualrate,0,1) = @StakeRM then c.actualrate
 						else round(@StakeRM/(round(@StakeRM/@actualrate,0)),4) end
 			from #matrixbettype mb cross join #tmpCustInfo c cross join #tmpMatches m
-			where bettype = @bettype4 and mb.betteam = @betteam;
+			where bettype = @bettype4 and (@betteam = '' or mb.betteam = @betteam);
 		end
 		SET @sm = @sm + @steptimeticket
 		SET @c=@c+1;
 	 END;
 -- SELECT * FROM #tmpBettrans
 
-if (@@SERVERNAME in ('TESTDBTRANS') and exists (select 1 from #tmpcustinfo) and exists (select 1 from #tmpbettrans) and exists (select 1 from match(nolock) where matchid = @matchid)) begin	
+if (@@SERVERNAME in ('TESTDBTRANS') and exists (select 1 from #tmpcustinfo) and exists (select 1 from #tmpbettrans) and exists (select 1 from match(nolock) where matchid IN (SELECT val FROM dbo.f_SplitString(@matchid, ',')))) begin	
 	insert into dbo.bettrans (transdate, winlostdate,oddsid, hdp1, hdp2, oddstype, odds, stake, livehomescore, liveawayscore, liveindicator, betteam, bettype, statusid,custid,matchid,recommend,mrecommend,srecommend, refno,username,betid,currency,CurrencyName,status,oddsspread, virtualrate, actualrate, actual_stake, ip)
 	select transdate, @eventdate,oddsid, hdp1, hdp2, @oddstype,odds, stake, livehomescore, liveawayscore, liveindicator, betteam, bettype, statusid,custid,matchid,recommend,mrecommend,srecommend, 100000000000,username,betid,currency,currencyName,@status, 0, @virtualrate, actualrate, stake, @ip
-	from #tmpbettrans (nolock) where matchid = @matchid
+	from #tmpbettrans (nolock) where matchid IN (SELECT val FROM dbo.f_SplitString(@matchid, ','))
 end
 
 /*
@@ -421,7 +441,7 @@ SELECT TOP 100	b.sequenceid, b.transid, b.transdate, m.eventdate
 FROM dbo.bettrans AS b WITH(NOLOCK)
 	INNER JOIN dbo.match AS m WITH(NOLOCK) ON b.matchid = m.matchid
 	INNER JOIN dbo.league AS l WITH(NOLOCK) ON m.leagueid = l.leagueid
-where m.matchid = @matchid ORDER BY b.sequenceid ASC;
+where m.matchid IN (SELECT val FROM dbo.f_SplitString(@matchid, ',')) ORDER BY b.sequenceid ASC;
 
 SELECT  [CustId] = ft.CustId, ft.Username
 	  , [TransIds] = STUFF((SELECT ',', CONVERT(VARCHAR(20), t1.TransId) 
@@ -430,7 +450,7 @@ SELECT  [CustId] = ft.CustId, ft.Username
 							FOR XML PATH('')), 1, 1, '')
       ,	[TicketCounter]		= COUNT(1)
 FROM dbo.bettrans ft WITH (NOLOCK) 
-WHERE ft.MatchID = @matchid
+WHERE ft.MatchID IN (SELECT val FROM dbo.f_SplitString(@matchid, ','))
 GROUP BY ft.CustId, ft.Username, ft.MatchId, ft.winlostdate;
 
 /*
@@ -440,6 +460,7 @@ SELECT [TransIds] = STUFF((SELECT ',', CONVERT(VARCHAR(20), t1.TransId)
 							FOR XML PATH('')), 1, 1, '')
       ,	[TicketCounter]		= COUNT(1)
 FROM dbo.bettrans ft WITH (NOLOCK) 
-WHERE ft.MatchID = @matchid
+WHERE ft.MatchID IN (SELECT val FROM dbo.f_SplitString(@matchid, ','))
 GROUP BY ft.MatchId, ft.winlostdate;
 */
+
