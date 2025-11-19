@@ -1,0 +1,130 @@
+@startuml MatchMonitorClassificationBySport_SP_Insert_Detailed
+!theme plain
+title Match Monitor Classification By Sport - SP Insert Detailed Flow
+
+start
+:CTS_DC_CustClassification_BySport_Insert;
+note right
+    Database: CTS_DataCenter (MySQL)
+    Tables: Temp Tables, CTSCustomerClassification_BySport
+    CTSCustomerClassification_BySport_History
+    CustomerCategorySettings, StaticList
+    Parameters: @ip_InputFlowID=335, @ip_CustInfo (JSON)
+end note
+
+:STEP 1: Insert_GetInfo;
+note right
+    Parse JSON input:
+    - Validate JSON structure
+    - Extract customer information
+    - Create Temp_NewClassification table
+    - Set CategoryID = SystemDetectGB
+    - Set CategoryGroupID = SystemDetectGB
+    - Set SportGroup from input
+end note
+
+note right
+    CREATE TEMPORARY TABLE Temp_NewClassification
+    (CustID, CTSCustID, SportID, etc.)
+end note
+
+:STEP 2: Insert_Process;
+note right
+    Process classification logic:
+    - Check for existing classifications
+    - Handle probation customers
+    - Determine action type (Insert/Update/Ignore)
+    - Set target customer class
+end note
+
+if (InputFlowID = 335 - BySportInsertPA?) then (yes)
+    :Skip PreProcess (only for Normal);
+    :Execute Insert_Process;
+    
+    note right
+        Check existing classifications
+        WHERE CustID = @CustID
+          AND sportID = @SportGroup
+    end note
+    
+    if (Existing PA Classification?) then (yes)
+        :Set ActionType = 3 (ExistedPA);
+        :Skip insertion;
+    else (no)
+        :Set ActionType = 0 (Insert);
+        :Set TargetCC = PA Category;
+    endif
+    
+elseif (InputFlowID = 339 - BySportInsertNormal?) then (yes)
+    :Execute PreProcess;
+    note right
+        PreProcess handles:
+        - Probation customers
+        - Smart/Risky customers
+        - Existing PA checks
+    end note
+    
+    :Execute Insert_Process;
+    :Set TargetCC = Normal Category;
+else (Other InputFlowID)
+    :Handle Other Flows;
+endif
+
+:STEP 3: Insert_Complete;
+note right
+    Complete insertion:
+    - Insert into CTSCustomerClassification_BySport
+    - Insert into CTSCustomerClassification_BySport_History
+    - Update wrapper categories if needed
+    - Set CreatedDate, CreatedBy
+end note
+
+if (ActionType = 0 - Insert?) then (yes)
+    note right
+        INSERT INTO CTSCustomerClassification_BySport
+        (CustID, CTSCustID, SportID, CategoryID, etc.)
+    end note
+    
+    note right
+        INSERT INTO CTSCustomerClassification_BySport_History
+        (Full classification record)
+    end note
+    
+    :Check Wrapper Categories;
+    if (Need Wrapper Category?) then (yes)
+        note right
+            INSERT/UPDATE wrapper category
+            (if not exists)
+        end note
+    endif
+elseif (ActionType = 1 - Update?) then (yes)
+    note right
+        UPDATE CTSCustomerClassification_BySport
+        SET CategoryID = @NewCategoryID
+        WHERE CustID = @CustID AND SportID = @SportGroup
+    end note
+    
+    note right
+        INSERT INTO History
+        (Record the change)
+    end note
+elseif (ActionType = 3 - ExistedPA?) then (yes)
+    :Skip Insertion;
+    note right
+        Customer already has PA classification
+        for this sport
+    end note
+endif
+
+:Return Results;
+note right
+    SELECT DISTINCT
+    CustID, SportID AS SportGroup
+    TargetCC AS CustomerClass
+    WHERE IsReturnData = 1
+end note
+
+stop
+
+@enduml
+
