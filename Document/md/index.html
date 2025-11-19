@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +28,7 @@
             background: white;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             margin-bottom: 30px;
             text-align: center;
         }
@@ -48,7 +49,7 @@
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
         .category-title {
@@ -90,7 +91,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: left 0.5s;
         }
 
@@ -100,7 +101,7 @@
 
         .flow-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             border-color: #667eea;
         }
 
@@ -140,7 +141,7 @@
             border-radius: 15px;
             padding: 30px;
             margin-top: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .flow-detail.active {
@@ -149,8 +150,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .flow-detail-header {
@@ -193,7 +201,7 @@
             background: #f8f9fa;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
         }
 
@@ -215,7 +223,7 @@
             height: auto;
             border-radius: 8px;
             background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: transform 0.3s;
         }
@@ -232,7 +240,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(0, 0, 0, 0.9);
             animation: fadeIn 0.3s;
         }
 
@@ -297,13 +305,14 @@
             .flow-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .diagram-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -394,7 +403,8 @@
                         { file: "SabaGroupBetting_MainFlow.svg", title: "Main Flow (Saba-Specific)" },
                         { file: "SabaGroupBetting_Sequence.svg", title: "Sequence Diagram" },
                         { file: "SabaGroupBetting_MappingDictionary.svg", title: "MappingCustDictionary Logic" },
-                        { file: "SabaGroupBetting_AssociationDetection.svg", title: "Simplified Association Detection (4 Criteria)" }
+                        { file: "SabaGroupBetting_AssociationDetection.svg", title: "Simplified Association Detection (4 Criteria)" },
+                        { file: "SabaGroupBetting_DatabaseFlow.svg", title: "Database Flow (Get, Complete, Clean SPs)" }
                     ]
                 },
                 {
@@ -691,18 +701,18 @@
             Object.keys(flowData).forEach(categoryName => {
                 const category = document.createElement('div');
                 category.className = 'category';
-                
+
                 const categoryTitle = document.createElement('div');
                 categoryTitle.className = 'category-title';
                 categoryTitle.innerHTML = `<span class="category-icon">📁</span> ${categoryName}`;
-                
+
                 const flowGrid = document.createElement('div');
                 flowGrid.className = 'flow-grid';
-                
+
                 flowData[categoryName].forEach(flow => {
                     const card = document.createElement('div');
                     card.className = 'flow-card';
-                    
+
                     // Check if this is an external page (website page)
                     if (flow.isExternalPage) {
                         card.onclick = () => window.location.href = flow.pageUrl;
@@ -737,10 +747,10 @@
                             </div>
                         `;
                     }
-                    
+
                     flowGrid.appendChild(card);
                 });
-                
+
                 category.appendChild(categoryTitle);
                 category.appendChild(flowGrid);
                 container.appendChild(category);
@@ -750,7 +760,7 @@
         function showFlowDetail(flow) {
             currentFlow = flow;
             const container = document.getElementById('flowContainer');
-            
+
             const detailHTML = `
                 <div class="flow-detail active">
                     <div class="flow-detail-header">
@@ -775,7 +785,7 @@
                     </div>
                 </div>
             `;
-            
+
             container.innerHTML = detailHTML;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -789,12 +799,12 @@
         function openModal(svgPath, title) {
             const modal = document.getElementById('diagramModal');
             const modalContent = document.getElementById('modalContent');
-            
+
             modalContent.innerHTML = `
                 <h2 style="margin-bottom: 20px; color: #667eea;">${title}</h2>
                 <img src="${svgPath}" class="modal-svg" alt="${title}">
             `;
-            
+
             modal.classList.add('active');
         }
 
@@ -804,18 +814,18 @@
         }
 
         // Close modal when clicking outside
-        document.getElementById('diagramModal').addEventListener('click', function(e) {
+        document.getElementById('diagramModal').addEventListener('click', function (e) {
             if (e.target === this) {
                 closeModal();
             }
         });
 
         // Search functionality
-        document.getElementById('searchBox').addEventListener('input', function(e) {
+        document.getElementById('searchBox').addEventListener('input', function (e) {
             const searchTerm = e.target.value.toLowerCase();
             const cards = document.querySelectorAll('.flow-card');
             let hasResults = false;
-            
+
             cards.forEach(card => {
                 const text = card.textContent.toLowerCase();
                 if (text.includes(searchTerm)) {
@@ -825,14 +835,14 @@
                     card.style.display = 'none';
                 }
             });
-            
+
             // Show no results message
             const categories = document.querySelectorAll('.category');
             categories.forEach(category => {
                 const grid = category.querySelector('.flow-grid');
                 const visibleCards = Array.from(grid.querySelectorAll('.flow-card'))
                     .filter(card => card.style.display !== 'none');
-                
+
                 if (visibleCards.length === 0 && searchTerm) {
                     if (!category.querySelector('.no-results')) {
                         const noResults = document.createElement('div');
@@ -850,7 +860,7 @@
         });
 
         // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 if (document.getElementById('diagramModal').classList.contains('active')) {
                     closeModal();
@@ -864,5 +874,5 @@
         renderFlows();
     </script>
 </body>
-</html>
 
+</html>

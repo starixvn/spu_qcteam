@@ -1,6 +1,6 @@
 @startuml SabaGroupBetting_MainFlow
 !theme plain
-title Match Monitor Saba Group Betting - Main Business Flow
+title Match Monitor Saba Group Betting - Main Business Flow (Updated 2025-11-19)
 
 start
 
@@ -8,10 +8,17 @@ floating note : PHASE 1 - STAGING (Shared with all rules)
 
 :Insert Ticket Detail;
 note right
-    Same as standard Group Betting
-    PoolType = 2 (Saba Pool)
+    **Staging Tables:**
+    - MatchMonitorStagingGroupBettingSabaLive
+    - MatchMonitorStagingGroupBettingSabaNonLive
     
-    See: GroupBetting_StagingFlow for details
+    **Key Fields:**
+    - SequenceID (auto-increment)
+    - TransID, CustID, CTSCustID
+    - MatchID, ScoreDiff, BettypeID, BetID, Betteam
+    - SportType, LeagueGroupID
+    - Stake, TransDateToSecond
+    - GroupID (initially 0)
 end note
 
 floating note : PHASE 2 - PROCESSING (Saba-Specific)
@@ -26,26 +33,36 @@ end note
 :MatchMonitorJobService.ProcessRuleSabaGroupBetting(isLive, numberOfThread);
 
 :GetMatchRuleSabaGB(isLive);
-:Call SP: RuleSabaGB_Get(isLive);
+:Call SP: CTS_DC_MatchMonitor_RuleGroupBettingSaba_Get(isLive);
 note right
-    Database: CTS_DataCenter (MySQL)
-    PoolType = 2 (Saba Pool)
+    **Database:** CTS_DataCenter (MySQL)
+    **SP Name:** CTS_DC_MatchMonitor_RuleGroupBettingSaba_Get
     
-    Returns:
-    - MaxSequenceID
-    - CTSCustomerList (For mapping!)
-    - MatchStagingList (grouped)
+    **Returns:**
+    - MaxSequenceID (OUT parameter)
+    - CTSCustomerList (for mapping dictionary)
+    - MatchStagingList (grouped matches)
+    
+    **Tables Used:**
+    - MatchMonitorStagingGroupBettingSabaLive
+    - MatchMonitorStagingGroupBettingSabaNonLive
+    - MatchMonitorRuleSetting
+    - SystemParameter
 end note
 
 partition "=== CREATE MAPPING DICTIONARY ===" {
     :Extract CTSCustomerList;
     note right
         From SP result:
-        CTSCustomerList = [
+        SELECT DISTINCT CustID, CTSCustID
+        FROM MatchMonitorStagingGroupBettingSaba[Live/NonLive]
+        WHERE SequenceID <= MaxSequenceID
+        
+        Example Result:
+        [
             { CustID: 101, CTSCustID: 5001 },
             { CustID: 102, CTSCustID: 5002 },
-            { CustID: 103, CTSCustID: 5003 },
-            ...
+            { CustID: 103, CTSCustID: 5003 }
         ]
     end note
     
@@ -64,9 +81,7 @@ partition "=== CREATE MAPPING DICTIONARY ===" {
         {
             101: 5001,
             102: 5002,
-            103: 5003,
-            104: 5004,
-            ...
+            103: 5003
         }
         
         Purpose:
@@ -81,7 +96,10 @@ partition "=== CREATE MAPPING DICTIONARY ===" {
 :Group Matches;
 note right
     Group by: MatchID, ScoreDiff, BettypeID, BetID, Betteam
-    Same grouping logic as standard
+    Filter by:
+    - TotalStake >= RuleSetting.TotalStake
+    - COUNT(DISTINCT CustID) > 1
+    - SUM(CustStake) >= TotalStake
 end note
 
 if (Has Matches?) then (yes)
@@ -157,7 +175,7 @@ if (Has Matches?) then (yes)
         partition "=== COMPLETE: Save Results ===" {
             :Complete(maxSequenceID);
             
-            :Merge Round 1 & Round 2;
+            :Merge Round 1 and Round 2;
             :Group by TransIDList;
             :Assign Sequential GroupID;
             note right
@@ -169,17 +187,26 @@ if (Has Matches?) then (yes)
             
             if (Has Results?) then (yes)
                 :CompleteTransRuleSabaGB();
+                :Call SP: CTS_DC_MatchMonitor_RuleGroupBettingSaba_Complete;
                 note right
-                    INSERT INTO CTSMatchMonitorRuleSabaGroupBetting
+                    **SP Name:** CTS_DC_MatchMonitor_RuleGroupBettingSaba_Complete
                     
-                    **Saba-specific result table!**
+                    **Operations:**
+                    1. INSERT/UPDATE MatchMonitorDetails
+                    2. UPDATE Staging GroupID
+                    3. INSERT MatchMonitor
+                    
+                    **Tables:**
+                    - MatchMonitorDetails (main results)
+                    - MatchMonitor (summary)
+                    - MatchMonitorStagingGroupBettingSaba[Live/NonLive]
                 end note
                 
                 :Mark Staging as Processed;
                 note right
-                    UPDATE CTSMatchMonitorStaging
-                    SET IsProcessed = 1
-                    WHERE PoolType = 2
+                    UPDATE MatchMonitorStagingGroupBettingSaba[Live/NonLive]
+                    SET GroupID = TargetGroupID
+                    WHERE TransID IN (TransIDList)
                 end note
             endif
         }
@@ -191,11 +218,18 @@ if (Has Matches?) then (yes)
     :Wait for All Threads;
     
     :CleanTransRuleSabaGB(isLive, maxSequenceID);
+    :Call SP: CTS_DC_MatchMonitor_RuleGroupBettingSaba_StagingClean;
     note right
-        DELETE FROM CTSMatchMonitorStaging
-        WHERE PoolType = 2
-            AND IsProcessed = 1
-            AND ProcessedDate < NOW() - 7 days
+        **SP Name:** CTS_DC_MatchMonitor_RuleGroupBettingSaba_StagingClean
+        
+        **Clean-up Logic:**
+        - Remove processed transactions
+        - Keep last TimeStep transactions
+        - Update SystemParameter (162 for Live, 163 for NonLive)
+        
+        **Tables:**
+        - MatchMonitorStagingGroupBettingSaba[Live/NonLive]
+        - SystemParameter
     end note
     
 else (no)
@@ -223,18 +257,20 @@ note right
        - No sport-specific settings
        - No IPLast3Days
     
-    3. ✅ Saba Pool
-       - PoolType = 2
-       - Separate from standard (PoolType = 1)
+    3. ✅ Saba-Specific Tables
+       - MatchMonitorStagingGroupBettingSabaLive
+       - MatchMonitorStagingGroupBettingSabaNonLive
+       - MatchMonitorDetails (Reason = 0)
     
-    4. ✅ Saba Result Table
-       - CTSMatchMonitorRuleSabaGroupBetting
-       - Separate from standard
+    4. ✅ Stored Procedures
+       - CTS_DC_MatchMonitor_RuleGroupBettingSaba_Get
+       - CTS_DC_MatchMonitor_RuleGroupBettingSaba_Complete
+       - CTS_DC_MatchMonitor_RuleGroupBettingSaba_StagingClean
     
     **Same as Standard:**
     - 2-round detection
     - Parallel processing
-    - Merge & complete flow
+    - Merge and complete flow
     - Clean-up logic
     
     **Complexity:**
@@ -243,4 +279,3 @@ note right
 end note
 
 @enduml
-

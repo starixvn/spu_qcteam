@@ -1,6 +1,6 @@
 @startuml SabaGroupBetting_MappingDictionary
 !theme plain
-title Match Monitor Saba Group Betting - CustID Mapping Dictionary Logic
+title Match Monitor Saba Group Betting - CustID Mapping Dictionary Logic (Updated 2025-11-19)
 
 start
 
@@ -55,26 +55,27 @@ note right
 end note
 
 partition "CREATION PROCESS" {
-    :Call SP: CTS_MatchMonitor_RuleSabaGB_Get;
+    :Call SP: CTS_DC_MatchMonitor_RuleGroupBettingSaba_Get;
     
     :SP Returns CTSCustomerList;
     note right
         Example CTSCustomerList:
         [
-            { CustID: 101, CTSCustID: 5001, Username: "user1" },
-            { CustID: 102, CTSCustID: 5002, Username: "user2" },
-            { CustID: 103, CTSCustID: 5003, Username: "user3" },
-            { CustID: 104, CTSCustID: 5004, Username: "user4" },
-            { CustID: 105, CTSCustID: 5005, Username: "user5" }
+            { CustID: 101, CTSCustID: 5001 },
+            { CustID: 102, CTSCustID: 5002 },
+            { CustID: 103, CTSCustID: 5003 },
+            { CustID: 104, CTSCustID: 5004 },
+            { CustID: 105, CTSCustID: 5005 }
         ]
         
-        SQL Query in SP:
-        SELECT DISTINCT CustID, CTSCustID, Username
-        FROM CTSMatchMonitorStaging s
-        JOIN CTSCustomer c ON s.CustID = c.CustID
-        WHERE s.IsLive = @IsLive 
-            AND s.PoolType = 2
-            AND s.IsProcessed = 0;
+        **SQL Query in SP:**
+        SELECT DISTINCT CustID, CTSCustID
+        FROM MatchMonitorStagingGroupBettingSabaLive
+        WHERE SequenceID <= @op_MaxSequenceID;
+        
+        **Tables:**
+        - MatchMonitorStagingGroupBettingSabaLive
+        - MatchMonitorStagingGroupBettingSabaNonLive
     end note
     
     :Extract CustID and CTSCustID;
@@ -153,8 +154,8 @@ partition "USAGE IN ASSOCIATION DETECTION" {
             }
             
             **Example:**
-            CustID 101 to Lookup to CTSCustID 5001
-            CustID 102 to Lookup to CTSCustID 5002
+            CustID 101 -> Lookup -> CTSCustID 5001
+            CustID 102 -> Lookup -> CTSCustID 5002
             etc.
         end note
         
@@ -182,10 +183,10 @@ partition "USAGE IN ASSOCIATION DETECTION" {
     :Map Back to Saba CustID;
     note right
         Reverse mapping for final results:
-        CTSCustID to CustID
+        CTSCustID -> CustID
         
-        5001 to 101
-        5002 to 102
+        5001 -> 101
+        5002 -> 102
         etc.
     end note
     
@@ -208,7 +209,7 @@ partition "EXAMPLE SCENARIO" {
     
     :Step 1: Staging;
     note right
-        INSERT INTO CTSMatchMonitorStaging
+        INSERT INTO MatchMonitorStagingGroupBettingSabaLive
         (CustID, CTSCustID, DeviceID, ...)
         VALUES
         (101, 5001, 'ABC123', ...),
@@ -234,16 +235,17 @@ partition "EXAMPLE SCENARIO" {
         WHERE CTSCustID IN (5001, 5002, 5003)
             AND DeviceID = 'ABC123'
         
-        Result: All 3 customers to GroupID = 1 (Device)
+        Result: All 3 customers -> GroupID = 1 (Device)
     end note
     
     :Step 4: Save Results;
     note right
-        INSERT INTO CTSMatchMonitorRuleSabaGroupBetting
-        (MatchID, GroupID, CustIDList, ...)
+        INSERT INTO MatchMonitorDetails
+        (MatchID, GroupID, ListCustID, Reason, ...)
         VALUES
-        (987654, 1, '101,102,103', ...)
+        (987654, 1, '101,102,103', 0, ...)
         
+        **Reason = 0 (CONST_MMREASON_GROUPBETTINGSABA)**
         **Uses Saba CustIDs in final results!**
     end note
 }
@@ -284,7 +286,11 @@ floating note right
     - IReadOnlyDictionary<int, int>
     - Cannot be modified after creation
     - Thread-safe for parallel processing
+    
+    **Tables:**
+    - MatchMonitorStagingGroupBettingSabaLive
+    - MatchMonitorStagingGroupBettingSabaNonLive
+    - MatchMonitorDetails (Reason=0)
 end note
 
 @enduml
-
